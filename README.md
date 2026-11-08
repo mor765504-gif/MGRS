@@ -11,7 +11,7 @@ MGRS 首先服务于秘秘自身的可靠性、性能和产品演进，同时允
 | 仓库 | 角色 | 可见性 |
 |------|------|--------|
 | [`assisthub`](https://github.com/mor765504-gif/assisthub) | 研发总控 | 私有 |
-| `mimi` | 发布 | 待建 |
+| [`mimi`](https://github.com/mor765504-gif/mimi) | 发布 | 私有 |
 | **MGRS**（本仓） | 治理协议 | 公开 |
 
 ## 状态
