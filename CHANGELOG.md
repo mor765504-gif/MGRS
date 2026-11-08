@@ -1,5 +1,9 @@
 # 变更记录
 
+## 2026-11-09 · 去掉对外点名第三方框架
+
+- README / DECISIONS 不再点名具体第三方工作流框架；D03 改为「治理合同自洽」的中性表述。
+
 ## 2026-11-09 · 技术答疑对齐（不含产品差异）
 
 - 从 [BV1vix26sEzR](https://www.bilibili.com/video/BV1vix26sEzR/) 技术答疑抽取可协议化内容，写入 `DECISIONS.md` D07–D12（多 Agent 治理、Hermes/抽屉/工坊、信息源质量、隐私路径、协议仓用途、高风险效果审计）。

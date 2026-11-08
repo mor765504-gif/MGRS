@@ -24,7 +24,7 @@ MGRS 首先服务于秘秘内部的 Agent 协作、上下文交接、工具执�
 
 身份与授权、四类上下文视图、版本化任务和结果交接、MCP 效果等级、Skill 生命周期、Persona、Profile 隔离、单宿主恢复、前后端契约、可靠性度量、实施映射及变更控制。
 
-这里保留原有 Core、Hermes、Orchestration、Workshop 等组件的职责，不依赖 Superpowers，也不把独立治理协议误写成全新执行框架。
+这里保留原有 Core、Hermes、Orchestration、Workshop 等组件的职责，也不把独立治理协议误写成全新执行框架。
 
 ## 文件结构
 
