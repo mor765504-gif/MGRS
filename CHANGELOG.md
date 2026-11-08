@@ -1,10 +1,10 @@
 # 变更记录
 
-## 2026-11-09 · 对齐 B 站公开自述
+## 2026-11-09 · 技术答疑对齐（不含产品差异）
 
-- 依据 UP 在 [BV1vix26sEzR](https://www.bilibili.com/video/BV1vix26sEzR/) 评论区亲自宣布的认知，新增 `DECISIONS.md` D07–D15。
-- 回写 `README.md` 与 `MGRS.md` §1 / §13 的定位与可靠性口径；更新 `OPEN-QUESTIONS.md` Q12 注释。
-- 增加来源说明 `docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md`。未经验证的 TEE / 体量 / 排期仍标为待证。
+- 从 [BV1vix26sEzR](https://www.bilibili.com/video/BV1vix26sEzR/) 技术答疑抽取可协议化内容，写入 `DECISIONS.md` D07–D12（多 Agent 治理、Hermes/抽屉/工坊、信息源质量、隐私路径、协议仓用途、高风险效果审计）。
+- 明确本仓为**技术探讨**文档：不收录竞品对照与市场定位；已从 README / 正文去掉产品差异表述。
+- 来源说明见 `docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md`。TEE / 体量目标仍为待证。
 
 ## 2026-11-09 · 公开仓库
 
