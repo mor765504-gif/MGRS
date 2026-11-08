@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Explicit, private-only first publication. No source-repository history is copied.
+# Explicit public first publication. No source-repository history is copied.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 OWNER="mor765504-gif"
@@ -52,14 +52,14 @@ while IFS= read -r p || [[ -n "$p" ]]; do
 done < "$ROOT/publish-files.txt"
 git -c commit.gpgsign=false -C "$ROOT" commit -m 'docs: archive MGRS 0.1 specification, research and discussion records'
 
-if ! gh repo create "$TARGET" --private --disable-wiki \
+if ! gh repo create "$TARGET" --public --disable-wiki \
   --description 'MGRS: Mimi proprietary Agent governance protocol, specification and review archive' \
   --source "$ROOT" --remote origin; then
   printf 'Creation failed or was not confirmed. Local commit is retained; inspect GitHub before retrying.\n' >&2
   exit 1
 fi
 PRIVATE="$(gh api "repos/$TARGET" --jq '.private')"
-[[ "$PRIVATE" == true ]] || { printf 'Private visibility not confirmed. Refusing to push.\n' >&2; exit 1; }
+[[ "$PRIVATE" == false ]] || { printf 'Public visibility not confirmed. Refusing to push.\n' >&2; exit 1; }
 # Use gh's credential helper for this push only, without writing global Git settings.
 if ! git -c credential.helper= -c 'credential.helper=!gh auth git-credential' -C "$ROOT" push -u origin HEAD:main; then
   printf 'Repository creation was confirmed, but push was not confirmed. Local commit and remote are retained.\n' >&2
@@ -69,5 +69,5 @@ fi
 LOCAL="$(git -C "$ROOT" rev-parse HEAD)"
 REMOTE="$(gh api "repos/$TARGET/git/ref/heads/main" --jq '.object.sha')"
 [[ "$LOCAL" == "$REMOTE" ]] || { printf 'Remote commit verification failed.\n' >&2; exit 1; }
-printf 'Published private repository at commit %s\n' "$REMOTE"
+printf 'Published public repository at commit %s\n' "$REMOTE"
 gh api "repos/$TARGET" --jq '.html_url'

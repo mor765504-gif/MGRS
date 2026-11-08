@@ -2,11 +2,11 @@
 
 **Mimi Governed Runtime Standard · 秘秘专有 Agent 治理协议**
 
-协议版本 **0.1 / 设计候选** · 文档归档 **2026-11-07** · 拟建仓库 **私有**
+协议版本 **0.1 / 设计候选** · 文档归档 **2026-11-07** · 仓库 **公开**
 
 MGRS 首先服务于秘秘内部的 Agent 协作、上下文交接、工具执行、证据验收和故障恢复，同时允许外部开发者参与讨论与审查。它是一套协议，不是新增的 Agent 框架、中间层或第二个调度器。
 
-> 本仓库包保留完整规范与研究原稿，不只是摘要。本包交付时尚未创建或推送新的 GitHub 仓库；后续实际发布以 GitHub 回读结果为准，发布方式见下方。文档完成不代表产品实现、验收或上线完成。
+> 本仓库保留完整规范与研究原稿，不只是摘要。仓库已公开于 GitHub；文档完成不代表产品实现、验收或上线完成。
 
 ## 阅读入口
 
@@ -53,17 +53,15 @@ MGRS/
     └── verify_archive.py
 ```
 
-## 创建独立 GitHub 仓库
+## GitHub 仓库
 
-拟用名称为 `mor765504-gif/MGRS`，仅创建为私有，不覆盖同名仓库。需在本机已安装 Git、Python 3 和 GitHub CLI，并登录对应账号。
+公开仓库为 [`mor765504-gif/MGRS`](https://github.com/mor765504-gif/MGRS)。本地可用以下命令做文档结构校验：
 
 ```sh
-# 在解压得到的 MGRS 目录内执行
 python3 scripts/verify_archive.py
-bash scripts/publish-github.sh --create
 ```
 
-发布脚本只使用清单内文件初始化一个新的文档历史；不复制 Mimi-Superagent 的 Git 历史，不删除或修改原产品仓库。脚本会检查账号、私有属性和远端提交。完整步骤及失败后的处理见 [PUBLISH.md](docs/PUBLISH.md)。
+首次发布脚本见 [PUBLISH.md](docs/PUBLISH.md)；当前仓库已公开，勿再按「仅私有创建」流程重复建仓。
 
 ## 来源与状态
 
