@@ -1,0 +1,30 @@
+{
+  "format": "mgrs-source-archive/1",
+  "date": "2026-11-07",
+  "remote_repository_created": false,
+  "source_pr": "https://github.com/mor765504-gif/Mimi-Superagent/pull/14",
+  "sources": [
+    {
+      "source_repository": "mor765504-gif/Mimi-Superagent",
+      "commit": "ad62b7f1301fa96474c160a7e58d2188785d7311",
+      "source_path": "docs/plans/2026-11-07-mgrs-native-governance.md",
+      "archive_path": "archive/2026-11-07/docs/plans/2026-11-07-mgrs-native-governance.md",
+      "git_blob_sha1": "6e244b81644bc65833a004e36bbb46a3bf417937",
+      "sha256": "88c27667279b65f64ff86b356d53c5e1eb3622b6715bb4b2a38548146a88bc8a",
+      "bytes": 27866,
+      "lines": 333,
+      "url": "https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/plans/2026-11-07-mgrs-native-governance.md"
+    },
+    {
+      "source_repository": "mor765504-gif/Mimi-Superagent",
+      "commit": "ad62b7f1301fa96474c160a7e58d2188785d7311",
+      "source_path": "docs/research/2026-11-07-drawers-architecture-review.md",
+      "archive_path": "archive/2026-11-07/docs/research/2026-11-07-drawers-architecture-review.md",
+      "git_blob_sha1": "2e278e8ed0a3e75563a70ad8c2c2974834d42a82",
+      "sha256": "31b15d3ce71f07a703b1c97707129233d9b2e7e1d995d6e3d215719edfc83c40",
+      "bytes": 40151,
+      "lines": 353,
+      "url": "https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/research/2026-11-07-drawers-architecture-review.md"
+    }
+  ]
+}
