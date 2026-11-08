@@ -13,6 +13,7 @@ docs/OPEN-QUESTIONS.md
 docs/PROVENANCE.md
 docs/PUBLISH.md
 docs/RESEARCH.md
+docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md
 publish-files.txt
 scripts/publish-github.sh
 scripts/verify_archive.py

@@ -1,5 +1,11 @@
 # 变更记录
 
+## 2026-11-09 · 对齐 B 站公开自述
+
+- 依据 UP 在 [BV1vix26sEzR](https://www.bilibili.com/video/BV1vix26sEzR/) 评论区亲自宣布的认知，新增 `DECISIONS.md` D07–D15。
+- 回写 `README.md` 与 `MGRS.md` §1 / §13 的定位与可靠性口径；更新 `OPEN-QUESTIONS.md` Q12 注释。
+- 增加来源说明 `docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md`。未经验证的 TEE / 体量 / 排期仍标为待证。
+
 ## 2026-11-09 · 公开仓库
 
 - 仓库 `mor765504-gif/MGRS` 以公开可见性发布完整规范包。
