@@ -15,7 +15,9 @@ MGRS 首先用于秘秘内部，允许受邀开发者讨论、审查和提出修
 | 修改内容 | 对应文件 |
 | :--- | :--- |
 | 项目介绍、阅读顺序 | [README.md](README.md)、[docs/README.md](docs/README.md) |
-| 概念解释与教学示例 | `docs/000-*.md` 至 `docs/005-*.md`，并链接对应规范章节 |
+| 概念解释、教学示例与自研搜索策略 | `docs/000-*.md` 至 `docs/006-*.md`，链接对应规范或实现依据 |
+| 产品哲学与系统总览 | [MIMI-OVERVIEW.md](docs/MIMI-OVERVIEW.md)，保留产品、实现与协议三层区别 |
+| 当前工程核查 | `docs/sources/` 下带日期的记录，固定提交并区分源码、历史记录和新执行 |
 | 协议条款 | [MGRS.md](MGRS.md) |
 | 研究依据与新的比较材料 | [RESEARCH.md](docs/RESEARCH.md)，注明新增研究的版本、日期与访问范围 |
 | 已确认决定 | [DECISIONS.md](docs/DECISIONS.md)，保留明确的确认来源 |
