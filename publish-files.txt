@@ -14,13 +14,16 @@ docs/002-architecture.md
 docs/003-context-and-memory.md
 docs/004-execution-and-evidence.md
 docs/005-review-and-conformance.md
+docs/006-search-strategy.md
 docs/DECISIONS.md
+docs/MIMI-OVERVIEW.md
 docs/OPEN-QUESTIONS.md
 docs/PROVENANCE.md
 docs/PUBLISH.md
 docs/README.md
 docs/RESEARCH.md
 docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md
+docs/sources/2026-11-09-system-baseline.md
 publish-files.txt
 scripts/publish-github.sh
 scripts/verify_archive.py

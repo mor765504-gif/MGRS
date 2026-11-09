@@ -6,6 +6,8 @@ MGRS 把治理要求落到秘秘已有组件的交界处：事实由谁维护，
 
 本页是对 0.1 设计候选的说明。图中的关系表达协议职责，不表示这些链路已在当前产品全部接通或完成实测。规范依据是[六个治理面](../MGRS.md#mgrs-2)、[上下文合同](../MGRS.md#mgrs-4)与[单宿主恢复](../MGRS.md#mgrs-11)。
 
+产品组织以 Mimi 自有宿主 ProductRuntime 为根：它装配运行组件与生命周期，Hermes 提供复用的原生执行循环，MGRS 横向规定职责合同。包括统一执行网关、外部软件与推理路径的完整关系，见[产品与系统总览](MIMI-OVERVIEW.md)。
+
 ## 一次任务跨过哪些职责
 
 ```mermaid
@@ -54,5 +56,11 @@ flowchart TD
 | 宿主生命周期 | `backend/deploy/mimi_cli/mimi_product_runtime.py` |
 
 核查实现时，应固定实际源码版本并确认装配、配置和执行证据。某个模块出现在源码中，只能支持对应范围的源码判断；是否被加载、是否能完成真实任务，需要相应验证记录。历史已有能力与待证边界见[第 16 章](../MGRS.md#mgrs-16)，分期路线见[第 14 章](../MGRS.md#mgrs-14)。
+
+## 2026-11-09 候选中的执行网关与自研搜索
+
+PR #15 已合入 PR #12 的候选分支，当前固定 head 为 `1dd86db66894ecabcd518be1e5cb1aac8d9fc462`。`ExecutionPort` / `ExecutorRouter` 在既有任务、attempt、SessionDB 与回执体系中连接 Hermes 和受管子进程两类任务后端；受限 AGY `infer_once` 是单独注册的推理端口。详见[当前源码入口与 CI](sources/2026-11-09-system-baseline.md#source-runtime)。
+
+同一候选包含 `mimi_search_strategy` 的策略文件、hook 和宿主装配入口。它把秘秘自研搜索方法送入当前模型，工具执行沿用原生搜索与提取能力，详见[自研搜索策略](006-search-strategy.md)。
 
 [上一章：核心概念](001-domain-model.md) · [下一章：上下文与记忆](003-context-and-memory.md)

@@ -4,9 +4,21 @@
 
 让多 Agent 的协作有明确边界，交接有可追溯的依据，完成有实际回执。
 
-[设计理念](docs/000-philosophy.md) · [核心对象](docs/001-domain-model.md) · [架构关系](docs/002-architecture.md) · [任务示例](docs/004-execution-and-evidence.md) · [完整规范](MGRS.md)
+[产品与系统总览](docs/MIMI-OVERVIEW.md) · [设计理念](docs/000-philosophy.md) · [架构关系](docs/002-architecture.md) · [自研搜索策略](docs/006-search-strategy.md) · [完整规范](MGRS.md)
 
 **协议版本：0.1，设计候选。** 本仓库公开保存规范、研究记录和技术讨论材料，首先服务于秘秘内部，并允许外部开发者参与讨论与审查。实现和验证的范围见[当前状态与证据](docs/005-review-and-conformance.md)，许可说明见 [NOTICE.md](NOTICE.md)。
+
+## 产品、实现与协议
+
+秘秘希望让 AI 持续参与个人与组织的工作，让用户保有对数据、模型、工具和计算资源的选择权。完整介绍见[《秘秘 Mimi：产品哲学、系统架构与 MGRS 治理协议》](docs/MIMI-OVERVIEW.md)，其中包含十二个部分和四张架构图。
+
+| 对象 | 承担的职责 |
+| :--- | :--- |
+| **Mimi 产品** | 面向个人与企业的持续运行 AI 工作空间，提供交互、记忆、任务执行、跨软件协作和结果交付 |
+| **Mimi Harness** | 以自有宿主集成 Hermes、Core、Persona、Memory、MCP、Skill、工坊、自研搜索策略与统一执行网关 |
+| **MGRS 治理协议** | 约束各组件和 Agent 的可观察行为、权限、版本、交接、实际效果、验收与恢复 |
+
+MGRS 允许 Agent 自主选择方法，不强制规定模型内部的思考过程、规划顺序或模型架构。**Agent 的自主性体现于选择方法；治理的约束体现于权限、事实、责任和效果。**
 
 ## MGRS 是什么
 
@@ -32,6 +44,12 @@ MGRS 从这些实际边界组织规范：
 
 治理的开销也要算进去。普通聊天和小任务可以直接推进；复杂依赖和高风险效果才需要相应的合同、复核与恢复检查。在已有授权的有效范围内继续推进，避免机械重复确认。这个原则写在 [G12](MGRS.md#mgrs-3) 与[任务纪律](MGRS.md#mgrs-6)中。
 
+## 秘秘自研搜索策略
+
+秘秘的搜索策略由项目作者自主设计，覆盖什么时候搜索、怎样构造查询、如何读取原件、判断来源、按缺口追查，以及何时停止和引用。它通过 `mimi_search_strategy` 插件与 `pre_llm_call` 接入当前模型，复用 Hermes 原生 `web_search` / `web_extract` 执行检索和提取。
+
+查询语言与来源选择是这套自研策略的一部分。方法层的设计归属和底层 provider 的执行职责分别说明，详见[自研搜索策略](docs/006-search-strategy.md)。当前候选已有策略源码、宿主装配入口和既有单题链路记录，范围见[核验索引](docs/sources/2026-11-09-system-baseline.md#source-search)。
+
 ## 用一个任务理解它
 
 假设用户交代：“根据这些材料整理一份研究简报，保留引用，先交草稿。”
@@ -44,7 +62,7 @@ MGRS 从这些实际边界组织规范：
 
 ## 从哪里开始读
 
-编号导读按“理念 → 对象 → 架构 → 上下文 → 执行 → 审查”组织。它们解释现有规范；条款正文集中在 [MGRS.md](MGRS.md)。
+编号导读按“理念 → 对象 → 架构 → 上下文 → 执行 → 审查”展开，并以 006 单独说明自研搜索策略。它们解释规范与具体方法；条款正文集中在 [MGRS.md](MGRS.md)。
 
 | 文档 | 读完能理解什么 |
 | :--- | :--- |
@@ -54,6 +72,7 @@ MGRS 从这些实际边界组织规范：
 | [003 · 上下文与记忆](docs/003-context-and-memory.md) | 抽屉如何选择信息，权限、缓存、压缩和冷启动如何衔接 |
 | [004 · 执行与证据](docs/004-execution-and-evidence.md) | 一个任务如何分工、接受修正、交接结果和处理未知效果 |
 | [005 · 审查与符合性](docs/005-review-and-conformance.md) | 怎样区分协议要求、源码记录、测试证据和当前待决问题 |
+| [006 · 秘秘自研搜索策略](docs/006-search-strategy.md) | 自研方法怎样组织查询、阅读、追查与证据判断，并接入原生工具循环 |
 
 需要快速定位某个问题，可以直接看[文档导航](docs/README.md)。要逐条审查协议，阅读 [16 章完整规范](MGRS.md)、[决定记录](docs/DECISIONS.md)与[待商榷事项](docs/OPEN-QUESTIONS.md)。技术依据与原有取舍保存在[研究全文](docs/RESEARCH.md)。
 
@@ -66,13 +85,15 @@ MGRS 从这些实际边界组织规范：
 | 研究与原稿 | 保留 2026-11-07 的固定研究基线及逐字归档，历史判断按原范围阅读 |
 | 产品实施与符合性 | 需要逐项关联源码版本、配置与执行证据；文档合并不代表对应能力通过验收 |
 
+**2026-11-09 工程核查：** 产品集成候选 [PR #12](https://github.com/mor765504-gif/Mimi-Superagent/pull/12) 仍为 Open / Draft，head 为 `1dd86db6`；统一执行网关 [PR #15](https://github.com/mor765504-gif/Mimi-Superagent/pull/15) 已合入该候选分支；自研搜索策略 [PR #453](https://github.com/mor765504-gif/assisthub/pull/453) 已合入实验仓，当前产品候选也包含它。固定提交、已有 CI 和运行记录的范围见[工程基线](docs/sources/2026-11-09-system-baseline.md)。
+
 抽屉收益、复杂任务的语义交接、完整单宿主长运行、零访问加密推理等，仍按各自的具体证据判断。约 2C4G 的宿主体量是设计目标；2000 字符是事实视图的首版预算，两者都不能当成实测容量或性能结论。具体边界见[审查指南](docs/005-review-and-conformance.md)。
 
 ## 参与讨论和维护
 
 欢迎围绕明确条款、失效场景和替代方案提出 [Issue](https://github.com/mor765504-gif/MGRS/issues) 或 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls)。请说明问题落在哪个章节、怎样影响用户目标或实际结果，以及有哪些证据。涉及仍未决定的权限与验收边界，保留讨论状态。
 
-编辑入口和建议格式见 [CONTRIBUTING.md](CONTRIBUTING.md)。本仓库聚焦技术治理，讨论不延伸为产品市场定位或竞品差异清单。
+编辑入口和建议格式见 [CONTRIBUTING.md](CONTRIBUTING.md)。规范正文聚焦技术治理；产品哲学、部署选择、个人与企业路径以及商业模式在[总览](docs/MIMI-OVERVIEW.md)中说明，帮助理解协议的适用场景。
 
 在已有克隆目录中运行文档检查，只需 Python 3：
 
