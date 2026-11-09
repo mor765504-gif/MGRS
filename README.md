@@ -2,71 +2,90 @@
 
 **Mimi Governed Runtime Standard · 秘秘专有 Agent 治理协议**
 
-协议版本 **0.1 / 设计候选** · 文档归档 **2026-11-07** · 仓库 **公开**
+让多 Agent 的协作有明确边界，交接有可追溯的依据，完成有实际回执。
 
-简单来说，MGRS 不是又一套 Agent 框架，也不是再挂一层调度中间件。它是秘秘内部怎么管好多 Agent 协作的一套协议——谁说了算、记性怎么装、做完怎么交差、别假装干完了。底座还是 Hermes（MCP / Skill / 心跳 / Loop）；我补的是记忆抽屉、Persona，和工坊那一层治理合同。
+[设计理念](docs/000-philosophy.md) · [核心对象](docs/001-domain-model.md) · [架构关系](docs/002-architecture.md) · [任务示例](docs/004-execution-and-evidence.md) · [完整规范](MGRS.md)
 
-多 Agent 玩到头了，本质是 harness 调度和工程治理。工程长尾、假验收，这些要专门合同和证据分层；协作好不好，就看准确率、延迟、用量/成本、任务可靠性。本仓库用来**技术探讨与审查**，不收录产品对照、市场定位或竞品差异。
+**协议版本：0.1，设计候选。** 本仓库公开保存规范、研究记录和技术讨论材料，首先服务于秘秘内部，并允许外部开发者参与讨论与审查。实现和验证的范围见[当前状态与证据](docs/005-review-and-conformance.md)，许可说明见 [NOTICE.md](NOTICE.md)。
 
-> 完整规范和研究原稿都在这里，不只是摘要。仓库已公开于 GitHub；文档写完 ≠ 产品实现、验收或上线完成。
+## MGRS 是什么
 
-## 阅读入口
+MGRS 关心一件具体的事：当 Agent 开始长期记住事情、拆任务、调用工具、把工作交给其他 Agent，并在中断后继续执行时，怎样让整件事始终对得上用户的目标、权限和真实结果。
 
-| 文件 | 内容 | 使用方式 |
+谁能读哪份资料？Worker 能继承多少权限？用户中途改了要求，旧结果还能不能用？一个 Agent 说“完成了”，后继 Agent 有没有真正收到、读到并用对？MGRS 把这些问题写成可以讨论、实现和检查的运行时合同。
+
+底座继续沿用 Hermes 的 Agent Loop、MCP、Skill、心跳和会话机制；Core 管业务事实与授权，抽屉整理本轮上下文，Persona 管人格和表达，Orchestration 与工坊负责受管任务、结果验收和交付。协议说明这些组件怎样配合，以及每项事实由谁负责。详见[架构关系](docs/002-architecture.md)。
+
+## 为什么要讨论治理
+
+多 Agent 分工以后，困难会出现在组件之间：任务已启动，结果却没有送到正确的会话；新要求已经保存，实际模型请求仍使用旧版；工具超时了，外部操作可能已经成功。每个局部看起来都在工作，最终交付却未必可靠。
+
+MGRS 从这些实际边界组织规范：
+
+| 需要讲清的问题 | 协议中的处理方式 | 阅读位置 |
 | :--- | :--- | :--- |
-| [MGRS.md](MGRS.md) | 16 章完整规范、14 条治理不变量、上下文与结果合同、权限和恢复规则 | 日常编辑的主文件 |
-| [RESEARCH.md](docs/RESEARCH.md) | 抽屉系统设计、开源机制比较及九项架构核查全文 | 查看技术依据与取舍 |
-| [DECISIONS.md](docs/DECISIONS.md) | 原稿之后的对话决定及其确认状态 | 避免建议被误记为批准 |
-| [OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) | 权威归属、验收边界、抽屉预算等待商榷问题 | 对外审查与逐项讨论 |
-| [PROVENANCE.md](docs/PROVENANCE.md) | 固定提交、原文件路径、blob 校验与编辑说明 | 追溯来源 |
-| [archive/](archive/README.md) | 两份与 GitHub 字节一致的原始 Markdown | 固定留档，不覆盖 |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | 编辑、提议与审查约定 | 提交修改前阅读 |
+| 谁有权读、写和执行 | 由可信宿主绑定身份、Profile、scope 和当前授权；Worker 按任务获得有限能力 | [核心对象](docs/001-domain-model.md) |
+| 这一轮究竟需要哪些信息 | 从现有权威来源生成只读上下文视图，保留来源、版本和遗漏原因 | [上下文与记忆](docs/003-context-and-memory.md) |
+| 团队交接是否真正有效 | 结果绑定任务版本，分别记录持久化、路由、请求消费和验收 | [执行与证据](docs/004-execution-and-evidence.md) |
+| 失败后怎样继续 | 恢复原任务和旧 attempt，对账未知效果，再决定后续动作 | [规范第 11 章](MGRS.md#mgrs-11) |
+| 怎样判断改造有价值 | 同时观察准确性、延迟、用量与成本、任务可靠性，保留失败样本和测试条件 | [审查与符合性](docs/005-review-and-conformance.md) |
 
-## 规范覆盖范围
+治理的开销也要算进去。普通聊天和小任务可以直接推进；复杂依赖和高风险效果才需要相应的合同、复核与恢复检查。在已有授权的有效范围内继续推进，避免机械重复确认。这个原则写在 [G12](MGRS.md#mgrs-3) 与[任务纪律](MGRS.md#mgrs-6)中。
 
-身份与授权、四类上下文视图、版本化任务和结果交接、MCP 效果等级、Skill 生命周期、Persona、Profile 隔离、单宿主恢复、前后端契约、可靠性度量、实施映射及变更控制。
+## 用一个任务理解它
 
-这里保留原有 Core、Hermes、Orchestration、Workshop 等组件的职责，也不把独立治理协议误写成全新执行框架。
+假设用户交代：“根据这些材料整理一份研究简报，保留引用，先交草稿。”
 
-## 文件结构
+主控明确目标和允许使用的材料，按需要拆分资料整理与复核任务。每个 Worker 获得与任务相关的上下文和权限，返回带版本、证据引用和未解决问题的结果。接收方检查它对应的要求，再根据原件与约定的检查接受结果。
 
-```text
-MGRS/
-├── README.md
-├── MGRS.md
-├── CONTRIBUTING.md
-├── NOTICE.md
-├── CHANGELOG.md
-├── source-manifest.json
-├── publish-files.txt
-├── docs/
-│   ├── RESEARCH.md
-│   ├── DECISIONS.md
-│   ├── OPEN-QUESTIONS.md
-│   ├── PROVENANCE.md
-│   └── PUBLISH.md
-├── archive/
-│   ├── README.md
-│   └── 2026-11-07/docs/
-│       ├── plans/2026-11-07-mgrs-native-governance.md
-│       └── research/2026-11-07-drawers-architecture-review.md
-└── scripts/
-    ├── publish-github.sh
-    └── verify_archive.py
-```
+如果用户后来要求缩小研究范围，任务要求就有了新版本。旧结果仍归原版本，不满足新版本要求；相关下游依据失效并等待确认，不能悄悄重绑依赖。如果草稿已经生成，系统应据实记录产物；外部发送则另看授权与实际回执。主控可以解释进度，完成状态要有对应事实。
 
-## GitHub 仓库
+[完整示例](docs/004-execution-and-evidence.md)把这条过程展开到任务版本、结果交接和未知效果恢复。示例用于解释协议，不是产品实测报告。
 
-公开仓库为 [`mor765504-gif/MGRS`](https://github.com/mor765504-gif/MGRS)。本地可用以下命令做文档结构校验：
+## 从哪里开始读
+
+编号导读按“理念 → 对象 → 架构 → 上下文 → 执行 → 审查”组织。它们解释现有规范；条款正文集中在 [MGRS.md](MGRS.md)。
+
+| 文档 | 读完能理解什么 |
+| :--- | :--- |
+| [000 · 设计理念](docs/000-philosophy.md) | 为什么关注事实权威、真实交接和与任务相称的治理成本 |
+| [001 · 核心对象](docs/001-domain-model.md) | 身份、Profile、会话、任务、attempt、结果和回执分别指什么 |
+| [002 · 架构关系](docs/002-architecture.md) | Core、Hermes、Memory、Persona、Orchestration 和工坊怎样分工 |
+| [003 · 上下文与记忆](docs/003-context-and-memory.md) | 抽屉如何选择信息，权限、缓存、压缩和冷启动如何衔接 |
+| [004 · 执行与证据](docs/004-execution-and-evidence.md) | 一个任务如何分工、接受修正、交接结果和处理未知效果 |
+| [005 · 审查与符合性](docs/005-review-and-conformance.md) | 怎样区分协议要求、源码记录、测试证据和当前待决问题 |
+
+需要快速定位某个问题，可以直接看[文档导航](docs/README.md)。要逐条审查协议，阅读 [16 章完整规范](MGRS.md)、[决定记录](docs/DECISIONS.md)与[待商榷事项](docs/OPEN-QUESTIONS.md)。技术依据与原有取舍保存在[研究全文](docs/RESEARCH.md)。
+
+## 当前状态
+
+| 内容 | 状态与适用范围 |
+| :--- | :--- |
+| 完整规范 | 0.1 设计候选，包含 16 章、14 条治理不变量，以及 ContextEnvelope / ResultCapsule 的拟议结构 |
+| 导读与讨论 | 本仓库提供可编辑 Markdown、任务示例、决定记录、开放问题和来源索引 |
+| 研究与原稿 | 保留 2026-11-07 的固定研究基线及逐字归档，历史判断按原范围阅读 |
+| 产品实施与符合性 | 需要逐项关联源码版本、配置与执行证据；文档合并不代表对应能力通过验收 |
+
+抽屉收益、复杂任务的语义交接、完整单宿主长运行、零访问加密推理等，仍按各自的具体证据判断。约 2C4G 的宿主体量是设计目标；2000 字符是事实视图的首版预算，两者都不能当成实测容量或性能结论。具体边界见[审查指南](docs/005-review-and-conformance.md)。
+
+## 参与讨论和维护
+
+欢迎围绕明确条款、失效场景和替代方案提出 [Issue](https://github.com/mor765504-gif/MGRS/issues) 或 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls)。请说明问题落在哪个章节、怎样影响用户目标或实际结果，以及有哪些证据。涉及仍未决定的权限与验收边界，保留讨论状态。
+
+编辑入口和建议格式见 [CONTRIBUTING.md](CONTRIBUTING.md)。本仓库聚焦技术治理，讨论不延伸为产品市场定位或竞品差异清单。
+
+在已有克隆目录中运行文档检查，只需 Python 3：
 
 ```sh
 python3 scripts/verify_archive.py
 ```
 
-首次发布脚本见 [PUBLISH.md](docs/PUBLISH.md)；当前仓库已公开，勿再按「仅私有创建」流程重复建仓。
+该命令离线检查原稿校验值、规范结构、Markdown 本地链接与锚点、规范中的 JSON 示例和发布清单。它不执行秘秘产品测试。[日常维护说明](docs/PUBLISH.md)介绍修改后的检查方式。
 
-## 来源与状态
+## 来源与许可
 
-完整原稿保存在 [Mimi-Superagent PR #14](https://github.com/mor765504-gif/Mimi-Superagent/pull/14)，固定文档提交为 `ad62b7f1301fa96474c160a7e58d2188785d7311`。本次读取该 PR 为 Open / Draft。
+原稿来源为 [Mimi-Superagent PR #14](https://github.com/mor765504-gif/Mimi-Superagent/pull/14) 的固定文档提交 `ad62b7f1301fa96474c160a7e58d2188785d7311`。公开仓库内的[逐字归档](archive/README.md)可直接阅读；来源、历史基线和后续编辑记录见 [PROVENANCE.md](docs/PROVENANCE.md) 与 [CHANGELOG.md](CHANGELOG.md)。
 
-原稿保留它自己的产品研究版本和证据范围。后续讨论另列，不回填成旧版本已经验证的事实。仓库公开范围与许可尚未另行确定，参见 [NOTICE.md](NOTICE.md)。
+文档的首页入口与编号导读形式参考了 [DSH 的 README](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/README.md)。MGRS 的协议内容、组件职责和状态说明以本仓库为准。
+
+本项目保持“秘秘内部专有治理协议、公开技术讨论”的定位。许可、再分发和实施条件见 [NOTICE.md](NOTICE.md)。
