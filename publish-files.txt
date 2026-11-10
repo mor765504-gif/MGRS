@@ -24,6 +24,7 @@ docs/README.md
 docs/RESEARCH.md
 docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md
 docs/sources/2026-11-09-system-baseline.md
+docs/sources/2026-11-11-integration.md
 publish-files.txt
 scripts/publish-github.sh
 scripts/verify_archive.py

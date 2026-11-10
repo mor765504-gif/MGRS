@@ -44,4 +44,42 @@ Skill 提供可复用的方法。看见名称、读到正文、执行脚本、�
 
 外置 `memory.md` 或 `context.json` 可以作为带版本和来源的可读视图。人工编辑若要改变权威事实，应走既有 Core 写入、撤回和版本比较流程。这样可以保留文件的可读性，同时避免文件与数据库互相覆盖、各说各话。
 
+## 2026-11-11 候选中的实际装配
+
+以下观察固定在 `77c853f1`，依据[源码索引与证据范围](sources/2026-11-11-integration.md)。前文规范要求继续保留，拟议 `ContextEnvelope` 与候选已有诊断字段分别核对。
+
+```mermaid
+flowchart TD
+    Query["当前 turn 的用户请求"] --> Provider["mimi_memory provider"]
+    Core["Core 当前授权 scope 快照"] --> Provider
+    Provider --> Rank["跨 scope 词法相关性与重要性排序"]
+    Rank --> Facts["最多 2000 字符事实块与来源引用"]
+    Rank --> Report["选中、省略与 partial 元数据"]
+    Bundle["Persona bundle 与 session side state"] --> Tavern["mimi_tavern 编译"]
+    Inbox["受管任务必需输入 journal"] --> Input["InputAdapter 请求边界"]
+    Facts --> Request["Hermes 请求装配"]
+    Tavern --> Request
+    Skills["原生 Skill 读取与 P6 实时检查"] --> Request
+    Request --> Input
+    Input --> Final["最终模型请求与 trace"]
+```
+
+图中多源箭头表示来源关系，各插件的全局顺序仍由原生装配与 patch 决定。`InputAdapter.final_request()` 检查最终 payload 的包含事实。Persona 的 `evidence_stage=compiled` 记录编译产物，实际发送与响应使用请求 trace 证据核对。
+
+### 事实投影
+
+`on_turn_start()` 取本轮 query，切换或初始化 session 时清空 query。`system_prompt_block()` 每次重取所有授权 read scopes 的快照，任一读取失败即清空投影；写入后读回未知时暂不提供事实块。Core 决定有效性与到期撤回，投影对已授权有效集合进行排序。
+
+`projection.rank_facts()` 对规范化英文词、中文相邻双字与路径命中加权，再按重要性和稳定身份排序。`select_prompt()` 将 header 与完整事实记录共同计入 2000 个 Python 字符，容不下的记录标记 `budget` 并继续选择。报告含来源、版本、相关性及省略元数据；`prefetch` 保持空内容。词法分数用于选择，相关性质量仍需任务样本测量。它和全来源预算协调、完整上下文审计合同分别保留状态。
+
+### Persona 连续性
+
+`MimiContextEngine` 复用 Hermes `ContextCompressor` 和原压缩配置，`PersonaSession.select()` 产生本轮消息及报告，记录实际 bundle revision/hash、profile、session 与 `compiled` 阶段。新普通 session 读取更新或回滚后的 bundle；相同 home/profile 在压缩边界有未完成 turn 时保留既有 bundle 与 workspace。`clone_for_agent()` 保留不可变 bundle，隔离 session state 并清除报告。人格加载或编译出错可降级为原请求，需观察告警及空报告，表达质量另行验收。
+
+### 已批准 Skill 的读取链
+
+`SkillRuntime` 仅为 `default` 与 `ai-daily` 绑定现有 P6。缺少私有发布配置时 disabled，无效配置使启动报错；真实源生产者身份、批准和可信场景检查仍由既有发布流程提供。
+
+原生 `skills_list` / `skill_view` 通过 `mimi_skills` 的 tool override 调用 `native_read()`。读取校验当前发布头、源授权、Profile、路径和内容身份，读前读后重新检查；发布或撤回改变会使原生发现缓存失效。正文与引用读取、预处理和写入防护沿用同一宿主绑定。Skill 的全面三级披露及工具全面检索仍在后续范围，当前接线没有替它们签发验收结论。
+
 [上一章：002 架构关系](002-architecture.md) · [下一章：004 执行与证据](004-execution-and-evidence.md)
