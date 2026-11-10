@@ -49,6 +49,12 @@
 
 本仓库保存协议文档，不包含产品应用源码、凭据、真实会话数据库或完整私人人格卡。日常远端更新以实际提交与文件回读为准，操作说明见 [PUBLISH.md](PUBLISH.md)。
 
+## canonical 根与流式交互后续维护（2026-11-11）
+
+本次从公开文档已接受基线 `6e9d634e` 延续，更新既有 002–005、产品总览、导航及[同日来源记录](sources/2026-11-11-integration.md#followup-sources)。当前实现核对 assisthub `5e460e04` 与 GenUI `7bfca12`，不将发布 `backend/` 布局复制为第二开发根。新增说明覆盖轻量 SSE、按需 Core 投影、共享增量解析、草稿/确认、frame DOM 与 App 连续性，以及 Core/发布/nonce/spool 恢复边界。
+
+本轮只做文档维护与本地文档验证；c3 真实 HTTP/重启/A→C 与旧 WK 性能为读取总控脱敏 JSON 后的有界摘要。旧源码和原失败、UNKNOWN、UNVERIFIED 保留，新 App 原生接受与最新 CI pending 单列。工程 NEXT 仍是实现仓的进度入口，本仓不另设施工账本；Git 与公共发布由 root 负责。规范、许可、研究和历史原件不变。
+
 ## 本地核对
 
 ```sh

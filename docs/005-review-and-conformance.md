@@ -31,7 +31,7 @@ MGRS 0.1 是设计候选。审查它时，需要分别回答：规则是否清�
 
 ## 2026-11-11 组合候选与部署边界
 
-本次文档审阅重读组合候选 `77c853f1` 源码和现有实施记录，更新 002 至 005 的实际调用、所有权和恢复说明。组合候选尚未接受、合并或部署。旧记录中的测试、专项接受和部署事实保留原版本与范围，本轮源码观察标为 `SOURCE_PRESENT`。[本次索引与限制](sources/2026-11-11-integration.md)。
+本次文档审阅重读 canonical 构造候选 `5e460e04` 源码和现有实施记录，更新 002 至 005 的实际调用、所有权和恢复说明。新集成与产品发布均未合入各自 main，也未部署。旧记录中的测试、专项接受和部署事实保留原版本与范围，本轮源码观察标为 `SOURCE_PRESENT`。[本次索引与限制](sources/2026-11-11-integration.md)。
 
 | 核查面 | 本次可确认的源码行为 | 仍需相应运行证据 |
 | --- | --- | --- |
@@ -64,6 +64,33 @@ flowchart TD
 该图简化 `mimi-vnext-deploy.sh` 的门禁关系，备份在 drain 与实际替换前执行。此脚本部署 Orchestration 插件和相关原生 patch，其 payload 范围与 ProductRuntime 完整安装清单分别审查。PR #19 的预检在 drain/停服和替换前执行 staged child 路径，PR #17 的 memory/Skill/Persona 文件需要完整产品安装路径覆盖。脚本包含失败回滚并保留数据库记录，数据库 schema 不随文件回滚；成功的 scope canary 仍保留生产 API intake 为 `UNVERIFIED`。
 
 部署源码存在和历史部署记录不能替代组合候选的实际部署回执。生产验证应固定安装版本、目标环境、进程与配置读回、具名场景、失败恢复和交付事实。公开文档仅保留技术关系与证据范围，私有宿主配置和原始状态由既有私有回执承载。
+
+<a id="followup-evidence"></a>
+
+## 当前候选的局部通过与尚未完成项
+
+本次文档跟随 canonical `5e460e04`（GenUI `7bfca12` + 修复 c291 后端）。源码存在、局部测试、设备回放、候选接受、发布与生产分别记录。以下是总控脱敏 JSON 的有界摘要，本轮没有重跑产品或访问生产。[证据及固定来源](sources/2026-11-11-integration.md#followup-sources)。
+
+| 固定对象 | 已观察事实 | 不支持的扩大结论 |
+| --- | --- | --- |
+| 新安装 c3 `c3e056288c7093af8f883533dcc2184ef86a90c0` | 普通认证 HTTP → 原生官方 DeepSeek 路由通过，2 次实际请求均 HTTP 200；持久历史和 fresh restart 通过 | 该观察的 provider-reported model、usage、cost 为 UNKNOWN；原 harness 总结仍 UNVERIFIED。不能提升为当前全部发布通过 |
+| 同 c3 的另一次普通入口 A→C | 2 tasks / 2 attempts，A/C 结果 verified，C 依赖 A 的已验证 basis；HTTP 进度与关闭后持久读回通过；6 次 HTTP 全 200，含分别绑定 A、C 的官方请求 | 父请求有 `deepseek-flash` reported model；SDK 提前关闭流，child reported-model/usage/cost UNKNOWN，harness 仍 UNVERIFIED；不能声称每个 provider 身份已验证 |
+| 较旧 GenUI 固定 replay | M6 / 12 核 / 16GiB、前台原生 WKWebView；10k/50k/100k 字符 × 50/200 delta/s 六组通过；p95 event→DOM 12–18ms，active job 2ms | 基于 native-history/model fixture、固定 200 条历史；不是实际模型生成，也不是新 App 修复的 fresh 性能验收 |
+| WK 精确来源身份 | base `02963441d6fc5b8516a7d11adc9df60796bc7a60`；source-manifest SHA-256 `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` | 该 manifest 固定旧 scoped candidate，不能换标为最新 `7bfca12` 或 `5e460e04` |
+| 固定源码 CI | c291 完整 run `42904611343` 因两个 mail-watch 回执夹具失败；后续源码/隔离安装定向 173 项通过 | 定向通过不替代下一固定版本完整 CI；原失败保留 |
+| 生产 | 总控给定旧 Core schema 18 / 旧 gateway 状态 | 新构造与产品发布均未 main 合并或部署；私有现场信息不进入本页 |
+
+历史 `77c853f1` / `31fd6f75`、已安装旧模块与其他历史验收保留原范围，不以这次更新抹去原失败。最新 GenUI 普通 App 连续性仍需原生接受；最终配对发布树、required CI、安装与部署须由 root 另行更新。
+
+### Core 备份、更新和完整产品恢复
+
+Core 合同固定 `1.0` / schema `42`；`backup.snapshot()` 使用 SQLite backup API 和引用 blobs 清单（`core.db`、`manifest.json`、`blobs/`），绑定真实 writer/currentness fence，并核对完整性、行数与 blob 摘要。快照不携带可自行签发当前宿主权限的 authority；Memory 连续性、epoch 和外部当前授权必须单独对账。离线备份不能认证跨进程活跃 writer，也不能把普通文件拷贝当作活库一致性证明。
+
+`recovery.py` 的 `backup_full()` / `verify_full_snapshot()` / `restore_full_isolated()` 在同一现有恢复链上要求 mail、spool、memory、multimodal、calendar、product、delivery 七类 host ports，逐域隔离准备、状态核对、再激活与回读；失败沿逆序 quarantine/abort。contract-only port、缺少 current-authority 或无法回滚的消费者保留 blocker。`core_only` 默认 `full_ready=False`、activation blocked；完整产品恢复明确仍为 **partial**，不能由单域或 synthetic Core 成功提升。
+
+`update()` 由 installer ownership inventory、安装锁和 Core writer fence 管理，非 synthetic 更新要求 verified full recovery closure。源码有普通更新入口不等于已开放生产切换；当前实现保留 production activation blocked，且不做 schema migration 或旧业务数据库回滚。`--synthetic-core` 的本地启动/health/readback 是独立范围。网关有界文件回滚（上图）、Core 数据恢复与全域运行恢复是三种不同操作。
+
+c3 隔离真实旧数据库快照的 schema 18→42 迁移回执支持保留旧表行/列、完整性与外键检查；没有修改生产，未覆盖 service UID 和 blobs recovery。它不构成线上迁移或七域恢复接受。
 
 ## 规范中的证据层级
 
