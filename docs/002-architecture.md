@@ -10,7 +10,7 @@ MGRS 把治理要求落到秘秘已有组件的交界处：事实由谁维护，
 
 ## 2026-11-11 的源码调用与所有权
 
-本节核查产品组合候选 `77c853f1`，包含基线 `1dd86db6`、PR #17 `2ef4555d` 与 PR #19 `1682f28d`。组合候选尚未接受、合并或部署。下图表达源码接线，运行验证按[本次来源与限制](sources/2026-11-11-integration.md)单独记录。后文原协议职责图和 11 月 9 日记录保留各自日期与范围。
+本节核查产品 canonical 构造候选 `5e460e04`，其后端继承原 PR #17/#19 接线并含 c291 修复，合入 GenUI `7bfca12`。新集成与产品发布均未合入各自 main，也未部署。下图表达源码接线，运行验证按[本次来源与限制](sources/2026-11-11-integration.md)单独记录。后文原协议职责图和 11 月 9 日记录保留各自日期与范围。
 
 ```mermaid
 flowchart TD
@@ -66,6 +66,41 @@ sequenceDiagram
 | 产物接受与交付 | 具名 result verifier、Workshop 和相应产物/外部效果回执 |
 
 Hermes 是默认任务后端。process 需要显式配置和当前授权，必需输入尚无消费支持时在资源预留前等待能力。受限 `AgyInferencePort.infer_once` 经独立 inference ports 注册，调用与授权入口和完整任务执行分开。自研搜索策略仍通过 `pre_llm_call` 注入方法上下文，底层检索走原生工具。以上接线支持对应源码观察，MGRS 完整符合性仍逐条验收。
+
+<a id="canonical-layout"></a>
+
+## 开发根、配对发布与事实权威
+
+开发权威现位于 assisthub `5e460e04a30a9c2625a252736d443692f6074e86`。`core/`、`adapters/`、`deploy/` 是根后端，`frontend/` 是唯一产品前端，`mac/` 为宿主集成。发布仓 Mimi-Superagent 的 `backend/` 映射这些根后端路径，再与 `frontend/` 和包装资产配对。`incoming/` 保存导入来源，不能作为另一套活跃后端。这样可避免仅为满足旧发布布局而复制运行实现，或让测试误配旧 UI。
+
+当前构造已合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与 c291 后端修复；配对发布树仍需 root 固定最终提交及映射，不能把开发合流称为发布 main 合并或安装部署。前面的宿主/网关图继续表示继承的接线；源码索引区分原发布快照的 `backend/` 与当前开发根。[版本与来源](sources/2026-11-11-integration.md#followup-sources)。
+
+Core 单写者维护业务 SQLite、授权与持久回执，Orchestration 仍拥有原 SessionDB 的任务/attempt 事实。UI 的草稿、抽屉和派生块不构成新业务账本。Core 当前合同为 `1.0`、schema `42`，不意味着线上已升级；总控给定的生产状态仍为旧 Core schema `18` 和旧网关状态。公开文档只记录代际差异。
+
+### SSE 事实与按需 UI 物化
+
+逐 token 编译会把 UI 校验进程启动放到模型传输关键路径。当前 `TrustedObservation.publish()` 向 `CoreBlockRepository.observe()` 传递已解析原生事实；后者只归并最终正文、终态与可信身份，delta 不启动 Node，也不拼接权威正文。最终正文来自 `assistant.completed.content`，失败保持 sticky，迟到的成功不能清除失败。
+
+```mermaid
+flowchart TD
+    Native["原生事件与保存的消息身份"] --> SSE["U01 TrustedObservation"]
+    SSE --> Facts["Core observe：轻量事实归并"]
+    SSE --> Browser["浏览器预览与局部渲染"]
+    Browser -->|认证 get / history| Read["CoreBlockRepository"]
+    Native -->|message_source 与授权核验| Read
+    Facts --> Read
+    Read -->|按内容与实现版本去重| Compile["Node：共享解析与校验"]
+    Compile -->|重新核验身份及版本| Saved["Core 派生记录与确认状态"]
+    Saved --> Browser
+```
+
+`GET /api/features/gu_renderer/blocks`（有 message_id 调 get，否则 history）在认证读回时按需物化；确认写入经 `PUT /api/features/gu_renderer/state`，携带块/控件身份与 `expected_version`，浏览器不得设置 principal/profile、正文或终态。`projection` 绑定正文 SHA-256、`catalog_version` 与实际配对 JS 的 `validator_version` 摘要；同版本复用结果，同一计算键合并等待，编译在写事务外运行，发布前再检查授权、scope epoch 和内容版本。无效/不可用投影保留相应状态，原生结果保存不以 UI 投影成功为前提。
+
+`ui26_message_identity.py:saved_identity()` 只使用原生 finalizer 明确选中且已持久化的消息对象 `_row_id`，在原 SessionDB 写事务中将 `ui26_chat_identity_v1` 元数据绑定 origin/session/run/stream/message/role 与合法 run_status；`project_identity()` 再核对具体行身份，不从最新一行或文字顺序猜测。
+
+`NativeMessageSource` 读精确 history 行及其 run；仅原生 run 查询返回具名 `run_not_found` / `RUN_NOT_FOUND` 404 时，允许使用该保存行绑定的 `run_status`。其他错误不降级为成功，run/session/status 不一致不恢复执行。
+
+重启后由宿主 `message_source` 从原生保存记录恢复精确消息/run/正文，`message_authorizer` 检查当前可读身份；wire ID、相似正文或浏览器声称的身份均不能替代。旧记录缺少可信证据时保持不可执行。实现入口、身份持久化补丁与测试位置见[来源索引](sources/2026-11-11-integration.md#followup-sources)；真实重启通过的范围另见[验收分层](005-review-and-conformance.md#followup-evidence)。
 
 ## 一次任务跨过哪些职责
 
