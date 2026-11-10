@@ -46,7 +46,7 @@ Skill 提供可复用的方法。看见名称、读到正文、执行脚本、�
 
 ## 2026-11-11 候选中的实际装配
 
-以下观察固定在 `77c853f1`，依据[源码索引与证据范围](sources/2026-11-11-integration.md)。前文规范要求继续保留，拟议 `ContextEnvelope` 与候选已有诊断字段分别核对。
+以下观察固定在 canonical `5e460e04`，依据[源码索引与证据范围](sources/2026-11-11-integration.md)。前文规范要求继续保留，拟议 `ContextEnvelope` 与候选已有诊断字段分别核对。
 
 ```mermaid
 flowchart TD
@@ -81,5 +81,33 @@ flowchart TD
 `SkillRuntime` 仅为 `default` 与 `ai-daily` 绑定现有 P6。缺少私有发布配置时 disabled，无效配置使启动报错；真实源生产者身份、批准和可信场景检查仍由既有发布流程提供。
 
 原生 `skills_list` / `skill_view` 通过 `mimi_skills` 的 tool override 调用 `native_read()`。读取校验当前发布头、源授权、Profile、路径和内容身份，读前读后重新检查；发布或撤回改变会使原生发现缓存失效。正文与引用读取、预处理和写入防护沿用同一宿主绑定。Skill 的全面三级披露及工具全面检索仍在后续范围，当前接线没有替它们签发验收结论。
+
+<a id="incremental-ui"></a>
+
+## 同一正文怎样成为可交互视图
+
+这里的 GenUI 是模型结果的显示与交互投影，保持 `mimi-ui/1` 和既有 16 标签目录。它和规范的上下文抽屉分属不同读视图；完整 `ContextEnvelope` 与 `ResultCapsule` 仍为设计合同。
+
+`blocks.js:createIncrementalParser()` 的 `append()` 与 `full()` 共用围栏扫描、偏移和解析状态，输出有序 text/UI `segments`。`renderer.js:createMarkupParser()` 延续标签、属性、表达式和 App 原始区段；正文最终全文不再是原追加序列时，store 增加 `content_generation`、重做 full，并淘汰旧代次待绘制项。复制、降级和显示沿同一正文顺序，避免把所有卡片挪到文字末尾。
+
+`createBlockStore()` 在同一个 store 内维护 `draft_state` 与 `committed_state`。完整且依赖有效的本地控件可预览交互；草稿绑定内容代次、控件描述、编辑序号与值，不增加 Core `state_revision`，也不提前发起持久写入、聊天提交或 App 启动。可信身份、成功终态和 Core 确认到齐后，U14 的确认写入队列用 revision 检查保存；`captureDraft()` / `ackDraft()` 按精确身份和版本确认，只清除已确认且未被新编辑覆盖的草稿。授权撤回与旧回读不能覆盖新状态。
+
+```mermaid
+flowchart TD
+    Delta["解码后的 delta / 最终全文"] --> Parser["共享 append / full 解析"]
+    Parser --> Store["有序 segments 与块 store"]
+    Edit["本地控件编辑"] --> Draft["draft_state 与编辑序号"]
+    Draft --> Store
+    Core["Core 确认与 revision"] --> Commit["committed_state / ackDraft"]
+    Commit --> Store
+    Store --> Prepare["有界准备任务：不写 DOM"]
+    Prepare --> Frame["原生 requestAnimationFrame"]
+    Frame --> Patch["消息与块局部 DOM patch"]
+    Patch --> App["固定挂载锚点的 App 实例"]
+```
+
+这些路径由 `incremental_rendering`、`local_streaming_interaction`、`motion` 三个显式 true 开关控制，默认 false；源码进入候选不证明运行宿主已启用。增量路径的 `gu_renderer/feature.js` 将编译准备分片到任务中，DOM patch 仅在原生 `requestAnimationFrame` 回调执行；代码预算为每片 4ms，并按原生 frame timestamp 限制同消息提交。预算是调度目标，不是任意输入的硬实时保证。隐藏页面暂停，重新可见再排队；普通 delta 不重刷整线程。卸载时取消队列、观察器与旧 authority epoch。
+
+`guMorphWork()` 保持 iframe 及含 App 的祖先挂载锚点不移动、不脱离文档；同实例的 `srcdoc` 与属性保持不变，周围兄弟节点可以更新。`sandbox="allow-scripts"`、无同源权限与 CSP 继续生效。`If` 变为 false、真实会话卸载、权限撤回或源换代允许结束实例；之后再显示属于新挂载。此处说明 `7bfca12` 新修复源码行为，普通产品 App 连续性的最新原生验收仍待完成；旧 WK replay 的 fixture 连续性通过不能替代它。[证据范围](005-review-and-conformance.md#followup-evidence)。
 
 [上一章：002 架构关系](002-architecture.md) · [下一章：004 执行与证据](004-execution-and-evidence.md)

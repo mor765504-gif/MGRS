@@ -54,7 +54,7 @@
 
 ## 2026-11-11 候选的真实结果链
 
-本节为 `77c853f1` 源码观察，与前文虚构例子分别阅读。`Runtime._basis()` 取得当前有效且已验证的依赖结果，`_ensure_dependency_inputs()` 将其绑定为不可变 `mimi_dependency_result/1` 输入，复用任务 inputs 与原生 inbox。其字段只覆盖已有实现，规范 `ResultCapsule` 仍保留更完整的设计合同。[固定源码与限制](sources/2026-11-11-integration.md)。
+本节为 canonical `5e460e04` 源码观察，与前文虚构例子分别阅读。`Runtime._basis()` 取得当前有效且已验证的依赖结果，`_ensure_dependency_inputs()` 将其绑定为不可变 `mimi_dependency_result/1` 输入，复用任务 inputs 与原生 inbox。其字段只覆盖已有实现，规范 `ResultCapsule` 仍保留更完整的设计合同。[固定源码与限制](sources/2026-11-11-integration.md)。
 
 ```mermaid
 sequenceDiagram
@@ -110,5 +110,23 @@ stateDiagram-v2
 - writer 接班按 epoch 观察旧 attempt，并重放事件。相同进程里的 bridge 保留 child/进程句柄，InputAdapter 改绑新 Runtime。硬重启后原生持久结果可恢复 finished 事实，缺少 live ticket 或持久 timeout 仍不足以证明 quiet。
 
 任务恢复、原生 receipt 与外部非幂等效果对账分别取证。具体未知状态和完整恢复通过情况见[审查入口](005-review-and-conformance.md)及[来源记录](sources/2026-11-11-integration.md)。
+
+<a id="recovery-ownership"></a>
+
+## 发布、nonce 与 spool 恢复各由谁负责
+
+恢复的动机是确认旧效果，而不是把超时等同于未执行。当前 canonical 修复保留原幂等身份，不改变前述 `mimi_dependency_result/1` 为拟议 `ResultCapsule`。
+
+| 边界 | 实际调用与持久事实 | 未知结果的处理 |
+| --- | --- | --- |
+| P6 发布 | `SkillReleaseService.execute()` 在事务内复核计划并写入 unknown release、receipt 与目标锁，再在事务外调用 `publisher.apply(plan)` | `recover()` 与执行共用 executor lock；仍有执行者时返回 `executor_active`，否则只 `publisher.readback(plan)`，不重复 apply。确认精确 profile/version/content hash 后才更新 head；unknown 保留锁 |
+| 原生材料 nonce | `TurnVerifier.verify()` 检查签名、用途、参数 hash、绑定、到期时间；consume 由实际消费边界负责 | ASR 路由必须重读当前 scope，复用已有 verifier 实例及同一 clock；媒体 wrapper 保留原 enterprise verifier 与 nonce cache，不能通过重新构造 verifier 清空已消费事实 |
+| 持久 source spool | `Spool.drain(submit, timeout, limit)` 对单 source 获取 `.spool-drain.lock`，按 FIFO 提交原 envelope | timeout 仅结束等待。`timed_drain()` 的 daemon thread 持有 source fd 和 lifecycle lease 直到 callback/回执处理完成；同 source 重入返回 `SpoolBusy`，其他 source 独立推进 |
+
+TurnVerifier 的 `_seen` 是进程内有界到期缓存（4096 项），不是跨重启 nonce 数据库；当前 wrapper 的实例保留不能被表述成任意进程重启抗重放证明。备份恢复也不延长凭据或既有 pending 的有效期；重建业务可用性仍需当前宿主授权及消费者对账。
+
+spool 的迟到 durable ACK 只能释放原文件：回执 `idempotency_key` 和 `content_hash` 必须匹配，文件 inode 与原始字节也要相同；可释放状态删除，rejected 移入 dead letter，随后 fsync。异常或未知回执保留当前及后续文件。超时后不再开始下一项；若进程先退出，原文件供新进程以同一幂等键重放，Core 负责去重。daemon thread 不是可强制取消 callback 的机制，`stop()` / `join()` 和备份/恢复仍需等待实际 lease 结束。
+
+[固定代码及范围](sources/2026-11-11-integration.md#followup-sources)。上述为代码边界；真实外部系统未知效果、完整产品恢复及跨进程 nonce 政策仍需独立证明。
 
 [上一章：003 上下文与记忆](003-context-and-memory.md) · [下一章：005 审查与符合性](005-review-and-conformance.md)

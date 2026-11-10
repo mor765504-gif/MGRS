@@ -2,7 +2,56 @@
 
 [架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [审查](../005-review-and-conformance.md)
 
-## 版本与核查方式
+<a id="followup-sources"></a>
+
+## 后续源码核查：canonical 开发根与局部证据
+
+本页保留首轮 `77c853f1` / `31fd6f75` 记录，以下为同一主题的后续补充，不另建可变工程账本。当前 assisthub 构造固定 `5e460e04a30a9c2625a252736d443692f6074e86`，合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与修复 c291 后端。读取源码及当前指南，关键判断核对调用方、接收方与状态；不是全仓审计。新集成和产品发布未 main 合并、未部署为总控给定状态，本轮不操作 Git、不查远端 PR/CI、不接触生产。
+
+开发根 `core/`、`adapters/`、`deploy/` 与 `frontend/` 为当前源码入口；下文旧发布快照的 `backend/` 路径保留其历史身份。最终产品配对发布 SHA 尚待 root 固定。公开页面只使用仓库相对路径与提交，不包含私有配置、原始会话或本机路径。固定 GitHub 链接指向私有实现仓，需要权限；读者无法访问源码时，仍可阅读本仓的职责解释，但不能因此独立复验私有实现。
+
+| 核查主题 | 固定源码（assisthub） | 定向覆盖 |
+| --- | --- | --- |
+| 开发/发布布局 | [README.md](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/README.md) | 开发根、唯一 frontend、incoming 历史与发布映射 |
+| 原始领域边界 | [docs/architecture/LEAN_CORE.md](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/architecture/LEAN_CORE.md) | Core 单写者、外部适配器与 named interfaces |
+| 产品宿主 | [deploy/mimi_cli/mimi_product_runtime.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/mimi_product_runtime.py) | Core/P6、kernel、UI 生命周期；继承前次固定接线 |
+| Core 版本 | [core/assisthub_core/contracts.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/core/assisthub_core/contracts.py) | CONTRACT_VERSION 1.0 / SCHEMA_VERSION 42 |
+| 可信 SSE | [frontend/server/features/target_role/feature.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/server/features/target_role/feature.py) | TrustedObservation.publish / SessionProxy；原生身份归并 |
+| Core UI 投影 | [deploy/hermes/ui26_blocks.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/hermes/ui26_blocks.py) | observe / get / history / control；版本摘要、短锁、事务外 Node 与重新授权 |
+| 精确保存身份 | [deploy/hermes/ui26_message_identity.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/hermes/ui26_message_identity.py) | saved_identity / project_identity；chat_identity.v1 与原生行元数据 |
+| 认证读路径 | [frontend/server/features/gu_renderer/feature.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/server/features/gu_renderer/feature.py) | blocks、history 与 state 的现有认证路由 |
+| 重启原生来源 | [frontend/server/shared/ui26_host.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/server/shared/ui26_host.py) | NativeMessageSource、具名 missing-run 404 与保存行终态证明 |
+| 共享增量正文 | [frontend/web/shared/genui/blocks.js](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/web/shared/genui/blocks.js) | createIncrementalParser append/full 与有序 segments |
+| 草稿和确认 | [frontend/web/shared/genui-state.js](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/web/shared/genui-state.js) | createBlockStore、bindIdentity、restore、captureDraft / ackDraft |
+| 解析与 App | [frontend/web/shared/genui/renderer.js](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/web/shared/genui/renderer.js) | createMarkupParser、guMorphWork、iframe 固定锚点与沙箱 |
+| frame 调度 | [frontend/web/features/gu_renderer/feature.js](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/web/features/gu_renderer/feature.js) | requestPreparation / requestFrame / flushWork、maybeMaterialize、dispose |
+| 确认动作队列 | [frontend/web/features/gu_actions/actions.js](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/frontend/web/features/gu_actions/actions.js) | 草稿提交屏障、Core state revision 与动作回执 |
+| 实际依赖输入 | [deploy/hermes/plugins/mimi_orchestration/runtime.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/hermes/plugins/mimi_orchestration/runtime.py) | mimi_dependency_result/1、basis 与必需输入 |
+| 请求消费证据 | [deploy/hermes/plugins/mimi_orchestration/input_adapter.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/hermes/plugins/mimi_orchestration/input_adapter.py) | prepare/final request、trace 与响应观察；继承接线 |
+| Core 备份 | [core/assisthub_core/backup.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/core/assisthub_core/backup.py) | snapshot、Memory fence、SQLite backup、blobs 与 manifest |
+| 恢复边界 | [deploy/mimi_cli/recovery.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/recovery.py) | core_only 默认阻止激活、七域 ports 与 full readiness |
+| 更新边界 | [deploy/mimi_cli/update.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/update.py) | ownership、full closure gate、synthetic_core 与普通 switch blocked |
+| 安装操作说明 | [deploy/mimi_cli/README.md](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/README.md) | 安装/doctor/offline recovery/update 的范围与未验项 |
+| P6 恢复 | [core/assisthub_core/skills_release/service.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/core/assisthub_core/skills_release/service.py) | execute / recover / _finish；未知锁与只读回恢复 |
+| nonce 验证 | [adapters/secretary_school/turn_auth.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/adapters/secretary_school/turn_auth.py) | TurnVerifier.verify、consume 与进程内有界 cache |
+| ASR scope 路由 | [deploy/mimi_cli/ui26_asr_authority.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/ui26_asr_authority.py) | NativeASRScopeVerifier.require_scope 复用已有 verifier 与 clock |
+| 媒体 verifier | [deploy/mimi_cli/mimi_media_features.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/deploy/mimi_cli/mimi_media_features.py) | MimiMediaVerifier 保留 enterprise_verifier 实例 |
+| spool 提交 | [adapters/spool/spool.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/adapters/spool/spool.py) | drain / _drain；per-source flock、FIFO、精确 ACK 和原文件身份 |
+| spool 等待所有权 | [adapters/spool/deadline.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/adapters/spool/deadline.py) | timed_drain；等待超时不取消 callback、迟到 ACK 与 lease 生命周期 |
+| UI 源码测试 | [core/tests/test_ui26_genui_a.py](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/core/tests/test_ui26_genui_a.py) | 重开 repository、保存身份冲突/失败粘性测试；本轮未执行 |
+
+GenUI 设计动机与固定接口另对照 [2026-11-07 streaming rendering 计划](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/plans/2026-11-07-genui-streaming-rendering.md)；计划中的目标不自动成为验收。增量、草稿与 App 新修复代码也只读对照了 GenUI `7bfca12` 工作树，源码身份与旧 WK manifest 分开。
+
+### 总控证据的精确读取范围
+
+- [candidate-c3-observations.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/candidate-c3-observations.json)：读取 `normal_official_canary_followup` 与 `official_child_followup` 两次独立功能通过，保留原 canary 模块根不匹配失败、c3 convergence 失败和 overall UNVERIFIED。前者 2 次 HTTP 200 与 fresh restart，后者 2 tasks / 2 attempts、验证依赖、HTTP progress、关闭后持久读回及 6 次 HTTP 200，含 A/C 各自 bound 请求。SDK early-close 使 child reported model / usage / cost UNKNOWN，不能声称每个供应商身份均被验证。迁移节只证明隔离真实旧库快照 schema 18→42，不是生产变更或完整 blobs 恢复。
+- [genui-wkwebview-foreground.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/genui-wkwebview-foreground.json)：读取六组前台 native WK replay，硬件 M6 / 12 核 / 16GiB，p95 event→DOM 12–18ms / active job 2ms。固定 manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 属较旧 scoped candidate，普通产品新 App 修复仍 native acceptance pending；fixture 连续性不能替代新修复或真实模型测试。
+
+总控回读 c291 完整 CI run `42904611343` 为 FAIL：两个 mail-watch 夹具只返回 status，缺少真实 Core 回执字段。修正后的夹具与延迟 UI 物化检查，在源码和隔离安装确认中各执行 173 项通过；后续固定版本完整 CI 仍须另行接受。生产仍为旧 Core 18 / 旧 gateway。最新源 CI、普通 App 原生验收、最终配对发布版本及正式部署只能在 root 获得相应新证据后更新，不能由源码、worker 声明或旧局部通过推断。局部证据详见[审查导读](../005-review-and-conformance.md#followup-evidence)，技术流见[架构](../002-architecture.md#canonical-layout)、[增量视图](../003-context-and-memory.md#incremental-ui)与[恢复所有权](../004-execution-and-evidence.md#recovery-ownership)。
+
+本轮执行文档检查、链接/锚点核对与变更 Mermaid 的 headless 渲染/视觉检查，私有逐文件摘要和渲染产物留在本地，不进入发布清单。历史许可证、研究、归档和既有接受范围未改。
+
+## 历史快照 · 版本与核查方式
 
 本次从产品源码工作树只读核查，Git HEAD 为 `77c853f1431313cc2ff2ce30682c0c1eb82b896f`，读取时工作树干净。基线为 `1dd86db66894ecabcd518be1e5cb1aac8d9fc462`，叠加 PR #17 `2ef4555d3e28c4c5de454eb3ace7b71c02bec880` 与 PR #19 `1682f28d6284a4e1ceea9fc087c21d56b82d709e`。组合候选尚未接受、合并或部署，该状态来自本轮总控给定的任务基线。本次没有查询 GitHub 实时 PR 状态。
 
@@ -57,7 +106,7 @@ PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，�
 
 <a id="actual-verification"></a>
 
-## 总控补充的实际验证（2026-11-11）
+## 历史补充 · 31fd6f75 与原已安装模块（2026-11-11）
 
 上述文档源码审阅范围保持不变。总控随后对组合候选实际运行回归，先保留`77c853f1`上的失败：compiled target计数、安装白名单和既有业务域断言不一致。修复提交`31fd6f75`仅调整对应检查与CI源码接缝，并清理审批模块末尾空行；没有更改运行语义。
 
