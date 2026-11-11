@@ -174,3 +174,5 @@ PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，�
 修复后Python3.12.16、固定Hermes版本的31文件组合为386 passed、89 subtests、4 skipped，完整安装6项通过。四项skip仍要求prepared kernel，未当作通过；原生补充夹具和依赖缺口仍保留。范围与原失败见[私有实验仓证据](https://github.com/mor765504-gif/assisthub/blob/51a25deb3adfefe3bdd0d96e0dcabae8b35780fd/docs/reports/2026-11-11-audit/README.md)，具体修复见[固定提交](https://github.com/mor765504-gif/Mimi-Superagent/commit/31fd6f75)。这些检查不构成完整产品接受。
 
 另外，总控在原已安装模块的隔离home执行真实官方DeepSeek主控/Worker A→C，两个结果verified且C自动续派，驱动退出0、模型未mock。该次运行不部署本组合，也不证明生产网页收单、其他profile或新结果消费逻辑通过。[脱敏回执](https://github.com/mor765504-gif/assisthub/blob/51a25deb3adfefe3bdd0d96e0dcabae8b35780fd/docs/reports/2026-11-11-audit/installed-official-canary.json)。原安装源码无可读Git HEAD，整体部署版本保留UNKNOWN；文件匹配范围单列，不能由少量文件推断整套版本。
+
+后续归因更正：独立 source/installed 原生调用闭包证明既有 U14 主聊天路径已经注入可信能力块。标题辅助调用也可能携带相同的原始用户文本而没有能力块，合法上下文插件还会追加主请求内容。原验收器用 phase、用户全文相等与所有请求都必须带能力块来识别主请求，条件过严。原真实运行未记录调用栈，其被拒请求的归属仍 UNVERIFIED；保留原 unknown 动作和未获得下一轮回复的事实，不将其直接归为产品注入缺陷。验收器按真实调用来源修正，产品注入实现保持原样。历史滑块自身值25而Core/文字值30仍是独立复现问题。
