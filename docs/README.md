@@ -2,7 +2,7 @@
 
 [仓库首页](../README.md) · [产品与系统总览](MIMI-OVERVIEW.md) · [协议全文](../MGRS.md)
 
-第一次接触秘秘，可以先读[设计理念](000-philosophy.md)，再读[执行与证据](004-execution-and-evidence.md)。前一篇解释为什么一个长期帮人做事的助手需要治理，后一篇跟着一份研究简报，看这些设计如何应对分工、改要求和中断。
+如果你是从秘秘的视频过来的，想弄清楚我为什么这么在意「治理协作」，可以先读[设计理念](000-philosophy.md)。里面有一封发错附件的邮件。想接着看这件事在系统里怎么处理，再读[执行与证据](004-execution-and-evidence.md)，跟着一份简报走到交稿。
 
 ## 按问题阅读
 
@@ -18,7 +18,7 @@
 
 ## 讨论规则或查看依据
 
-逐条讨论协议时，可以从[十四条治理不变量](../MGRS.md#mgrs-3)进入。[设计决定](DECISIONS.md)说明一项取舍已有何种共识，[待商榷事项](OPEN-QUESTIONS.md)列出还有哪些具体边界要定。[参与讨论](../CONTRIBUTING.md)
+如果你也在做自己的 Agent，想拿具体场景讨论，可以直接翻[十四条治理不变量](../MGRS.md#mgrs-3)。有些取舍已经写进了[设计决定](DECISIONS.md)，有些我也还在考虑，放在[待商榷事项](OPEN-QUESTIONS.md)里。[参与讨论](../CONTRIBUTING.md)
 
 想追溯设计的来历，可以看[作者的公开答疑](sources/2026-11-09-bilibili-bv1vix26sEzR.md)和[抽屉与九项架构研究](RESEARCH.md)。想深入秘秘实现，可以按问题查[宿主与搜索策略](sources/2026-11-09-system-baseline.md)、[组件接线与运行记录](sources/2026-11-11-integration.md)，或[早期长对话与缓存实验](sources/2026-11-12-context-evaluation-baseline.md)。每份记录都给出了当时采用的版本和观察条件。
 
