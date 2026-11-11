@@ -31,6 +31,7 @@
 | 讨论秘秘自研搜索策略 | [006](006-search-strategy.md)与[固定源码及证据](sources/2026-11-09-system-baseline.md#source-search) |
 | 弄清组件关系与是否要新增服务 | [002](002-architecture.md)与[规范第 2 章](../MGRS.md#mgrs-2) |
 | 讨论记忆、人格和上下文预算 | [003](003-context-and-memory.md)与[研究第 3 至 6 节的入口](RESEARCH.md#research-3) |
+| 查历史压缩参数、缓存命中率和实测的适用边界 | [2026-09-26 历史评测与 2026-11-12 对齐记录](sources/2026-11-12-context-evaluation-baseline.md) |
 | 讨论多 Agent 结果交接与“假验收” | [004](004-execution-and-evidence.md)与[规范第 5 章](../MGRS.md#mgrs-5) |
 | 核对工具授权或 Skill 生命周期 | [规范第 7 章](../MGRS.md#mgrs-7)与[第 8 章](../MGRS.md#mgrs-8) |
 | 对照某个产品实现是否符合 | [005](005-review-and-conformance.md)与[规范第 13 至 16 章的入口](../MGRS.md#mgrs-13) |
