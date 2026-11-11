@@ -4,7 +4,7 @@
 
 [首页](../README.md) · [协议正文](../MGRS.md) · [来源与编辑说明](PROVENANCE.md)
 
-> 本页为既有研究记录的 Markdown 整理版，不是新一轮技术研究。保留原文概念、论证、证据标记及访问范围，只调整目录、内部链接与来源跳转。外部项目现状与产品实现情况没有在本次归档中重新核验。
+> 本页保存 11 月 7 日研究时的问题、推理和来源。想了解为什么采用抽屉，可以先读第 3 节；想追查当时的实现，按第 12 节的证据索引定位。下文的“当前”指这次研究选用的版本。
 >
 > [GitHub 固定原文](https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/research/2026-11-07-drawers-architecture-review.md) · [逐字归档](../archive/2026-11-07/docs/research/2026-11-07-drawers-architecture-review.md)
 

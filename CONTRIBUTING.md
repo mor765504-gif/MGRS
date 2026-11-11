@@ -1,61 +1,23 @@
-# 编辑与审查
+# 参与讨论与编辑
 
-[首页](README.md) · [文档导航](docs/README.md) · [完整规范](MGRS.md) · [审查指南](docs/005-review-and-conformance.md)
+MGRS 是秘秘的专有治理协议，公开供开发者讨论与审查。可以在 [Issue](https://github.com/mor765504-gif/MGRS/issues) 中讨论规则，也可以用 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls) 提交修订。[项目定位与许可](NOTICE.md)
 
-MGRS 首先用于秘秘内部，允许受邀开发者讨论、审查和提出修改建议。讨论不自动产生实施、合并或对外发布授权。
+## 从一个场景开始
 
-## 从一个具体问题开始
+例如，用户撤回了一份材料，但接手任务的 Agent 仍从缓存里引用它。读者可以指出涉及哪一章，说明这件事在哪个步骤发生、用户会看到什么结果，再给出措辞或实现上的改法。能复现的问题请附上版本和可公开的观察结果。修正错字、术语或链接，只写位置和改法就够了。
 
-可以通过 [Issue](https://github.com/mor765504-gif/MGRS/issues) 讨论规则，也可以通过 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls) 提交明确的文字修订。首次阅读建议先看编号导读；提出条款变更前，检查对应规范、决定记录与开放问题。
+## 改哪一份文档
 
-最有用的反馈通常包含三件事：哪一条规则遇到了什么场景，现有表述为何不足，以及建议怎样修改。术语解释、来源补充、链接修正和可复现的反例都可以单独提交。简单勘误直接给出位置和改法即可。
+- [产品总览](docs/MIMI-OVERVIEW.md)和[编号导读](docs/README.md)面向第一次接触秘秘的读者。把设计放回用户的工作里讲，能用一个例子说清的地方，用例子。版本、运行记录和测量条件可以链接到 `docs/sources/` 中对应的材料。
+- 权限、任务目标、验收条件等实质规则写在 [MGRS.md](MGRS.md)。提出调整时请说明会影响哪些人、工具或任务。[决定记录](docs/DECISIONS.md)和[开放问题](docs/OPEN-QUESTIONS.md)可以帮助定位已有讨论。
+- [研究全文](docs/RESEARCH.md)保留当时的分析。[归档](archive/README.md)保存逐字原稿。后续发现可在编辑版或带日期的来源页说明，读者仍能与原稿对照。
 
-## 修改入口
+## 提交前检查
 
-| 修改内容 | 对应文件 |
-| :--- | :--- |
-| 项目介绍、阅读顺序 | [README.md](README.md)、[docs/README.md](docs/README.md) |
-| 概念解释、教学示例与自研搜索策略 | `docs/000-*.md` 至 `docs/006-*.md`，链接对应规范或实现依据 |
-| 产品哲学与系统总览 | [MIMI-OVERVIEW.md](docs/MIMI-OVERVIEW.md)，保留产品、实现与协议三层区别 |
-| 当前工程核查 | `docs/sources/` 下带日期的记录，固定提交并区分源码、历史记录和新执行 |
-| 协议条款 | [MGRS.md](MGRS.md) |
-| 研究依据与新的比较材料 | [RESEARCH.md](docs/RESEARCH.md)，注明新增研究的版本、日期与访问范围 |
-| 已确认决定 | [DECISIONS.md](docs/DECISIONS.md)，保留明确的确认来源 |
-| 尚未解决的边界 | [OPEN-QUESTIONS.md](docs/OPEN-QUESTIONS.md) |
-| 来源与编辑说明 | [PROVENANCE.md](docs/PROVENANCE.md)、[CHANGELOG.md](CHANGELOG.md) |
-
-不要用修改排版或扩写导读的方式静默改变权限边界、任务目标或验收强度。导读解释现有条款；若发现规则本身需要改变，应明确提出规范修订。历史研究中的结论保留原日期和基线，新的核验另写清楚。
-
-`archive/` 为固定原稿，默认不改。对原稿的纠错通过编辑版和变更说明记录，保留历史文本。
-
-## 提交建议
-
-规则或证据方面的讨论，可以按下面的顺序写；与当前修改无关的项可以省略：
-
-```text
-涉及章节 / 条款：
-场景与问题：
-现有文字：
-建议文字或替代方案：
-对权限、作用范围或验收条件的影响：
-证据、版本与实际执行范围：
-仍未解决的问题：
-```
-
-有测试时注明版本、实际执行范围与回执；只提出测试设计时不得标为已通过。更详细的证据写法见[审查与符合性](docs/005-review-and-conformance.md)。请只放适合公开的材料，对私有路径或结果保留可说明的访问边界。
-
-协议定位已确定，但 0.1 整体仍为设计候选。不要把每个草案条款都标成用户批准，更不能仅因 Markdown 被合并就宣布产品符合协议。
-
-本仓库讨论技术治理。许可和再分发条件继续参照 [NOTICE.md](NOTICE.md)；引用参考项目不改变 MGRS 的许可定位。
-
-## 本地检查
-
-在仓库根目录执行，离线检查只需 Python 3：
+在仓库根目录运行下面的命令，检查归档校验值、规范结构、合同示例、本地链接、锚点与发布清单。
 
 ```sh
 python3 scripts/verify_archive.py
 ```
 
-新增文档时，补齐阅读入口和相邻章节链接，并更新 [publish-files.txt](publish-files.txt)。变更说明写入 [CHANGELOG.md](CHANGELOG.md)，区分介绍性编辑、条款修订和新增验证证据。日常操作见 [PUBLISH.md](docs/PUBLISH.md)。
-
-这个检查验证归档、链接和结构，不评价真实运行可靠性。对产品代码的实施与验收仍沿用原产品仓库的权威入口。
+新增文件请加入 [publish-files.txt](publish-files.txt)，并从合适的阅读入口链接过去。涉及条款、来源或阅读路径的改动记入 [CHANGELOG.md](CHANGELOG.md)。[维护说明](docs/PUBLISH.md)
