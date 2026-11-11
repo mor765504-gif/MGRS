@@ -51,9 +51,9 @@
 
 ## canonical 根与流式交互后续维护（2026-11-11）
 
-本次从公开文档已接受基线 `6e9d634e` 延续，更新既有 002–005、产品总览、导航及[同日来源记录](sources/2026-11-11-integration.md#followup-sources)。当前实现核对 assisthub `5e460e04` 与 GenUI `7bfca12`，不将发布 `backend/` 布局复制为第二开发根。新增说明覆盖轻量 SSE、按需 Core 投影、共享增量解析、草稿/确认、frame DOM 与 App 连续性，以及 Core/发布/nonce/spool 恢复边界。
+本次从公开文档已接受基线 `6e9d634e` 延续，更新既有 002–005、产品总览、导航及[同日来源记录](sources/2026-11-11-integration.md#followup-sources)。前次 PR #2 已合并到公开 main `d64702c9071e3160b75b7e9c730083f1c170ea30`，范围为八份文档、两张新增图及 419 本地链接检查。此次继续相同八份文档，以源 main `230b2758` 更新既有关系与版本化证据。开发根和发布 `backend/` 继续使用同一映射。新增说明覆盖轻量 SSE、按需 Core 投影、共享增量解析、草稿/确认、frame DOM 与 App 连续性，以及 Core/发布/nonce/spool 恢复边界。
 
-本轮只做文档维护与本地文档验证；c3 真实 HTTP/重启/A→C 与旧 WK 性能为读取总控脱敏 JSON 后的有界摘要。旧源码和原失败、UNKNOWN、UNVERIFIED 保留，新 App 原生接受与最新 CI pending 单列。工程 NEXT 仍是实现仓的进度入口，本仓不另设施工账本；Git 与公共发布由 root 负责。规范、许可、研究和历史原件不变。
+本轮只做文档维护与本地渲染和链接验证。c3、旧 WK、cf8 真实产物、service 身份隔离迁移及 strict-egress 均按固定报告范围摘要。源 PR #464 合并、该次 head CI 与新 streaming 缺陷按 root 给定更正记录，worker 未查询远端或重跑产品。历史 PASS/FAIL、UNKNOWN、UNVERIFIED 及 artifact 身份保留。spec13 下一轮能力、精确 race、最终 M6 性能和产品最终发布仍分别待证。独立 ASLI 项目继续在本次范围外，MGRS 完整合同仍属设计，零访问保证仍待独立证明。工程 NEXT 仍是实现仓的进度入口，本仓不另设施工账本；Git 与公共发布由 root 负责。规范、许可、研究和历史原件不变。
 
 ## 本地核对
 

@@ -44,9 +44,9 @@ Skill 提供可复用的方法。看见名称、读到正文、执行脚本、�
 
 外置 `memory.md` 或 `context.json` 可以作为带版本和来源的可读视图。人工编辑若要改变权威事实，应走既有 Core 写入、撤回和版本比较流程。这样可以保留文件的可读性，同时避免文件与数据库互相覆盖、各说各话。
 
-## 2026-11-11 候选中的实际装配
+## 2026-11-11 源码中的实际装配
 
-以下观察固定在 canonical `5e460e04`，依据[源码索引与证据范围](sources/2026-11-11-integration.md)。前文规范要求继续保留，拟议 `ContextEnvelope` 与候选已有诊断字段分别核对。
+以下观察固定在已合并源码 `230b2758`，依据[源码索引与证据范围](sources/2026-11-11-integration.md)。前文规范要求继续保留，拟议 `ContextEnvelope` 与候选已有诊断字段分别核对。
 
 ```mermaid
 flowchart TD
@@ -98,7 +98,8 @@ flowchart TD
     Parser --> Store["有序 segments 与块 store"]
     Edit["本地控件编辑"] --> Draft["draft_state 与编辑序号"]
     Draft --> Store
-    Core["Core 确认与 revision"] --> Commit["committed_state / ackDraft"]
+    Core["Core 确认与 revision"] --> Fence["当前 authority 与精确草稿版本检查"]
+    Fence --> Commit["committed_state / ackDraft"]
     Commit --> Store
     Store --> Prepare["有界准备任务：不写 DOM"]
     Prepare --> Frame["原生 requestAnimationFrame"]
@@ -106,8 +107,10 @@ flowchart TD
     Patch --> App["固定挂载锚点的 App 实例"]
 ```
 
-这些路径由 `incremental_rendering`、`local_streaming_interaction`、`motion` 三个显式 true 开关控制，默认 false；源码进入候选不证明运行宿主已启用。增量路径的 `gu_renderer/feature.js` 将编译准备分片到任务中，DOM patch 仅在原生 `requestAnimationFrame` 回调执行；代码预算为每片 4ms，并按原生 frame timestamp 限制同消息提交。预算是调度目标，不是任意输入的硬实时保证。隐藏页面暂停，重新可见再排队；普通 delta 不重刷整线程。卸载时取消队列、观察器与旧 authority epoch。
+这些路径由 `incremental_rendering`、`local_streaming_interaction`、`motion` 三个显式 true 开关控制。普通开关解析缺省为 false；当前新安装配置将三者显式开启，旧配置继续按有效值执行。源码进入 main 不证明既有宿主已启用。增量路径的 `gu_renderer/feature.js` 将编译准备分片到任务中，DOM patch 仅在原生 `requestAnimationFrame` 回调执行；代码预算为每片 4ms，并按原生 frame timestamp 限制同消息提交。预算是调度目标，不是任意输入的硬实时保证。隐藏页面暂停，重新可见再排队；普通 delta 不重刷整线程。卸载时取消队列、观察器与旧 authority epoch。
 
-`guMorphWork()` 保持 iframe 及含 App 的祖先挂载锚点不移动、不脱离文档；同实例的 `srcdoc` 与属性保持不变，周围兄弟节点可以更新。`sandbox="allow-scripts"`、无同源权限与 CSP 继续生效。`If` 变为 false、真实会话卸载、权限撤回或源换代允许结束实例；之后再显示属于新挂载。此处说明 `7bfca12` 新修复源码行为，普通产品 App 连续性的最新原生验收仍待完成；旧 WK replay 的 fixture 连续性通过不能替代它。[证据范围](005-review-and-conformance.md#followup-evidence)。
+`guMorphWork()` 保持 iframe 及含 App 的祖先挂载锚点不移动、不脱离文档；同实例的 `srcdoc` 与属性保持不变，周围兄弟节点可以更新。`sandbox="allow-scripts"`、无同源权限与 CSP 继续生效。`If` 变为 false、真实会话卸载、权限撤回或源换代允许结束实例；之后再显示属于新挂载。该行为继承 `7bfca12`，在 `cf8ed2d3` 的普通前端真实产物读回中，App counter 0→1、slider 25→26 的 Core ACK 后仍为同一 node/window/nonce，额外 load 为 0。新 `64a` 场景已观察 streaming 原生交互 25→30 和 Core ACK revision 1。下一轮 latest context 精确，但实际 outbound 缺少 trusted UI capabilities，修复及完整链路验收仍待完成。该新场景刷新后又观察到 Core 与文字值为 30、range 控件自身值为 25；历史控件一致性另行修复。[证据范围](005-review-and-conformance.md#followup-evidence)。
+
+当前 composer 草稿另由 `target_role/drafts.js` 管理。单 tab 的 sessionStorage 同步写入文本、revision 与原请求去重信息，迟到 ACK 只有在原草稿身份、revision 和文本都匹配时才清空。`enterprise_meetings/intent_store.js` 提供 IndexedDB 比较交换，`enterprise_meetings/actions.js` 处理 legacy 记录归属及 quota 等持久化失败。初始持久写入失败时停止确认，已提交效果未知时沿原 key 查询回执。这些源修复已进入 `64a` 并由当前 main 继承，完整下一轮消费仍按实际 outbound 证据核对。
 
 [上一章：002 架构关系](002-architecture.md) · [下一章：004 执行与证据](004-execution-and-evidence.md)

@@ -52,9 +52,9 @@
 
 这样，一份交付记录能够分别回答：按哪版要求做了什么，哪些结论有依据，哪些问题仍未解决，以及交付到了哪里。具体语义验收边界仍需结合任务讨论，见 [Q05](OPEN-QUESTIONS.md)；本例没有替这些开放问题作出新的决定。
 
-## 2026-11-11 候选的真实结果链
+## 2026-11-11 源码中的结果链
 
-本节为 canonical `5e460e04` 源码观察，与前文虚构例子分别阅读。`Runtime._basis()` 取得当前有效且已验证的依赖结果，`_ensure_dependency_inputs()` 将其绑定为不可变 `mimi_dependency_result/1` 输入，复用任务 inputs 与原生 inbox。其字段只覆盖已有实现，规范 `ResultCapsule` 仍保留更完整的设计合同。[固定源码与限制](sources/2026-11-11-integration.md)。
+本节为已合并源码 `230b2758` 的观察，与前文虚构例子分别阅读。`Runtime._basis()` 取得当前有效且已验证的依赖结果，`_ensure_dependency_inputs()` 将其绑定为不可变 `mimi_dependency_result/1` 输入，复用任务 inputs 与原生 inbox。其字段只覆盖已有实现，规范 `ResultCapsule` 仍保留更完整的设计合同。[固定源码与限制](sources/2026-11-11-integration.md)。
 
 ```mermaid
 sequenceDiagram
@@ -115,7 +115,7 @@ stateDiagram-v2
 
 ## 发布、nonce 与 spool 恢复各由谁负责
 
-恢复的动机是确认旧效果，而不是把超时等同于未执行。当前 canonical 修复保留原幂等身份，不改变前述 `mimi_dependency_result/1` 为拟议 `ResultCapsule`。
+恢复的动机是确认旧效果，而不是把超时等同于未执行。当前 main 继承的 group/intent 修复保留原 request key、provenance 与当前 authority，迟到回执沿原请求及草稿版本对账。`mimi_dependency_result/1` 继续表示已有依赖输入，拟议 `ResultCapsule` 按原设计范围核对。
 
 | 边界 | 实际调用与持久事实 | 未知结果的处理 |
 | --- | --- | --- |
@@ -126,6 +126,8 @@ stateDiagram-v2
 TurnVerifier 的 `_seen` 是进程内有界到期缓存（4096 项），不是跨重启 nonce 数据库；当前 wrapper 的实例保留不能被表述成任意进程重启抗重放证明。备份恢复也不延长凭据或既有 pending 的有效期；重建业务可用性仍需当前宿主授权及消费者对账。
 
 spool 的迟到 durable ACK 只能释放原文件：回执 `idempotency_key` 和 `content_hash` 必须匹配，文件 inode 与原始字节也要相同；可释放状态删除，rejected 移入 dead letter，随后 fsync。异常或未知回执保留当前及后续文件。超时后不再开始下一项；若进程先退出，原文件供新进程以同一幂等键重放，Core 负责去重。daemon thread 不是可强制取消 callback 的机制，`stop()` / `join()` 和备份/恢复仍需等待实际 lease 结束。
+
+源合并采用普通 PR 路径，无 admin 绕过，main push 触发 CI。生产切换继续需要独立部署回执。`cf8` 的已完成产物读回阶段没有新增 LLM 请求，保护状态与凭据摘要保持一致，进程组清理通过。精确功能范围和失败记录见[审查证据](005-review-and-conformance.md#followup-evidence)。
 
 [固定代码及范围](sources/2026-11-11-integration.md#followup-sources)。上述为代码边界；真实外部系统未知效果、完整产品恢复及跨进程 nonce 政策仍需独立证明。
 
