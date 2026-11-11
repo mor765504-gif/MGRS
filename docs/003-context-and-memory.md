@@ -114,3 +114,5 @@ flowchart TD
 当前 composer 草稿另由 `target_role/drafts.js` 管理。单 tab 的 sessionStorage 同步写入文本、revision 与原请求去重信息，迟到 ACK 只有在原草稿身份、revision 和文本都匹配时才清空。`enterprise_meetings/intent_store.js` 提供 IndexedDB 比较交换，`enterprise_meetings/actions.js` 处理 legacy 记录归属及 quota 等持久化失败。初始持久写入失败时停止确认，已提交效果未知时沿原 key 查询回执。这些源修复已进入 `64a` 并由当前 main 继承，完整下一轮消费仍按实际 outbound 证据核对。
 
 [上一章：002 架构关系](002-architecture.md) · [下一章：004 执行与证据](004-execution-and-evidence.md)
+
+后续归因更正：独立 source/installed 原生调用闭包证明既有 U14 主聊天路径已经注入可信能力块。标题辅助调用也可能携带相同的原始用户文本而没有能力块，合法上下文插件还会追加主请求内容。原验收器用 phase、用户全文相等与所有请求都必须带能力块来识别主请求，条件过严。原真实运行未记录调用栈，其被拒请求的归属仍 UNVERIFIED；保留原 unknown 动作和未获得下一轮回复的事实，不将其直接归为产品注入缺陷。验收器按真实调用来源修正，产品注入实现保持原样。历史滑块自身值25而Core/文字值30仍是独立复现问题。
