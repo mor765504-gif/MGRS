@@ -31,7 +31,7 @@ MGRS 0.1 是设计候选。审查它时，需要分别回答：规则是否清�
 
 ## 2026-11-11 组合候选与部署边界
 
-本次文档审阅重读 canonical 构造候选 `5e460e04` 源码和现有实施记录，更新 002 至 005 的实际调用、所有权和恢复说明。新集成与产品发布均未合入各自 main，也未部署。旧记录中的测试、专项接受和部署事实保留原版本与范围，本轮源码观察标为 `SOURCE_PRESENT`。[本次索引与限制](sources/2026-11-11-integration.md)。
+本次文档沿旧 PR #2 范围更新 002 至 005 的调用、所有权和恢复说明。源 main 已合并为 `230b2758`，产品 PR #21 仍开放，当前远端映射 `64a`。当前源、配对候选与生产分别固定在同日版本化证据中。旧记录中的测试、专项接受和部署事实保留原版本与范围，本轮源码观察标为 `SOURCE_PRESENT`。[本次索引与限制](sources/2026-11-11-integration.md)。
 
 | 核查面 | 本次可确认的源码行为 | 仍需相应运行证据 |
 | --- | --- | --- |
@@ -69,7 +69,7 @@ flowchart TD
 
 ## 当前候选的局部通过与尚未完成项
 
-本次文档跟随 canonical `5e460e04`（GenUI `7bfca12` + 修复 c291 后端）。源码存在、局部测试、设备回放、候选接受、发布与生产分别记录。以下是总控脱敏 JSON 的有界摘要，本轮没有重跑产品或访问生产。[证据及固定来源](sources/2026-11-11-integration.md#followup-sources)。
+本次文档跟随已合并 main `230b2758`，保留早期 `5e460e04`（GenUI `7bfca12` + 修复 c291 后端）的证据范围。源码存在、局部测试、设备回放、候选接受、发布与生产分别记录。以下是总控给定更正和固定脱敏报告的有界摘要，本轮没有重跑产品或访问生产。[证据及固定来源](sources/2026-11-11-integration.md#followup-sources)。
 
 | 固定对象 | 已观察事实 | 不支持的扩大结论 |
 | --- | --- | --- |
@@ -78,9 +78,15 @@ flowchart TD
 | 较旧 GenUI 固定 replay | M6 / 12 核 / 16GiB、前台原生 WKWebView；10k/50k/100k 字符 × 50/200 delta/s 六组通过；p95 event→DOM 12–18ms，active job 2ms | 基于 native-history/model fixture、固定 200 条历史；不是实际模型生成，也不是新 App 修复的 fresh 性能验收 |
 | WK 精确来源身份 | base `02963441d6fc5b8516a7d11adc9df60796bc7a60`；source-manifest SHA-256 `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` | 该 manifest 固定旧 scoped candidate，不能换标为最新 `7bfca12` 或 `5e460e04` |
 | 固定源码 CI | c291 完整 run `42904611343` 因两个 mail-watch 回执夹具失败；后续源码/隔离安装定向 173 项通过 | 定向通过不替代下一固定版本完整 CI；原失败保留 |
-| 生产 | 总控给定旧 Core schema 18 / 旧 gateway 状态 | 新构造与产品发布均未 main 合并或部署；私有现场信息不进入本页 |
+| 当前源 `230b2758` | PR #464 普通合并，其树等于已测试提交 `774bb96f4f88b5219413d757854b4b78aeec5ffb`。该次固定 head 的 required、engineering Linux/Mac、extract Linux/Mac、installed、product 全部 PASS | 六个配对 helper 修复、M6 说明与静态报告属于该合并范围，生产无切换回执 |
+| 先前固定 `64a7b420` | required、engineering Linux/Mac、extract Linux/Mac、installed Student PASS。product 首次 Chrome-start timeout FAIL，同 head 的 job attempt 2 PASS | 原 FAIL 保留，无代码变更，冷启动原因未识别 |
+| 产品候选 | PR #21 开放，远端 `1c353eda2d4c09418edf4fbafc6dd60cd5007046` 映射固定 `230b`，5533 项、6 个 overlay、12 个排除项 | 最终配对 head、CI、合并与安装状态待 root 固定 |
+| 真实生成 `cf8ed2d3` | 普通 ProductRuntime 官方 DeepSeek 两次 HTTP 200、一个 chat。持久有效 GenUI 与 SSE/Core 身份一致。App 0→1、slider 25→26 ACK revision 1，同 node/window/nonce、0 额外 loads。PUT 42 revision 2，stale 409，reload 与 final GET 仍为 42 | reported model/usage/cost UNKNOWN。读回阶段零新增 LLM 请求，保护摘要一致、group cleanup PASS。原 bootstrap 403、readiness timeout、证据写入 NameError 保留 |
+| 新 `64a` streaming 场景 | 原生交互 25→30，Core ACK revision 1，下一轮 latest context 精确 | 实际 outbound 缺少 trusted UI capabilities，缺陷修复中，spec13 全链仍未通过 |
+| strict-egress 隔离比较 | 同 runner 的旧 renderer 56 PASS/12 FAIL，当前 68 PASS，覆盖 IPv4/IPv6 TCP/UDP | 首轮 EPERM harness FAIL 和 nft grammar FAIL 保留。范围限隔离 namespace，生产 VPN 无改动 |
+| 生产 | 旧 Core schema 18，原 Core/gateway 进程保持 | 源 main 合并、CI 与隔离验证各有范围，生产 cutover 尚未执行 |
 
-历史 `77c853f1` / `31fd6f75`、已安装旧模块与其他历史验收保留原范围，不以这次更新抹去原失败。最新 GenUI 普通 App 连续性仍需原生接受；最终配对发布树、required CI、安装与部署须由 root 另行更新。
+历史 `77c853f1` / `31fd6f75`、c291 失败、已安装旧模块与其他历史验收保留原范围。spec13 真实 streaming 交互后准确下一轮仍待完整场景通过，精确 delayed-patch race 保留 UNVERIFIED，最终 M6 full-shell 六组性能仍未完成。用户基线为 M6 / 12 核 / 16GiB，M2 兼容性未验证，physical IME/touch 维持 adopted spec 的原范围。旧 acfb 六组 PASS 继续绑定旧源码及 harness。
 
 ### Core 备份、更新和完整产品恢复
 
@@ -90,7 +96,7 @@ Core 合同固定 `1.0` / schema `42`；`backup.snapshot()` 使用 SQLite backup
 
 `update()` 由 installer ownership inventory、安装锁和 Core writer fence 管理，非 synthetic 更新要求 verified full recovery closure。源码有普通更新入口不等于已开放生产切换；当前实现保留 production activation blocked，且不做 schema migration 或旧业务数据库回滚。`--synthetic-core` 的本地启动/health/readback 是独立范围。网关有界文件回滚（上图）、Core 数据恢复与全域运行恢复是三种不同操作。
 
-c3 隔离真实旧数据库快照的 schema 18→42 迁移回执支持保留旧表行/列、完整性与外键检查；没有修改生产，未覆盖 service UID 和 blobs recovery。它不构成线上迁移或七域恢复接受。
+c3 的早期隔离迁移只覆盖当时快照。后续 `cf8ed2d3` 的实际 service 身份隔离验证使用真实在线备份与 48 个 blobs，schema 18→42 后原表/列/行摘要保留，完整性 ok、FK 0。旧 18 reader 读取迁移后的 42 抛出 SchemaError，旧 socket client 的 ping/tools 通过。原 ancestry 拒绝与 UNVERIFIED 记录保留。生产读回仍为旧 18、原进程，完整产品恢复仍 partial。线上 cutover、最终静默备份、消费者兼容及新写入恢复需要各自证据。
 
 ## 规范中的证据层级
 
