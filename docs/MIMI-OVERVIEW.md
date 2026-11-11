@@ -76,7 +76,7 @@ Persona 组织交流方式与角色连续性；Memory 为正确理解交谈背�
 
 ## 二、实际工程基线
 
-当前开发权威为 assisthub `5e460e04`，合入 GenUI `7bfca12` 与修复 c291 后端；新集成和产品发布均未 main 合并或部署。开发根后端到发布 `backend/` 的映射、SSE/Core 投影见[架构导读](002-architecture.md#canonical-layout)，局部真实模型、重启、WK 回放与未验项见[审查导读](005-review-and-conformance.md#followup-evidence)。完整 MGRS 0.1 ContextEnvelope / ResultCapsule 仍为设计。
+当前开发权威为已合并 assisthub main `230b2758`，继承 GenUI `7bfca12`、c291 与 `64a` 修复，PR #464 的固定 head CI 全部通过。产品 PR #21 开放，远端 `1c353eda` 已映射固定 `230b`，配对提升及局部检查通过。生产仍为旧 Core 18。开发根后端到发布 `backend/` 的映射、SSE/Core 投影见[架构导读](002-architecture.md#canonical-layout)，局部真实模型、重启、WK 回放与未验项见[审查导读](005-review-and-conformance.md#followup-evidence)。完整 MGRS 0.1 ContextEnvelope / ResultCapsule 仍为设计。
 
 下表保留 **2026-11-09 历史基线**，不作为最新构造或线上版本。本次更新区分集成候选、已合并代码、规范提案与运行验收。固定提交和核验入口集中保存在[工程基线记录](sources/2026-11-09-system-baseline.md#source-prs)。
 
