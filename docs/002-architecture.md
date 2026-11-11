@@ -10,7 +10,7 @@ MGRS 把治理要求落到秘秘已有组件的交界处：事实由谁维护，
 
 ## 2026-11-11 的源码调用与所有权
 
-本节核查产品 canonical 构造候选 `5e460e04`，其后端继承原 PR #17/#19 接线并含 c291 修复，合入 GenUI `7bfca12`。新集成与产品发布均未合入各自 main，也未部署。下图表达源码接线，运行验证按[本次来源与限制](sources/2026-11-11-integration.md)单独记录。后文原协议职责图和 11 月 9 日记录保留各自日期与范围。
+本节沿用旧 PR #2 的接线范围，当前源码以已合并 assisthub main `230b2758` 固定。其继承 `5e460e04`、GenUI `7bfca12` 与 c291 修复，后续包含 `64a7b420` 的 group/intent/current-authority 修复。源 PR #464 已按普通 PR 路径合并，产品 PR #21 仍开放，生产保留旧 Core 18。下图表达源码接线，运行验证按[本次来源与限制](sources/2026-11-11-integration.md)单独记录。后文原协议职责图和 11 月 9 日记录保留各自日期与范围。
 
 ```mermaid
 flowchart TD
@@ -71,11 +71,13 @@ Hermes 是默认任务后端。process 需要显式配置和当前授权，必�
 
 ## 开发根、配对发布与事实权威
 
-开发权威现位于 assisthub `5e460e04a30a9c2625a252736d443692f6074e86`。`core/`、`adapters/`、`deploy/` 是根后端，`frontend/` 是唯一产品前端，`mac/` 为宿主集成。发布仓 Mimi-Superagent 的 `backend/` 映射这些根后端路径，再与 `frontend/` 和包装资产配对。`incoming/` 保存导入来源，不能作为另一套活跃后端。这样可避免仅为满足旧发布布局而复制运行实现，或让测试误配旧 UI。
+开发权威现位于 assisthub main `230b2758c0e6d42e73619f7cf5141ee555b5594e`，其树等于已测试提交 `774bb96f4f88b5219413d757854b4b78aeec5ffb`。`core/`、`adapters/`、`deploy/` 是根后端，`frontend/` 是唯一产品前端，`mac/` 为宿主集成。发布仓 Mimi-Superagent 的 `backend/` 映射这些根后端路径，再与 `frontend/` 和包装资产配对。`incoming/` 保存导入来源，不能作为另一套活跃后端。这样可避免仅为满足旧发布布局而复制运行实现，或让测试误配旧 UI。
 
-当前构造已合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与 c291 后端修复；配对发布树仍需 root 固定最终提交及映射，不能把开发合流称为发布 main 合并或安装部署。前面的宿主/网关图继续表示继承的接线；源码索引区分原发布快照的 `backend/` 与当前开发根。[版本与来源](sources/2026-11-11-integration.md#followup-sources)。
+源 PR #463 的 main `c50c425d28c2f12d3de526fc66666c631666229f` 已由 root 核对 tree 等于测试源 `64a7b420c869405ac4e57c51d04b1aa654862ca5`。随后 PR #464 合入六个配对测试 helper 的路径修复、M6 设备说明与静态报告。产品 PR #21 的远端 `1c353eda2d4c09418edf4fbafc6dd60cd5007046` 已映射固定 `230b`；最新映射 5533 项、6 个文档 overlay，12 个排除项保留。已记录映射为 5531 项、6 个 overlay、12 个排除项，原 `64a` 本地提升为 149 项变更、零删除。测试 helper 适配 canonical/发布两种路径，运行实现继续使用同一开发根。前面的宿主/网关图继续表示继承的接线；源码索引区分原发布快照的 `backend/` 与当前开发根。[版本与来源](sources/2026-11-11-integration.md#followup-sources)。
 
 Core 单写者维护业务 SQLite、授权与持久回执，Orchestration 仍拥有原 SessionDB 的任务/attempt 事实。UI 的草稿、抽屉和派生块不构成新业务账本。Core 当前合同为 `1.0`、schema `42`，不意味着线上已升级；总控给定的生产状态仍为旧 Core schema `18` 和旧网关状态。公开文档只记录代际差异。
+
+当前 group 操作保留原 request key 与 provenance，恢复与删除回执沿原请求对账。Core UI 读写捕获当前原生路由 authority fence，并在提交时重新持有和检查它。路径入口与源码验证范围见[固定索引](sources/2026-11-11-integration.md#followup-sources)。
 
 ### SSE 事实与按需 UI 物化
 
@@ -90,6 +92,8 @@ flowchart TD
     Native -->|message_source 与授权核验| Read
     Facts --> Read
     Read -->|按内容与实现版本去重| Compile["Node：共享解析与校验"]
+    Authority["当前原生路由 authority fence"] --> Read
+    Authority --> Saved
     Compile -->|重新核验身份及版本| Saved["Core 派生记录与确认状态"]
     Saved --> Browser
 ```

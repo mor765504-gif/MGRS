@@ -1,10 +1,71 @@
-# 2026-11-11 · 组合候选源码接线核查
+# 2026-11-11 · 源码接线与版本化证据
 
 [架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [审查](../005-review-and-conformance.md)
 
 <a id="followup-sources"></a>
 
-## 后续源码核查：canonical 开发根与局部证据
+## 合并后的源码与版本化证据（2026-11-11）
+
+本节延续已合并公开 PR #2 的八份文档范围。工程当前行动权威仍为私有 NEXT，本页记录固定版本、实现入口与证据范围。最新合并、CI 和 streaming 更正由 root 给定，worker 只读本地冻结源码与固定报告，执行文档维护和本地渲染。root 负责视觉 QA、Git 与公共发布。
+
+| 对象 | 固定版本与范围 |
+| --- | --- |
+| 当前源 main | PR #464 普通合并 `230b2758c0e6d42e73619f7cf5141ee555b5594e`，其树等于已测试提交 `774bb96f4f88b5219413d757854b4b78aeec5ffb`。六个配对测试 helper 路径修复、M6 说明和静态报告已合入，该次 head required/engineering Linux Mac/extract Linux Mac/installed/product 全 PASS |
+| 前次源合并 | PR #463 普通合并 `c50c425d28c2f12d3de526fc66666c631666229f`，root 核对 tree 等于测试源 `64a7b420c869405ac4e57c51d04b1aa654862ca5`。required/engineering Linux Mac/extract Linux Mac/installed Student PASS。product 首次 Chrome-start timeout FAIL，同 head job attempt 2 PASS，无代码变更，原因未识别 |
+| 产品配对候选 | PR #21 开放，远端 `1c353eda2d4c09418edf4fbafc6dd60cd5007046` 已映射固定 `230b`；5533 项映射、6 个 overlay、12 个排除项，配对路径与原件保全检查通过。先前 `64a` 提升记录为 5531 mapped、6 overlays、12 exclusions、149 changes、零删除，保留为其原范围 |
+| 生产 | 旧 Core schema 18 与原 Core/gateway 进程。main push 触发 CI，生产 cutover 尚未执行 |
+
+开发根 `core/`、`adapters/`、`deploy/` 与唯一 `frontend/` 映射到发布布局，配对测试 helper 适配路径，运行源码保持 canonical 所有权。下表在本地冻结 `230b` 检查路径和定向接口，继承的调用核查仍有旧 PR #2 的独立记录。GitHub 固定链接指向私有实现仓，需要相应权限。
+
+| 核查主题 | 固定源码（assisthub） | 定向覆盖 |
+| --- | --- | --- |
+| 开发/发布布局 | [README.md](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/README.md) | 开发根、唯一 frontend、incoming 历史与发布映射 |
+| 原始领域边界 | [docs/architecture/LEAN_CORE.md](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/architecture/LEAN_CORE.md) | Core 单写者、外部适配器与 named interfaces |
+| 产品宿主 | [deploy/mimi_cli/mimi_product_runtime.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/mimi_product_runtime.py) | Core/P6、kernel、UI 生命周期；继承前次固定接线 |
+| Core 版本 | [core/assisthub_core/contracts.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/core/assisthub_core/contracts.py) | CONTRACT_VERSION 1.0 / SCHEMA_VERSION 42 |
+| 可信 SSE | [frontend/server/features/target_role/feature.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/server/features/target_role/feature.py) | TrustedObservation.publish / SessionProxy；原生身份归并 |
+| Core UI 投影 | [deploy/hermes/ui26_blocks.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/hermes/ui26_blocks.py) | observe / get / history / control；版本摘要、短锁、事务外 Node 与重新授权 |
+| 精确保存身份 | [deploy/hermes/ui26_message_identity.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/hermes/ui26_message_identity.py) | saved_identity / project_identity；chat_identity.v1 与原生行元数据 |
+| 认证读路径 | [frontend/server/features/gu_renderer/feature.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/server/features/gu_renderer/feature.py) | blocks、history 与 state 的现有认证路由 |
+| 重启原生来源 | [frontend/server/shared/ui26_host.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/server/shared/ui26_host.py) | NativeMessageSource、具名 missing-run 404 与保存行终态证明 |
+| 共享增量正文 | [frontend/web/shared/genui/blocks.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/shared/genui/blocks.js) | createIncrementalParser append/full 与有序 segments |
+| 草稿和确认 | [frontend/web/shared/genui-state.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/shared/genui-state.js) | createBlockStore、bindIdentity、restore、captureDraft / ackDraft |
+| 解析与 App | [frontend/web/shared/genui/renderer.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/shared/genui/renderer.js) | createMarkupParser、guMorphWork、iframe 固定锚点与沙箱 |
+| frame 调度 | [frontend/web/features/gu_renderer/feature.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/features/gu_renderer/feature.js) | requestPreparation / requestFrame / flushWork、maybeMaterialize、dispose |
+| 确认动作队列 | [frontend/web/features/gu_actions/actions.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/features/gu_actions/actions.js) | 草稿提交屏障、Core state revision 与动作回执 |
+| 实际依赖输入 | [deploy/hermes/plugins/mimi_orchestration/runtime.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/hermes/plugins/mimi_orchestration/runtime.py) | mimi_dependency_result/1、basis 与必需输入 |
+| 请求消费证据 | [deploy/hermes/plugins/mimi_orchestration/input_adapter.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/hermes/plugins/mimi_orchestration/input_adapter.py) | prepare/final request、trace 与响应观察；继承接线 |
+| Core 备份 | [core/assisthub_core/backup.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/core/assisthub_core/backup.py) | snapshot、Memory fence、SQLite backup、blobs 与 manifest |
+| 恢复边界 | [deploy/mimi_cli/recovery.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/recovery.py) | core_only 默认阻止激活、七域 ports 与 full readiness |
+| 更新边界 | [deploy/mimi_cli/update.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/update.py) | ownership、full closure gate、synthetic_core 与普通 switch blocked |
+| 安装操作说明 | [deploy/mimi_cli/README.md](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/README.md) | 安装/doctor/offline recovery/update 的范围与未验项 |
+| P6 恢复 | [core/assisthub_core/skills_release/service.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/core/assisthub_core/skills_release/service.py) | execute / recover / _finish；未知锁与只读回恢复 |
+| nonce 验证 | [adapters/secretary_school/turn_auth.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/adapters/secretary_school/turn_auth.py) | TurnVerifier.verify、consume 与进程内有界 cache |
+| ASR scope 路由 | [deploy/mimi_cli/ui26_asr_authority.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/ui26_asr_authority.py) | NativeASRScopeVerifier.require_scope 复用已有 verifier 与 clock |
+| 媒体 verifier | [deploy/mimi_cli/mimi_media_features.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/deploy/mimi_cli/mimi_media_features.py) | MimiMediaVerifier 保留 enterprise_verifier 实例 |
+| spool 提交 | [adapters/spool/spool.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/adapters/spool/spool.py) | drain / _drain；per-source flock、FIFO、精确 ACK 和原文件身份 |
+| spool 等待所有权 | [adapters/spool/deadline.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/adapters/spool/deadline.py) | timed_drain；等待超时不取消 callback、迟到 ACK 与 lease 生命周期 |
+| UI 源码测试 | [core/tests/test_ui26_genui_a.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/core/tests/test_ui26_genui_a.py) | 重开 repository、保存身份冲突/失败粘性测试；本轮未执行 |
+| group 请求恢复 | [frontend/server/features/groups/adapter.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/server/features/groups/adapter.py) | 原 request key、provenance 与回执对账 |
+| composer 草稿 | [frontend/web/features/target_role/drafts.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/features/target_role/drafts.js) | sessionStorage 原请求去重、精确 revision/text ACK fence |
+| 意图持久化 | [frontend/web/features/enterprise_meetings/intent_store.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/features/enterprise_meetings/intent_store.js) | IndexedDB transaction、compareAndSet 与生命周期 lease |
+| 意图确认与恢复 | [frontend/web/features/enterprise_meetings/actions.js](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/web/features/enterprise_meetings/actions.js) | 原 key、legacy 归属和持久化失败处理 |
+| group 原生 provenance | [frontend/server/shared/profiles_host.py](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/frontend/server/shared/profiles_host.py) | 原生创建/绑定身份、当前授权与恢复 |
+
+### 固定技术报告与新场景范围
+
+- 固定 cf8ed2d367c691eb0bd995050936c7554c3de24b。普通 ProductRuntime 官方 DeepSeek 两次 HTTP 200、一个 chat，持久有效 GenUI/SSE-Core 同身份。App 0→1、slider 25→26 ACK revision 1 后同 node/window/nonce、0 额外 loads。PUT 42 revision 2、stale 409、reload/final GET 同值。读回阶段零新增 LLM 请求、保护摘要一致、group cleanup PASS。reported model/usage/cost UNKNOWN，原 bootstrap 403、readiness timeout 与证据输出 NameError 保留。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/genui-real-provider-observations.md)
+- 固定 cf8 的实际 service 身份隔离 DB18→42 与 48 blobs 验证，原行列保留、integrity ok、FK 0。旧18 reader 对42抛 SchemaError，旧 socket ping/tools PASS，原 ancestry 拒绝和 UNVERIFIED 保留。生产仍旧18/原进程，完整恢复 partial。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/service-uid-migration-observations.md)
+- 旧56 PASS/12 FAIL，当前68 PASS，覆盖 v4/v6 TCP/UDP。原 EPERM harness FAIL、nft grammar FAIL 保留。隔离 namespace 的技术结果保持原范围，生产 VPN 无改动。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/strict-egress-flow-observations.md)
+- 普通 shell fixture 的 selection/scroll 局部通过保留原源码身份。精确 delayed-patch race UNVERIFIED，最终 M6 full-shell 六组性能未完成。M6/12核/16GiB 是用户基线，M2 兼容性未验证。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/genui-selection-observations.md)
+
+Root已核对最新发布分支实际远端提交，重新执行配对 confirmation 4 项与 source-origin/freeze 2 项，全部通过；5533项映射逐字节复验通过。最新真实流式场景另观察到刷新后文字及Core值30、range控件值25，保持独立缺陷及原始失败记录。两张更新图已由Root实际查看，标签和连接可读。
+
+root 新更正记录 `64a` 真实 streaming native 25→30 与 Core ACK revision 1，下一轮 latest context 精确，但实际 outbound 缺少 trusted UI capabilities。缺陷修复中，spec13 的真实交互后准确下一轮仍待完整通过。cf8 的已完成子场景保留有效。旧 WK manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 六组 PASS 只覆盖旧 scope，当前 physical IME/touch 保持 adopted spec 原范围。
+
+原始 PASS/FAIL、artifact 标识与下方历史记录继续保留。完整 MGRS ContextEnvelope/ResultCapsule 仍属设计，独立 ASLI 项目在本次范围外，零访问保证需要独立证明。公开材料仅保留技术合同、仓库相对入口、固定提交和脱敏结果，私有原始状态由 root 在既有证据位置保护。
+
+## 历史补充 · PR #2 的 5e460e04 源码与局部证据
 
 本页保留首轮 `77c853f1` / `31fd6f75` 记录，以下为同一主题的后续补充，不另建可变工程账本。当前 assisthub 构造固定 `5e460e04a30a9c2625a252736d443692f6074e86`，合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与修复 c291 后端。读取源码及当前指南，关键判断核对调用方、接收方与状态；不是全仓审计。新集成和产品发布未 main 合并、未部署为总控给定状态，本轮不操作 Git、不查远端 PR/CI、不接触生产。
 
