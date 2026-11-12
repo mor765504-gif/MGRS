@@ -1,63 +1,61 @@
-# MGRS · Agent 一起做事时，哪些事要先说清楚？
+# MGRS 0.1 · 协议索引
 
-假如我请秘秘帮忙约场读书会，找大家有空的时间、挑材料、写邀请，这些都可以交给它。平时就那几个熟人，时间定了它直接往群里说一声，我还挺省心的。可这次如果想请一位第一次联系的老师，我就想先看看那封邮件。都是发邀请，跟这位老师头一次打交道，我还是挺在意怎么开口的。
+**Mimi Governed Runtime Standard** · 秘秘自有 Agent 治理协议 · **0.1 设计候选**
 
-我做秘秘的时候在想，这个分寸能不能跟助手讲得明白一点？后来又让几个 Agent 一起干活，连我应该跟谁讲都成了问题。我把这些想法写成了 MGRS（Mimi Governed Runtime Standard）。这份草案分三层，治理内核、协作合同，还有各个场合要用的专项扩展。[做秘秘的初衷](docs/MIMI-OVERVIEW.md)
+这里是 MGRS 的独立入口。**正式技术条文的唯一现行位置是 `spec/`**，每一章可独立阅读、引用和修订。本页只提供索引和阅读路线，不额外建立另一套规范。
+
+MGRS 讨论 Agent 如何在用户授权范围内持续做事、彼此交接、验证效果和处理异常。治理约束的是可观察的权限、事实、责任与效果，Agent 仍可自主选择方法。
+
+第一次接触可先看[设计背景与真实场景](docs/FRAMEWORK-INTRO.md)；查规范直接进入下方章节；了解已确定和仍在讨论的判断，可看[设计决定](docs/DECISIONS.md)与[开放问题](docs/OPEN-QUESTIONS.md)。L0、L1、L2 仅作为导航分类，**不改变原 16 章的编号、规范效力或跨层关系**。
 
 <a id="governance"></a>
 
-## 治理内核 · 人把哪些决定交给了助手
+## L0 · 治理内核
 
-我跟秘秘说「先把邀请写好给我看」。为了写好这封邀请，它想先看日历还是先翻邮件，都随它。写完就留在草稿里，等我看过、说可以发了，再发。哪怕我一个字都不用改，发给老师那一下，也是我特地留给自己的。
+身份授权、治理权威与跨层冲突裁决。这里的分组是阅读导航，并不缩小条款的适用范围。
 
-那以后每封邀请都得问吗？如果我交代过「每周读书会定好时间，直接通知固定组员」，它照着办就好了。第一次来的老师不在那几个人里，这次单独问我就行。我也可能哪天临时说「这周我自己来发」，那一封就得留给我。我把这部分叫治理内核。我说过可以直接发的，它用不着次次来问。我要自己接回来，也应该说一声就管用。
+- <a id="mgrs-1"></a>[第 1 章 · 宗旨、边界与禁止事项](spec/01-purpose-and-boundaries.md#mgrs-1)
+- <a id="mgrs-2"></a>[第 2 章 · 六个治理面与唯一权威](spec/02-governance-planes.md#mgrs-2)
+- <a id="mgrs-3"></a>[第 3 章 · 十四条必须保持的不变量](spec/03-invariants.md#mgrs-3)
+- <a id="mgrs-4"></a>[第 4 章 · 请求级治理合同 ContextEnvelope](spec/04-context-envelope.md#mgrs-4)
+- <a id="mgrs-15"></a>[第 15 章 · 冲突裁决与变更控制](spec/15-conflict-and-change-control.md#mgrs-15)
 
 <a id="collaboration"></a>
 
-## 协作合同 · 换一个 Agent，人的意思还得跟过去
+## L1 · 协作合同
 
-再往下想一步。假如这场读书会本来打算对外开放，我中途改了主意，在主窗口里补了句「这次只在组内讨论，那篇还没发表的文章先放一放」。后台可能有三个 Agent，一个排时间，一个选文章，一个写邀请。我这句话说完，排好的时间也许还能用，名单和附件可都得改。要是写邀请的那个还照昨天的阅读单办，等我发现的时候，没发表的文章说不定已经到了组外的人手里。
+任务委派、执行约束、外部效果与持续恢复。
 
-所以我希望它们分工前先讲清楚，这次办的是什么事，各自能看哪些资料，手里的东西最后给谁用。我把这份交代叫作协作合同。比如选文章的 Agent 交给写邀请的那位一个组内阅读单，顺便说清楚为什么选这几篇、哪篇还在等我拿主意。对方接过去就知道附件该放什么。哪怕前后都是同一个助手，一个星期以后我回来接着聊，这点记录也用得上。[主对话和工坊](docs/002-architecture.md) · [交接时带走什么](docs/004-execution-and-evidence.md)
-
-轮到我接手，开会前掏出手机，我就想知道给组员的通知到底发了没有。还在草稿里，我可以直接改。已经发出去了，要改的话我就得再联系一次。上次聊天的窗口关了，我也希望能直接看到这封邀请现在在哪。
+- <a id="mgrs-5"></a>[第 5 章 · 任务与团队交接合同 Task / ResultCapsule](spec/05-task-result-capsule.md#mgrs-5)
+- <a id="mgrs-6"></a>[第 6 章 · 统一任务纪律：不等于固定繁琐步骤](spec/06-task-discipline.md#mgrs-6)
+- <a id="mgrs-7"></a>[第 7 章 · 工具与效果等级](spec/07-tools-and-effects.md#mgrs-7)
+- <a id="mgrs-11"></a>[第 11 章 · 单宿主与持久恢复](spec/11-host-and-recovery.md#mgrs-11)
 
 <a id="extensions"></a>
 
-## 专项扩展 · 同一个人，在不同场合要的东西也不同
+## L2 · 专项扩展
 
-秘秘跟我闲聊，我希望它有点人味。可它替我给老师写邀请，要是把我俩平时开的玩笑也带上，我估计得自己重写。它倒是可以记得我查论文喜欢读原文，下次帮我准备材料省点工夫。光说一句「让助手懂我」还蛮笼统的，得把记忆和 Persona 放到具体的事里谈。尤其是从私聊换到团队里，哪些话可以拿出来用，差别很大。[上下文与记忆](docs/003-context-and-memory.md)
+Skill、Persona、数据隔离与终端管理等专项协议。
 
-有些做法我希望秘秘能留下来。比如读书会邀请写顺了，就存成一份 Skill，下回还用得上。名单可得看这次请了谁，要是连上次的收件人也给我填好了，那就帮倒忙了。做科研也是类似的。上回找到原论文的办法可以接着用，至于那篇论文能不能回答这回的问题，我还是得翻回去读。我把这些需要单独谈的做法放在专项扩展里，研究助手和替团队管客户资料的助手，可以在这里各自往下写。[秘秘的搜索策略](docs/006-search-strategy.md)
+- <a id="mgrs-8"></a>[第 8 章 · Skill 生命周期与本土流程规范](spec/08-skill-lifecycle.md#mgrs-8)
+- <a id="mgrs-9"></a>[第 9 章 · Persona 与人味](spec/09-persona.md#mgrs-9)
+- <a id="mgrs-10"></a>[第 10 章 · Profile / Cache / 文件隔离](spec/10-profile-cache-isolation.md#mgrs-10)
+- <a id="mgrs-12"></a>[第 12 章 · Web/Mac 管理界面与后端契约](spec/12-web-mac-contract.md#mgrs-12)
 
-<a id="discussion"></a>
+<a id="implementation"></a>
 
-## 我想先听听你们怎么做
+## 实施、度量及待证边界
 
-有个例子我自己也拿不准。假如我请助手给组员挑两篇入门读物，它看完觉得第三篇也挺关键，要不要一起放进去？我随口说个「两篇」，它多推荐一篇，我可能还挺高兴的。但如果是因为大家开会前就半小时能看材料，那还是替我挑出两篇吧。光看我交代的那句话，它还真不一定知道我为什么这么说。
+评测标准、实施分期与现有证据范围。
 
-你要是碰过类似的事，欢迎把当时跟助手说的那句话贴出来。比如多找了第三篇，有人会留下，有人会让它重新挑。这样的分歧我蛮想聊的，尤其是你当时有什么顾虑，光读那句要求可看不出来。有些可以拿来改草案，有些也许就该留给做产品、用产品的人自己选。[正在讨论的问题](docs/OPEN-QUESTIONS.md) · [参与共创](CONTRIBUTING.md)
+- <a id="mgrs-13"></a>[第 13 章 · 可靠性度量与正式晋级标准](spec/13-reliability-and-promotion.md#mgrs-13)
+- <a id="mgrs-14"></a>[第 14 章 · 实施映射与分期](spec/14-implementation-phases.md#mgrs-14)
+- <a id="mgrs-16"></a>[第 16 章 · 确认的已有能力与待证边界](spec/16-capabilities-and-gaps.md#mgrs-16)
 
-想看 0.1 里的某个想法是怎么定下来的，可以翻[设计决定](docs/DECISIONS.md)。习惯按原章节查的人可以直接看 [0.1 技术参考](docs/reference/mgrs-0.1-technical.md)。
+## 解释、研究和参与
 
-<details>
-<summary>按旧章节查 0.1 技术参考</summary>
+- [设计背景和具体场景](docs/FRAMEWORK-INTRO.md) · [专题导读](docs/README.md) · [产品与 Harness 总览](docs/MIMI-OVERVIEW.md)
+- [设计决定](docs/DECISIONS.md) · [开放问题](docs/OPEN-QUESTIONS.md) · [参与共创](CONTRIBUTING.md)
+- [来源与版本](docs/PROVENANCE.md) · [研究全文](docs/RESEARCH.md) · [历史原稿](archive/README.md)
 
-- <a id="mgrs-1"></a>[第 1 章 · 宗旨、边界与禁止事项](docs/reference/mgrs-0.1-technical.md#mgrs-1)
-- <a id="mgrs-2"></a>[第 2 章 · 六个治理面与唯一权威](docs/reference/mgrs-0.1-technical.md#mgrs-2)
-- <a id="mgrs-3"></a>[第 3 章 · 十四条必须保持的不变量](docs/reference/mgrs-0.1-technical.md#mgrs-3)
-- <a id="mgrs-4"></a>[第 4 章 · 请求级治理合同 ContextEnvelope](docs/reference/mgrs-0.1-technical.md#mgrs-4)
-- <a id="mgrs-5"></a>[第 5 章 · 任务与团队交接合同 Task / ResultCapsule](docs/reference/mgrs-0.1-technical.md#mgrs-5)
-- <a id="mgrs-6"></a>[第 6 章 · 统一任务纪律：不等于固定繁琐步骤](docs/reference/mgrs-0.1-technical.md#mgrs-6)
-- <a id="mgrs-7"></a>[第 7 章 · 工具与效果等级](docs/reference/mgrs-0.1-technical.md#mgrs-7)
-- <a id="mgrs-8"></a>[第 8 章 · Skill 生命周期与本土流程规范](docs/reference/mgrs-0.1-technical.md#mgrs-8)
-- <a id="mgrs-9"></a>[第 9 章 · Persona 与人味](docs/reference/mgrs-0.1-technical.md#mgrs-9)
-- <a id="mgrs-10"></a>[第 10 章 · Profile / Cache / 文件隔离](docs/reference/mgrs-0.1-technical.md#mgrs-10)
-- <a id="mgrs-11"></a>[第 11 章 · 单宿主与持久恢复](docs/reference/mgrs-0.1-technical.md#mgrs-11)
-- <a id="mgrs-12"></a>[第 12 章 · Web/Mac 管理界面与后端契约](docs/reference/mgrs-0.1-technical.md#mgrs-12)
-- <a id="mgrs-13"></a>[第 13 章 · 可靠性度量与正式晋级标准](docs/reference/mgrs-0.1-technical.md#mgrs-13)
-- <a id="mgrs-14"></a>[第 14 章 · 实施映射与分期](docs/reference/mgrs-0.1-technical.md#mgrs-14)
-- <a id="mgrs-15"></a>[第 15 章 · 冲突裁决与变更控制](docs/reference/mgrs-0.1-technical.md#mgrs-15)
-- <a id="mgrs-16"></a>[第 16 章 · 确认的已有能力与待证边界](docs/reference/mgrs-0.1-technical.md#mgrs-16)
-
-</details>
+MGRS 0.1 是公开讨论中的设计候选，不等于秘秘产品已实现或通过验收。规范文本按 [CC BY 4.0](LICENSE) 授权，具体范围见[许可说明](NOTICE.md)。

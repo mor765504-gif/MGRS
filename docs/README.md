@@ -1,8 +1,8 @@
 # MGRS 阅读指南
 
-[首页](../README.md) · [框架正文](../MGRS.md) · [参与共创](../CONTRIBUTING.md)
+[首页](../README.md) · [MGRS 协议索引](../MGRS.md) · [参与共创](../CONTRIBUTING.md)
 
-如果你是从视频过来的，想知道秘秘能帮忙做什么，我为什么想做它，可以先看[产品哲学](MIMI-OVERVIEW.md)。[框架正文](../MGRS.md)里用的是约读书会的例子。对哪一块感兴趣，再从下面挑一篇就好。
+如果你是从视频过来的，想知道秘秘能帮忙做什么，我为什么想做它，可以先看[产品哲学](MIMI-OVERVIEW.md)。[设计背景](FRAMEWORK-INTRO.md)里用的是约读书会的例子，正式条文可从[协议索引](../MGRS.md)逐章查看。对哪一块感兴趣，再从下面挑一篇就好。
 
 <a id="顺着你关心的问题读"></a>
 
@@ -20,4 +20,4 @@
 
 ## 延伸材料
 
-[0.1 技术参考](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)
+[0.1 正式规范（16 章）](../MGRS.md) · [旧技术参考链接兼容页](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)

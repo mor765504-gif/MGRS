@@ -17,6 +17,7 @@ docs/004-execution-and-evidence.md
 docs/005-review-and-conformance.md
 docs/006-search-strategy.md
 docs/DECISIONS.md
+docs/FRAMEWORK-INTRO.md
 docs/MIMI-OVERVIEW.md
 docs/OPEN-QUESTIONS.md
 docs/PROVENANCE.md
@@ -32,3 +33,19 @@ publish-files.txt
 scripts/publish-github.sh
 scripts/verify_archive.py
 source-manifest.json
+spec/01-purpose-and-boundaries.md
+spec/02-governance-planes.md
+spec/03-invariants.md
+spec/04-context-envelope.md
+spec/05-task-result-capsule.md
+spec/06-task-discipline.md
+spec/07-tools-and-effects.md
+spec/08-skill-lifecycle.md
+spec/09-persona.md
+spec/10-profile-cache-isolation.md
+spec/11-host-and-recovery.md
+spec/12-web-mac-contract.md
+spec/13-reliability-and-promotion.md
+spec/14-implementation-phases.md
+spec/15-conflict-and-change-control.md
+spec/16-capabilities-and-gaps.md

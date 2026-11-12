@@ -44,16 +44,33 @@ def main() -> int:
                 anchor = unquote(url.fragment)
                 if f'id="{anchor}"' not in body:
                     errors.append(f'Unknown anchor: {page.relative_to(ROOT)} -> {href}')
-    spec = (ROOT / 'docs' / 'reference' / 'mgrs-0.1-technical.md').read_text(encoding='utf-8')
-    if len(re.findall(r'^## \d+\. ', spec, re.M)) != 16:
-        errors.append('Expected all 16 source chapters in the technical reference')
-    if len(re.findall(r'^\*\*G\d{2}\*\* ', spec, re.M)) != 14:
-        errors.append('Expected all 14 invariants')
-    for data in re.findall(r'(?ms)^~~~json\n(.*?)^~~~\s*$', spec):
-        try:
-            json.loads(data)
-        except json.JSONDecodeError as exc:
-            errors.append('Invalid example JSON: ' + str(exc))
+    spec_files = sorted((ROOT / 'spec').glob('[0-9][0-9]-*.md'))
+    if len(spec_files) != 16:
+        errors.append(f'Expected 16 standalone chapters; got {len(spec_files)}')
+    combined = []
+    for number, page in enumerate(spec_files, 1):
+        part = page.read_text(encoding='utf-8')
+        combined.append(part)
+        if not re.search(r'^## ' + str(number) + r'\. ', part, re.M):
+            errors.append('Missing numbered heading: ' + page.name)
+        if f'id="mgrs-{number}"' not in part:
+            errors.append('Missing chapter anchor: ' + page.name)
+        for data in re.findall(r'(?ms)^~~~json\n(.*?)^~~~\s*$', part):
+            try:
+                json.loads(data)
+            except json.JSONDecodeError as exc:
+                errors.append('Invalid example JSON in ' + page.name + ': ' + str(exc))
+    invariants = re.findall(r'^\*\*G(\d{2})\*\* ', '\n'.join(combined), re.M)
+    if sorted(invariants) != [f'{i:02d}' for i in range(1, 15)]:
+        errors.append('Expected G01–G14 exactly once in spec chapters')
+    index = (ROOT / 'MGRS.md').read_text(encoding='utf-8')
+    legacy = (ROOT / 'docs/reference/mgrs-0.1-technical.md').read_text(encoding='utf-8')
+    for number in range(1, 17):
+        anchor = f'id="mgrs-{number}"'
+        if anchor not in index or anchor not in legacy:
+            errors.append('Missing index or legacy anchor: ' + anchor)
+    if re.search(r'^## \d+\. ', legacy, re.M):
+        errors.append('Legacy reference must not duplicate the current spec')
     allowlist = ROOT / 'publish-files.txt'
     if allowlist.exists():
         for name in allowlist.read_text().splitlines():
