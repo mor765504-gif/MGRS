@@ -1,25 +1,23 @@
 # MGRS 阅读指南
 
-[仓库首页](../README.md) · [产品与系统总览](MIMI-OVERVIEW.md) · [协议全文](../MGRS.md)
+[首页](../README.md) · [框架正文](../MGRS.md) · [参与共创](../CONTRIBUTING.md)
 
-如果你是从秘秘的视频过来的，想弄清楚我为什么这么在意「治理协作」，可以先读[设计理念](000-philosophy.md)。里面有一封发错附件的邮件。想接着看这件事在系统里怎么处理，再读[执行与证据](004-execution-and-evidence.md)，跟着一份简报走到交稿。
+想了解我为什么做秘秘，可以先看[产品哲学](MIMI-OVERVIEW.md)。如果你关心一个助手该有多主动、几个 Agent 分工时谁替用户守住原来的意思，可以直接读[框架正文](../MGRS.md)。
 
-## 按问题阅读
+## 顺着你关心的问题读
 
-| 想弄清的问题 | 对应章节 |
+| 你关心什么 | 从这里读 |
 | --- | --- |
-| 两个 Agent 都做完了各自的事，为什么参会者还会收到旧纪要？ | [000 · 设计理念](000-philosophy.md) |
-| 用户一直在说同一件事，系统为什么还要区分任务、尝试和结果？ | [001 · 核心对象](001-domain-model.md) |
-| 从用户入口到工坊，谁查权限、谁调工具、谁保存结果？ | [002 · 架构与职责](002-architecture.md) |
-| 用户改了要求，下一轮怎样用上新要求，还能找到先前的材料？ | [003 · 上下文、记忆与 Persona](003-context-and-memory.md) |
-| 交接之后怎样验收？工具超时以后怎样接着做？ | [004 · 执行与证据](004-execution-and-evidence.md) |
-| 有哪些证据能说明一个环节确实工作了？怎样衡量整件事？ | [005 · 审查与符合性](005-review-and-conformance.md) |
-| 做研究时，秘秘怎样从搜索结果追到足以支持结论的原件？ | [006 · 秘秘自研搜索策略](006-search-strategy.md) |
+| 明明是为了省心，为什么有些助手越用越需要自己盯着？ | [000 · 为什么聊 Agent 治理](000-philosophy.md) |
+| 换个窗口，怎么继续上次那件事？ | [001 · 任务和上下文](001-domain-model.md) |
+| 我只跟一个助手说话，它后面怎样分工？ | [002 · 主对话与工坊](002-architecture.md) |
+| 哪些事值得记住，又该在什么场合想起来？ | [003 · 上下文、记忆与 Persona](003-context-and-memory.md) |
+| 我中途改了主意，接手的人需要知道什么？ | [004 · 几个人接手同一件事](004-execution-and-evidence.md) |
+| 做法可以换，什么时候连目标也跟着变了？ | [005 · 哪些判断可以交给助手](005-review-and-conformance.md) |
+| 遇到一个研究问题，怎样知道找到的资料够不够用？ | [006 · 秘秘自研搜索策略](006-search-strategy.md) |
 
-## 讨论规则或查看依据
+你也可以从一个自己的例子开始，看看它会让哪条原则需要改写。[开放问题](OPEN-QUESTIONS.md) · [设计决定](DECISIONS.md) · [作者的公开答疑](sources/2026-11-09-bilibili-bv1vix26sEzR.md)
 
-如果你也在做自己的 Agent，想拿具体场景讨论，可以直接翻[十四条治理不变量](../MGRS.md#mgrs-3)。有些取舍已经写进了[设计决定](DECISIONS.md)，有些我也还在考虑，放在[待商榷事项](OPEN-QUESTIONS.md)里。[参与讨论](../CONTRIBUTING.md)
+## 延伸材料
 
-想追溯设计的来历，可以看[作者的公开答疑](sources/2026-11-09-bilibili-bv1vix26sEzR.md)和[抽屉与九项架构研究](RESEARCH.md)。想深入秘秘实现，可以按问题查[宿主与搜索策略](sources/2026-11-09-system-baseline.md)、[组件接线与运行记录](sources/2026-11-11-integration.md)，或[早期长对话与缓存实验](sources/2026-11-12-context-evaluation-baseline.md)。每份记录都给出了当时采用的版本和观察条件。
-
-[原稿与来源](PROVENANCE.md) · [逐字归档](../archive/README.md) · [变更记录](../CHANGELOG.md) · [仓库维护](PUBLISH.md)
+[0.1 技术参考](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)

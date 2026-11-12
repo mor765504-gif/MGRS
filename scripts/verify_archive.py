@@ -44,9 +44,9 @@ def main() -> int:
                 anchor = unquote(url.fragment)
                 if f'id="{anchor}"' not in body:
                     errors.append(f'Unknown anchor: {page.relative_to(ROOT)} -> {href}')
-    spec = (ROOT / 'MGRS.md').read_text(encoding='utf-8')
+    spec = (ROOT / 'docs' / 'reference' / 'mgrs-0.1-technical.md').read_text(encoding='utf-8')
     if len(re.findall(r'^## \d+\. ', spec, re.M)) != 16:
-        errors.append('Expected all 16 source chapters in MGRS.md')
+        errors.append('Expected all 16 source chapters in the technical reference')
     if len(re.findall(r'^\*\*G\d{2}\*\* ', spec, re.M)) != 14:
         errors.append('Expected all 14 invariants')
     for data in re.findall(r'(?ms)^~~~json\n(.*?)^~~~\s*$', spec):
