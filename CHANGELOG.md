@@ -1,5 +1,9 @@
 # 变更记录
 
+## 2026-11-12 · 长期记忆的出处
+
+[003](docs/003-context-and-memory.md)用组会备稿说明怎样核对原话、理解一项偏好的适用范围，以及何时要回到论文原件。[设计来源与实现范围](docs/PROVENANCE.md#memory-source)
+
 ## 2026-11-12 · 把 MGRS 作为共创框架来读
 
 首页与框架正文从作者的取舍和读者可以参与的问题出发。技术条文集中在[独立的 0.1 参考稿](docs/reference/mgrs-0.1-technical.md)。原 005 改为讨论哪些判断可以交给助手，历史测试仍可以从[来源页](docs/PROVENANCE.md)查到。
