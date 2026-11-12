@@ -10,4 +10,4 @@
 
 [我为什么做秘秘](docs/MIMI-OVERVIEW.md) · [MGRS 的设计想法](docs/000-philosophy.md) · [还想一起讨论的问题](docs/OPEN-QUESTIONS.md) · [全部文章](docs/README.md)
 
-MGRS 0.1 是秘秘的专有治理框架草案，公开供讨论和修订。[项目定位与许可](NOTICE.md)
+MGRS 0.1 是秘秘的专有治理框架草案，公开供讨论和修订。规范文本按 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 授权，可复制、翻译、改编与再分发，条件为署名；许可证全文见 [LICENSE](LICENSE)。[项目定位与许可](NOTICE.md)
