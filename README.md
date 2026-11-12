@@ -1,12 +1,16 @@
-# MGRS · 一起讨论 Agent 该怎么替人做事
+<h1 align="center">MGRS · 一起讨论 Agent 该怎么替人做事</h1>
 
-[![Version](https://img.shields.io/badge/MGRS-v0.1-8B5CF6?style=flat-square)](MGRS.md)
-[![Status](https://img.shields.io/badge/Status-Draft-F59E0B?style=flat-square)](docs/OPEN-QUESTIONS.md)
-[![Focus](https://img.shields.io/badge/Agent-Governance-2563EB?style=flat-square)](MGRS.md)
+<p align="center">
+  <a href="MGRS.md"><img alt="MGRS v0.1" src="https://img.shields.io/badge/MGRS-v0.1-8B5CF6?style=flat-square"></a>
+  <a href="docs/OPEN-QUESTIONS.md"><img alt="Status Draft" src="https://img.shields.io/badge/Status-Draft-F59E0B?style=flat-square"></a>
+  <a href="MGRS.md"><img alt="Agent Governance" src="https://img.shields.io/badge/Agent-Governance-2563EB?style=flat-square"></a>
+</p>
 
-[![Layers](https://img.shields.io/badge/Layers-L0%20%2F%20L1%20%2F%20L2-64748B?style=flat-square)](MGRS.md)
-[![Docs](https://img.shields.io/badge/Docs-Available-16A34A?style=flat-square)](docs/README.md)
-[![License](https://img.shields.io/badge/License-CC_BY_4.0-64748B?style=flat-square)](LICENSE)
+<p align="center">
+  <a href="MGRS.md"><img alt="Layers L0 L1 L2" src="https://img.shields.io/badge/Layers-L0%20%2F%20L1%20%2F%20L2-64748B?style=flat-square"></a>
+  <a href="docs/README.md"><img alt="Docs Available" src="https://img.shields.io/badge/Docs-Available-16A34A?style=flat-square"></a>
+  <a href="LICENSE"><img alt="License CC BY 4.0" src="https://img.shields.io/badge/License-CC_BY_4.0-64748B?style=flat-square"></a>
+</p>
 
 我最早做秘秘，就是自己的日程多到根本理不过来。比如我跟它说「帮我腾出周五下午」。那天有两场会，它要是帮我看看这两场各自还能挪到什么时候，我就省事很多。可假如我只打算挪其中一场，它已经把两封改期邮件都发了，那我还得一个个去跟人家解释。
 
