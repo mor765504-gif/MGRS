@@ -77,7 +77,7 @@ PR #15 的交付记录明确说明未更新产品 main、未部署或正式发�
 | 网关与宿主接入 | [gateway.py](https://github.com/mor765504-gif/Mimi-Superagent/blob/1dd86db66894ecabcd518be1e5cb1aac8d9fc462/backend/deploy/hermes/plugins/mimi_orchestration/gateway.py)、[mimi_execution.py](https://github.com/mor765504-gif/Mimi-Superagent/blob/1dd86db66894ecabcd518be1e5cb1aac8d9fc462/backend/deploy/mimi_cli/mimi_execution.py) | native/process adapter 接入同一 Runtime；配置区分 `processes` 与 `inference`，缺少私有配置时保持 native-only |
 | 受限推理端口 | [inference_port.py](https://github.com/mor765504-gif/Mimi-Superagent/blob/1dd86db66894ecabcd518be1e5cb1aac8d9fc462/backend/deploy/hermes/plugins/mimi_orchestration/inference_port.py) | `AgyInferencePort` 提供 `infer_once`，经独立 inference ports 注册；不是 Router 的第三种完整 Agent 任务后端 |
 
-Core、原生编排、Skill P6 及历史交付的其余既有依据仍见[原研究记录](../RESEARCH.md)与[规范第 16 章](../../MGRS.md#mgrs-16)。本次没有把整个产品源码逐行重审，也没有将当前插件源码观察扩大为所有端到端能力通过。
+Core、原生编排、Skill P6 及历史交付的其余既有依据仍见[原研究记录](../RESEARCH.md)与[规范第 16 章](../reference/mgrs-0.1-technical.md#mgrs-16)。本次没有把整个产品源码逐行重审，也没有将当前插件源码观察扩大为所有端到端能力通过。
 
 <a id="source-privacy"></a>
 
