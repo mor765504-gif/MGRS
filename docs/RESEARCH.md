@@ -1,12 +1,12 @@
 # 抽屉上下文系统与九项架构核查
 
-**完整研究记录** · 源文保留 · 2026-11-07
+2026 年 11 月 7 日
 
-[首页](../README.md) · [协议正文](reference/mgrs-0.1-technical.md) · [来源与编辑说明](PROVENANCE.md)
+[首页](../README.md) · [0.1 技术参考](reference/mgrs-0.1-technical.md) · [原稿从哪里来](PROVENANCE.md)
 
-> 本页保存 11 月 7 日研究时的问题、推理和来源。想了解为什么采用抽屉，可以先读第 3 节；想追查当时的实现，按第 12 节的证据索引定位。下文的“当前”指这次研究选用的版本。
->
-> [GitHub 固定原文](https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/research/2026-11-07-drawers-architecture-review.md) · [逐字归档](../archive/2026-11-07/docs/research/2026-11-07-drawers-architecture-review.md)
+我希望秘秘记得一个人平时怎么做事。可要是单独叫一个 Agent 来帮忙，它用得上之前聊过的哪几句？每次都把整段聊天搬过去，读起来费劲，也要花钱。想看这件事当时怎么想的，可以从[第 3 节的四个抽屉](#research-3)读起，或者直接看[第 5 节里关于压缩和成本的讨论](#research-5)。
+
+这里保留了 11 月 7 日研究时的推理、比较和实现记录。下文的“当前”指当时选用的版本。要找某个判断对应哪段代码、当时实际查到了什么，可以从[第 12 节](#research-12)回去找。[GitHub 固定原文](https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/research/2026-11-07-drawers-architecture-review.md) · [逐字归档](../archive/2026-11-07/docs/research/2026-11-07-drawers-architecture-review.md)
 
 ## 目录
 

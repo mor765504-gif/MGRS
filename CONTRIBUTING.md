@@ -1,9 +1,9 @@
 # 一起改 MGRS
 
-用秘秘的经验可以拿来讨论，用别的助手也一样。比如你愿意让它把邮件里的车次加进日历，但发现行程有变时，希望它先问你再替你改。像这样讲清楚哪一步你愿意交出去、哪一步想自己决定，就能帮我们看出框架哪里还说得太笼统。
+你平时用哪个助手都可以聊。比如你让它把车票上的时间加进日历，这点很好用。过两天车次改了，它把你原来约好的晚饭也挪了。也许你本来就想让它顺手帮这个忙，也许你宁愿自己跟朋友商量。把当时那句交代和后来的事放在一起，我才知道草案里哪句话说得太宽了。
 
-可以直接在 [Issues](https://github.com/mor765504-gif/MGRS/issues) 里讲这件事。手头已经有一句更合适的写法，也可以给[框架草案](MGRS.md)或某篇导读提 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls)。日常例子、不同意见和文字修订都欢迎。
+这样的例子可以直接发到 [Issues](https://github.com/mor765504-gif/MGRS/issues)。如果你读到哪一句，已经想到怎么改更合适，也可以直接改[框架草案](MGRS.md)或对应的文章，提个 [Pull Request](https://github.com/mor765504-gif/MGRS/pulls)。
 
-还没想好从哪里开始，可以先挑一个[仍在讨论的问题](docs/OPEN-QUESTIONS.md)。涉及已经形成的选择，可以查[设计决定](docs/DECISIONS.md)，了解当初为什么这样考虑。需要对照具体机制或做文档维护时，再看[技术参考](docs/reference/mgrs-0.1-technical.md)和[维护说明](docs/PUBLISH.md)。
+有几处我自己还拿不准，放在[开放问题](docs/OPEN-QUESTIONS.md)里。想知道之前为什么这样选，可以翻[设计决定](docs/DECISIONS.md)。按原章节找条款或者想一起维护仓库，可以看[技术参考](docs/reference/mgrs-0.1-technical.md)和[维护说明](docs/PUBLISH.md)。
 
 [项目定位与许可](NOTICE.md)

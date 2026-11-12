@@ -6,7 +6,7 @@
 
 ## 合并后的源码与版本化证据（2026-11-11）
 
-本页按源码版本汇集 11 月 11 日的核查材料。接线关系来自固定版本的源码，运行结果来自各段列明的报告。第一组记录涉及当日合入的源码、配对候选和当时仍在运行的生产版本。私有实现仓链接供有相应权限的读者定位原件。
+11 月 11 日有几份记录都在讲秘秘，但看的是不同的版本。实验仓刚合进去的代码、准备给产品用的那一份、用户当时实际连到的服务，都列在第一张表里。想查两个组件怎么接，可以顺着源码看。想知道滑块刷新以后到底显示几，要看实际操作的那次记录。链接指向私有实现仓，打开原件需要该仓库的权限。
 
 | 对象 | 固定版本与范围 |
 | --- | --- |
@@ -15,7 +15,7 @@
 | 产品配对候选 | PR #21 开放，远端 `1c353eda2d4c09418edf4fbafc6dd60cd5007046` 已映射固定 `230b`；5533 项映射、6 个 overlay、12 个排除项，配对路径与原件保全检查通过。先前 `64a` 提升记录为 5531 mapped、6 overlays、12 exclusions、149 changes、零删除，保留为其原范围 |
 | 生产 | 旧 Core schema 18 与原 Core/gateway 进程。main push 触发 CI，生产 cutover 尚未执行 |
 
-开发根 `core/`、`adapters/`、`deploy/` 与唯一 `frontend/` 映射到发布布局，配对测试 helper 适配路径，运行源码保持 canonical 所有权。下表在本地冻结 `230b` 检查路径和定向接口，继承的调用核查仍有旧 PR #2 的独立记录。GitHub 固定链接指向私有实现仓，需要相应权限。
+对照两套目录时，可以从开发仓的 `core/`、`adapters/`、`deploy/` 和唯一的 `frontend/` 找起。发布布局换了位置，配对测试用的 helper 也跟着改了路径，运行代码仍回到开发仓维护。下表对照的是本地固定下来的 `230b`，这里只检查了列出的路径和接口。旧 PR #2 里追过的调用，原记录另放在后面。
 
 | 核查主题 | 固定源码（assisthub） | 定向覆盖 |
 | --- | --- | --- |
@@ -63,7 +63,7 @@
 
 同一份记录还保留了对 `64a` 下一轮请求的调查。滑块从 25 调到 30，Core 确认 revision 1，下一轮上下文读到新值。一条对外请求缺少可信 UI 能力信息，初查把它归入了主聊天。后续检查发现标题辅助调用也可能带同一段用户原文，原运行缺少调用栈，请求归属仍为 UNVERIFIED。详情见[后续归因更正](#request-attribution)。旧 WK manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 六组通过，限于原有测试范围。
 
-上文保存各场景的 PASS、FAIL、UNKNOWN 与产物标识。完整的 ContextEnvelope 和 ResultCapsule 属于 MGRS 设计，零访问机密推理与独立 ASLI 项目不在本页验证范围内。
+要追某个场景，可以按它旁边的产物标识找原报告，PASS、FAIL 和 UNKNOWN 都沿用当时的结果。完整的 ContextEnvelope 和 ResultCapsule 是 MGRS 提出的设计。零访问机密推理和独立的 ASLI 项目也不在这次运行里。
 
 ## 历史补充 · PR #2 的 5e460e04 源码与局部证据
 
@@ -143,7 +143,7 @@ c291 的完整 CI run `42904611343` 失败，两个 mail-watch 夹具只返回 s
 | 既有实施记录 | [docs/plans/2026-11-10-context-governance-wiring.md](https://github.com/mor765504-gif/Mimi-Superagent/blob/77c853f1431313cc2ff2ce30682c0c1eb82b896f/docs/plans/2026-11-10-context-governance-wiring.md) | PR #17 范围、历史通过和失败、分发与环境限制 |
 | 现行工程入口 | [backend/docs/program/NEXT.md](https://github.com/mor765504-gif/Mimi-Superagent/blob/77c853f1431313cc2ff2ce30682c0c1eb82b896f/backend/docs/program/NEXT.md) | 11 月 10 日接线与审批打包候选，历史接受/部署边界 |
 
-组件 README 和实施记录用于理解范围，关键链路以调用方、接收方和持久状态交叉核对。此清单是文件/主题级覆盖记录，定向阅读与完整逐行审计分别保留口径。Core 全部业务接口、全部工具、前端、Hermes 全源码、私有配置、Persona 内容及生产现场均未作穷尽审计。
+读这张表可以先找自己关心的组件。README 和实施记录解释原先怎么设计，具体到一条调用，才去对谁发起、谁收到、最后留下什么。这里按文件和问题选读，Core 的业务接口、工具、前端和 Hermes 源码都没有逐行读完，私有配置、Persona 内容和生产现场也不在全面检查的范围里。
 
 ## 本轮可支持的结论
 
@@ -155,7 +155,7 @@ c291 的完整 CI run `42904611343` 失败，两个 mail-watch 夹具只返回 s
 
 ## 历史证据与未覆盖项
 
-11 月 9 日的源码、CI 和旧版本部署记录继续见[历史基线](2026-11-09-system-baseline.md)，原有接受范围不被此次文档编辑改写。
+如果要查再往前两天的源码、CI 和旧版本部署记录，可以直接翻 [11 月 9 日那一页](2026-11-09-system-baseline.md)。
 
 PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，另一个有重叠的执行/安装套件 `105 passed, 4 subtests passed, 5 skipped, 6 deselected`。记录还保留首次 context CI 的四项 fixture 失败及修复说明、早期内核依赖缺失、AF_UNIX 环境限制和私有人格迁移材料缺失。这些数字来自既有报告，本次没有重跑，也未据此接受组合候选。
 
@@ -165,7 +165,7 @@ PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，�
 
 ## 历史补充 · 31fd6f75 与原已安装模块（2026-11-11）
 
-上述文档源码审阅范围保持不变。总控随后对组合候选实际运行回归，先保留`77c853f1`上的失败：compiled target计数、安装白名单和既有业务域断言不一致。修复提交`31fd6f75`仅调整对应检查与CI源码接缝，并清理审批模块末尾空行；没有更改运行语义。
+后续那一轮，总控拿组合候选实际跑了回归。`77c853f1` 先遇到了三处对不上的地方，涉及 compiled target 的计数、安装白名单和已有业务域的断言。`31fd6f75` 调整了对应的检查和 CI 源码接缝，顺手清了审批模块末尾的空行。产品运行逻辑沿用原来的实现。
 
 修复后Python3.12.16、固定Hermes版本的31文件组合为386 passed、89 subtests、4 skipped，完整安装6项通过。四项skip仍要求prepared kernel，未当作通过；原生补充夹具和依赖缺口仍保留。范围与原失败见[私有实验仓证据](https://github.com/mor765504-gif/assisthub/blob/51a25deb3adfefe3bdd0d96e0dcabae8b35780fd/docs/reports/2026-11-11-audit/README.md)，具体修复见[固定提交](https://github.com/mor765504-gif/Mimi-Superagent/commit/31fd6f75)。这些检查不构成完整产品接受。
 
