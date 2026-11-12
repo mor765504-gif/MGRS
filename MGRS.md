@@ -8,8 +8,11 @@ MGRS 是从 **Mimi Harness 的真实工程组织与架构演化**中提炼出来
 
 ```mermaid
 flowchart TB
-    USER["用户 / 企业"] --> UI["Web / Mac / 主会话 / GenUI / 工坊"]
-    UI --> P1["1 用户入口与授权"]
+    USER["用户 / 企业"] --> CLIENT["Web / Mac 等客户端"]
+    CLIENT --> SPACE["主会话 / 工坊等工作空间"]
+    SPACE --> P1["1 用户入口与授权"]
+    SPACE -.-> GENUI["GenUI：会话内呈现与交互"]
+    GENUI -.->|"需提交的操作经宿主处理"| P1
     P1 --> P2["2 上下文与请求装配"]
     P2 --> AGENT["Hermes Agent Loop / 主 Agent"]
     AGENT --> DECIDE{"需要受管分工？"}
@@ -17,7 +20,7 @@ flowchart TB
     DECIDE -->|"是"| P3["3 决策、规划与协作编排"]
     P3 --> P4
     P4 --> P5["5 证据、结果消费与交付"]
-    P5 --> UI
+    P5 --> SPACE
     STATE["6 持久状态、恢复与运行观察"] -.-> P1
     STATE -.-> P2
     STATE -.-> P3
@@ -36,7 +39,7 @@ flowchart TB
 
 [打开独立说明：用户入口与授权](parts/01-entry-and-authority.md#part-1)
 
-从 Web、Mac、主会话、可操作卡片或工坊进入；由可信宿主确定 principal、Profile、scope 和当前 grant，区分用户目标、有效授权、审批与撤回。后续环节必须继续遵守这一边界。
+用户通过 Web、Mac 等客户端进入主会话或工坊，在这些工作空间中通过消息或受管理的界面操作提出请求；可信宿主确定 principal、Profile、scope 和当前 grant，区分用户目标、有效授权、审批与撤回。GenUI 属于这些场景内的呈现与交互机制，不额外提供身份或任务授权。后续环节必须继续遵守这一边界。
 
 关联条文：[宗旨与边界](spec/01-purpose-and-boundaries.md#mgrs-1) · [治理面](spec/02-governance-planes.md#mgrs-2) · [不变量](spec/03-invariants.md#mgrs-3) · [隔离](spec/10-profile-cache-isolation.md#mgrs-10) · [变更](spec/15-conflict-and-change-control.md#mgrs-15)
 
