@@ -18,6 +18,21 @@
 
 关于秘秘，还有些来回在[视频评论区的答复](sources/2026-11-09-bilibili-bv1vix26sEzR.md)里。[设计决定](DECISIONS.md)里可以翻到已经定下来的想法，[开放问题](OPEN-QUESTIONS.md)里有想请大家一起想的部分。
 
+## 从 Harness 运行过程理解 MGRS
+
+六个部分是架构与治理的主阅读路线，并非六个独立的服务或者固定的任务执行步骤。
+
+| 阅读顺序 | 关注的问题 |
+| --- | --- |
+| [第 1 部分 · 用户入口与授权](../parts/01-entry-and-authority.md#part-1) | 可信入口、Profile、scope、授权与撤回 |
+| [第 2 部分 · 上下文与请求装配](../parts/02-context-and-request.md#part-2) | Core、Memory、Persona、会话与 ContextEnvelope |
+| [第 3 部分 · 决策、规划与协作编排](../parts/03-decision-and-orchestration.md#part-3) | 主 Agent、受管任务、依赖、版本与 Worker |
+| [第 4 部分 · 执行与外部效果](../parts/04-execution-and-effects.md#part-4) | Hermes、MCP、Skill、执行网关与外部效果 |
+| [第 5 部分 · 证据、结果消费与交付](../parts/05-evidence-and-delivery.md#part-5) | ResultCapsule、四级回报、验收与 GenUI |
+| [第 6 部分 · 持久状态、恢复与运行观察](../parts/06-persistence-and-operations.md#part-6) | 状态权威、中断恢复、回执对账与可靠性观察 |
+
+已形成的 16 章技术条款仍保留在 `spec/`，用于逐项引用和审查；六个部分负责组织其与 Mimi Harness 的工程关系。
+
 ## 延伸材料
 
-[0.1 正式规范（16 章）](../MGRS.md) · [旧技术参考链接兼容页](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)
+[六部分主索引](../MGRS.md) · [原技术条款入口](../MGRS.md#mgrs-1) · [旧技术参考链接兼容页](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)

@@ -29,6 +29,12 @@ docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md
 docs/sources/2026-11-09-system-baseline.md
 docs/sources/2026-11-11-integration.md
 docs/sources/2026-11-12-context-evaluation-baseline.md
+parts/01-entry-and-authority.md
+parts/02-context-and-request.md
+parts/03-decision-and-orchestration.md
+parts/04-execution-and-effects.md
+parts/05-evidence-and-delivery.md
+parts/06-persistence-and-operations.md
 publish-files.txt
 scripts/publish-github.sh
 scripts/verify_archive.py

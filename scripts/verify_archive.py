@@ -71,6 +71,26 @@ def main() -> int:
             errors.append('Missing index or legacy anchor: ' + anchor)
     if re.search(r'^## \d+\. ', legacy, re.M):
         errors.append('Legacy reference must not duplicate the current spec')
+    declared_parts = [
+        '01-entry-and-authority.md',
+        '02-context-and-request.md',
+        '03-decision-and-orchestration.md',
+        '04-execution-and-effects.md',
+        '05-evidence-and-delivery.md',
+        '06-persistence-and-operations.md',
+    ]
+    part_files = sorted((ROOT / 'parts').glob('[0-9][0-9]-*.md'))
+    if [p.name for p in part_files] != declared_parts:
+        errors.append('Expected six MGRS architecture pages in declared order')
+    if len(re.findall(r'^## 第[一二三四五六]部分 · ', index, re.M)) != 6:
+        errors.append('Expected six top-level sections in MGRS.md')
+    for number, filename in enumerate(declared_parts, 1):
+        page = ROOT / 'parts' / filename
+        if not page.is_file():
+            continue
+        anchor = f'id="part-{number}"'
+        if anchor not in index or anchor not in page.read_text(encoding='utf-8'):
+            errors.append('Missing six-part anchor: ' + anchor)
     allowlist = ROOT / 'publish-files.txt'
     if allowlist.exists():
         for name in allowlist.read_text().splitlines():
@@ -79,7 +99,7 @@ def main() -> int:
     if errors:
         print('\n'.join('ERROR: ' + e for e in errors), file=sys.stderr)
         return 1
-    print(f'PASS: {len(manifest["sources"])} original Git blobs; 16 chapters; '
+    print(f'PASS: {len(manifest["sources"])} original Git blobs; 6 parts; 16 chapters; '
           f'14 invariants; {len(pages)} Markdown files; {local_count} local links/anchors.')
     print('Document checks only. No product, provider, deployment or remote publication tests.')
     return 0

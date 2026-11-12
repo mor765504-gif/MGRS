@@ -4,7 +4,7 @@ MGRS 是秘秘自有、自主设计的 Agent 治理框架，首先服务秘秘�
 
 ## 规范文本按 CC BY 4.0 授权
 
-本仓库的 `MGRS.md`、`spec/`、`docs/`、`archive/`、`README.md`、`CONTRIBUTING.md` 及本文件按 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 授权，许可证全文见 [`LICENSE`](LICENSE)。
+本仓库的 `MGRS.md`、`parts/`、`spec/`、`docs/`、`archive/`、`README.md`、`CONTRIBUTING.md` 及本文件按 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) 授权，许可证全文见 [`LICENSE`](LICENSE)。
 
 你可以复制、翻译、改编、再分发，包括商业用途。条件是按 CC BY 4.0 署名：
 
