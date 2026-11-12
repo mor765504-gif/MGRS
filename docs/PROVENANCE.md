@@ -15,13 +15,11 @@ MGRS 0.1 来源于 2026 年 11 月 7 日的协议草案与抽屉架构研究。�
 
 ## 编辑版、导读和作者发言
 
-[协议正文](../MGRS.md)沿用原来的 16 章和 14 条不变量，后续修订可与原件对照。[研究全文](RESEARCH.md)保留原有论证、比较表及证据索引，增加了便于跳读的目录与链接。该研究中的版本和运行判断均对应当时的基线。
+[框架正文](../MGRS.md)供读者讨论设计取舍。[0.1 技术参考](reference/mgrs-0.1-technical.md)保留详细的 16 章与 14 条不变量，可与原件对照。[研究全文](RESEARCH.md)保留原有论证、比较表及证据索引，增加了便于跳读的目录与链接。该研究中的版本和运行判断均对应当时的基线。
 
 作者在后续讨论中确认了产品、Harness 和协议的关系，并提供了十二节的产品说明。[设计决定](DECISIONS.md)记录具体决定及其确认程度，[开放问题](OPEN-QUESTIONS.md)保存尚待确定的边界。[公开答疑摘记](sources/2026-11-09-bilibili-bv1vix26sEzR.md)给出作者谈日程、工作连续性、数据自主和研究检索的原话及其位置。总览和导读里的任务例子用于解释这些设计。
 
 编号导读最初的组织形式参考了 DSH 的[首页](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/README.md)与[理念说明](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/000-philosophy.md)。编辑历史见[变更记录](../CHANGELOG.md)。
-
-<a id="implementation-sources"></a>
 
 ## 实现与测评材料
 
@@ -31,6 +29,10 @@ MGRS 0.1 来源于 2026 年 11 月 7 日的协议草案与抽屉架构研究。�
 | 组件如何交接、断线如何恢复、交互界面为什么能暴露验收问题 | [11 月 11 日源码与运行记录](sources/2026-11-11-integration.md)，按测试版本、执行环境和实际观察查阅 |
 | 旧宿主为什么调整长对话压缩阈值和记忆额度 | [11 月 12 日整理的上下文评测](sources/2026-11-12-context-evaluation-baseline.md)，原评测报告日期为 9 月 26 日 |
 
-[Anthropic 的记忆研究](https://www.anthropic.com/research/components-of-agent-memory)记录了一个可作参照的例子。游戏助手曾把地图上的一个地点记反，回看游戏过程后才改对。003 用组会备稿说明秘秘怎样核对用户当时怎么说、那句话适用于什么场合以及原始材料能证明什么。
+<a id="memory-source"></a>
+
+### 从记忆回查用户原话
+
+[Anthropic 的工程报告](https://www.anthropic.com/research/components-of-agent-memory)记录了游戏助手怎样回看原来的游戏过程，纠正笔记中记反的地点。对秘秘来说，回查原话可以澄清一项偏好是怎么写下来的。判断报告中的数字还要查到论文、财报等相应原件。
 
 公开记录提供脱敏结果、条件和来源定位。部分固定源码、报告与原始日志位于私有实现仓，访问范围由各来源页说明。

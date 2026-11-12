@@ -1,6 +1,6 @@
 # 2026-11-11 · 源码接线与版本化证据
 
-[架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [审查](../005-review-and-conformance.md)
+[架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [助手的判断](../005-review-and-conformance.md)
 
 <a id="followup-sources"></a>
 
@@ -108,7 +108,7 @@ GenUI 设计动机与固定接口另对照 [2026-11-07 streaming rendering 计�
 - [candidate-c3-observations.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/candidate-c3-observations.json)：读取 `normal_official_canary_followup` 与 `official_child_followup` 两次独立功能通过，保留原 canary 模块根不匹配失败、c3 convergence 失败和 overall UNVERIFIED。前者 2 次 HTTP 200 与 fresh restart，后者 2 tasks / 2 attempts、验证依赖、HTTP progress、关闭后持久读回及 6 次 HTTP 200，含 A/C 各自 bound 请求。SDK early-close 使 child reported model / usage / cost UNKNOWN，不能声称每个供应商身份均被验证。迁移节只证明隔离真实旧库快照 schema 18→42，不是生产变更或完整 blobs 恢复。
 - [genui-wkwebview-foreground.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/genui-wkwebview-foreground.json)：读取六组前台 native WK replay，硬件 M6 / 12 核 / 16GiB，p95 event→DOM 12–18ms / active job 2ms。固定 manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 属较旧 scoped candidate，普通产品新 App 修复仍 native acceptance pending；fixture 连续性不能替代新修复或真实模型测试。
 
-c291 的完整 CI run `42904611343` 失败，两个 mail-watch 夹具只返回 status，缺少 Core 回执字段。修正后的夹具与延迟 UI 物化检查，在源码和隔离安装确认中各有 173 项通过。当时生产使用旧 Core 18 和旧 gateway。局部证据的读法见[审查导读](../005-review-and-conformance.md#followup-evidence)。相关机制见[组件职责](../002-architecture.md#canonical-layout)、[界面状态进入上下文](../003-context-and-memory.md#incremental-ui)与[中断恢复](../004-execution-and-evidence.md#recovery-ownership)。
+c291 的完整 CI run `42904611343` 失败，两个 mail-watch 夹具只返回 status，缺少 Core 回执字段。修正后的夹具与延迟 UI 物化检查，在源码和隔离安装确认中各有 173 项通过。当时生产使用旧 Core 18 和旧 gateway。关于这些选择为什么影响使用者，可读[助手可以作哪些判断](../005-review-and-conformance.md)与[任务交接](../004-execution-and-evidence.md)。
 
 ## 历史快照 · 版本与核查方式
 
