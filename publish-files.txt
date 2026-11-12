@@ -22,6 +22,7 @@ docs/PROVENANCE.md
 docs/PUBLISH.md
 docs/README.md
 docs/RESEARCH.md
+docs/reference/mgrs-0.1-technical.md
 docs/sources/2026-11-09-bilibili-bv1vix26sEzR.md
 docs/sources/2026-11-09-system-baseline.md
 docs/sources/2026-11-11-integration.md
