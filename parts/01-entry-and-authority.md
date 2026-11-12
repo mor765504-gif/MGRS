@@ -20,18 +20,29 @@
 
 ```mermaid
 flowchart TB
-    A["用户指令 / 既有委托"] --> B["可信宿主：确认来源与身份"]
-    X["例程 / 外部事件"] --> B
-    B --> C["C1：会话与路由授权"]
-    B --> D["Core：业务对象权限、Grant 与审批"]
-    C --> E["有效任务上下文与授权范围"]
-    D --> E
-    E --> F["Hermes / Orchestration / Worker"]
-    F --> G["执行前的权限与效果检查"]
-    G --> H["实际动作与回执"]
-    R["撤权 / 到期 / 授权变化"] -.-> C
-    R -.-> D
-    R -.-> G
+    U["用户直接指令 / 已授权持续例程"] --> HOST["ProductRuntime：可信请求准入"]
+    EVENT["外部事件"] --> TRIGGER{"已有相应处理委托？"}
+    TRIGGER -->|"有"| HOST
+    TRIGGER -->|"无"| PASSIVE["仅作为待处理资料"]
+
+    HOST -->|"受管 Web 会话"| C1["C1 ProfilesService：路由凭证与授权代次"]
+    HOST -->|"其他已准入原生会话"| SESSION["Hermes 原生 SessionSource"]
+    C1 -->|"验证原生 turn 凭证"| SESSION
+    SESSION --> LOOP["Hermes Agent Loop"]
+
+    LOOP -->|"直接工具调用"| TOOL["现有工具权限与效果门禁"]
+    LOOP -->|"需要受管任务"| POLICY["Orchestration HostPolicy：绑定 principal_ref / scope_ref"]
+    POLICY --> ORCH["Orchestration：任务版本、资源与执行 Profile"]
+    ORCH --> ROUTER["ExecutorRouter：原生 Worker / 受控进程"]
+    ROUTER --> CHECK["对应执行器的授权与 preflight"]
+    CHECK --> EFFECT["实际操作、回执与未决效果"]
+    TOOL --> EFFECT
+
+    CORE["Core enterprise_auth：业务对象 Grant、有效期与撤回"] -.->|"操作受管业务对象时"| TOOL
+    CHANGE["路由撤销 / Grant 变更 / 权限到期"] -.-> C1
+    CHANGE -.-> CORE
+    CHANGE -.-> TOOL
+    CHANGE -.-> CHECK
 ```
 
 ## 入口不是单次登录检查
