@@ -2,9 +2,9 @@
 
 **完整研究记录** · 源文保留 · 2026-11-07
 
-[首页](../README.md) · [协议正文](../MGRS.md) · [来源与编辑说明](PROVENANCE.md)
+[首页](../README.md) · [协议正文](reference/mgrs-0.1-technical.md) · [来源与编辑说明](PROVENANCE.md)
 
-> 本页为既有研究记录的 Markdown 整理版，不是新一轮技术研究。保留原文概念、论证、证据标记及访问范围，只调整目录、内部链接与来源跳转。外部项目现状与产品实现情况没有在本次归档中重新核验。
+> 本页保存 11 月 7 日研究时的问题、推理和来源。想了解为什么采用抽屉，可以先读第 3 节；想追查当时的实现，按第 12 节的证据索引定位。下文的“当前”指这次研究选用的版本。
 >
 > [GitHub 固定原文](https://github.com/mor765504-gif/Mimi-Superagent/blob/ad62b7f1301fa96474c160a7e58d2188785d7311/docs/research/2026-11-07-drawers-architecture-review.md) · [逐字归档](../archive/2026-11-07/docs/research/2026-11-07-drawers-architecture-review.md)
 
@@ -229,7 +229,7 @@ Humanizer 属于写作修改，可用于指定文稿、邮件或报告，保留�
 
 - OpenAI 公开的 Skill 是目录化说明、资源和可选脚本，配合 MCP 完成流程，不是模型权重或额外权限。当前读取到的 `openai/skills` 已标记 deprecated，指向 `openai/plugins`；后者公开插件/skills/agents/hooks 等示例。它不是 ChatGPT 全部内部系统提示词的完整公开。[E09](#source-e09)
 - Anthropic `skill-creator` 提供写技能、测试触发、运行基线与评价的公开流程，适合借鉴技能验证方法；不是“复制一句提示词就复制 Claude 能力”。移植脚本前核对其工具和执行器依赖。[E10](#source-e10)
-- 设计、写作与审核类方法由秘秘自己的 MGRS 工作流合同提供，不安装外部通用工作流插件，不给额外 Supervisor 调度权。具体规则见 [MGRS 原生治理规范](../MGRS.md)。[E11](#source-e11)
+- 设计、写作与审核类方法由秘秘自己的 MGRS 工作流合同提供，不安装外部通用工作流插件，不给额外 Supervisor 调度权。具体规则见 [MGRS 原生治理规范](reference/mgrs-0.1-technical.md)。[E11](#source-e11)
 - Supervisor 复用评审方法和结果转发规则，不再带入 LangGraph runtime。最终控制权与 Worker 准入仍归现有 Mimi C0/Orchestration。[E08](#source-e08)
 
 ### 7.3 注入 Hermes 的推荐路径
@@ -445,7 +445,7 @@ Mac 源码已有本地进程启动、PID/启动时间身份校验、手动停止
 - [E10 Anthropic Skill Creator](https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md) 与 [Context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)：公开流程，不代表闭源产品全部内部实现。
 <a id="source-e11"></a>
 
-- [E11 秘秘原生治理规范](../MGRS.md)：MGRS 0.1，覆盖权限、上下文、团队交接、Skill 晋级和运行验收。
+- [E11 秘秘原生治理规范](reference/mgrs-0.1-technical.md)：MGRS 0.1，覆盖权限、上下文、团队交接、Skill 晋级和运行验收。
 <a id="source-e12"></a>
 
 - [E12 OpenAI Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)：缓存前缀原则；其他 provider 以其实际计费与缓存回执为准。

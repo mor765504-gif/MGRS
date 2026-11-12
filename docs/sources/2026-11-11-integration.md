@@ -1,12 +1,12 @@
 # 2026-11-11 · 源码接线与版本化证据
 
-[架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [审查](../005-review-and-conformance.md)
+[架构](../002-architecture.md) · [上下文](../003-context-and-memory.md) · [执行](../004-execution-and-evidence.md) · [助手的判断](../005-review-and-conformance.md)
 
 <a id="followup-sources"></a>
 
 ## 合并后的源码与版本化证据（2026-11-11）
 
-本节延续已合并公开 PR #2 的八份文档范围。工程当前行动权威仍为私有 NEXT，本页记录固定版本、实现入口与证据范围。最新合并、CI 和 streaming 更正由 root 给定，worker 只读本地冻结源码与固定报告，执行文档维护和本地渲染。root 负责视觉 QA、Git 与公共发布。
+本页按源码版本汇集 11 月 11 日的核查材料。接线关系来自固定版本的源码，运行结果来自各段列明的报告。第一组记录涉及当日合入的源码、配对候选和当时仍在运行的生产版本。私有实现仓链接供有相应权限的读者定位原件。
 
 | 对象 | 固定版本与范围 |
 | --- | --- |
@@ -59,17 +59,17 @@
 - 旧56 PASS/12 FAIL，当前68 PASS，覆盖 v4/v6 TCP/UDP。原 EPERM harness FAIL、nft grammar FAIL 保留。隔离 namespace 的技术结果保持原范围，生产 VPN 无改动。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/strict-egress-flow-observations.md)
 - 普通 shell fixture 的 selection/scroll 局部通过保留原源码身份。精确 delayed-patch race UNVERIFIED，最终 M6 full-shell 六组性能未完成。M6/12核/16GiB 是用户基线，M2 兼容性未验证。 [固定报告](https://github.com/mor765504-gif/assisthub/blob/230b2758c0e6d42e73619f7cf5141ee555b5594e/docs/reports/2026-11-11-audit/genui-selection-observations.md)
 
-Root已核对最新发布分支实际远端提交，重新执行配对 confirmation 4 项与 source-origin/freeze 2 项，全部通过；5533项映射逐字节复验通过。最新真实流式场景另观察到刷新后文字及Core值30、range控件值25，保持独立缺陷及原始失败记录。两张更新图已由Root实际查看，标签和连接可读。
+当日的发布核对包括 4 项配对确认、2 项来源与冻结检查，以及 5533 项映射的逐字节复验，记录均为通过。另一次真实流式交互在刷新后出现不一致，正文和 Core 的值为 30，滑块控件的值为 25。
 
-root 新更正记录 `64a` 真实 streaming native 25→30 与 Core ACK revision 1，下一轮 latest context 精确，但实际 outbound 缺少 trusted UI capabilities。缺陷修复中，spec13 的真实交互后准确下一轮仍待完整通过。cf8 的已完成子场景保留有效。旧 WK manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 六组 PASS 只覆盖旧 scope，当前 physical IME/touch 保持 adopted spec 原范围。
+同一份记录还保留了对 `64a` 下一轮请求的调查。滑块从 25 调到 30，Core 确认 revision 1，下一轮上下文读到新值。一条对外请求缺少可信 UI 能力信息，初查把它归入了主聊天。后续检查发现标题辅助调用也可能带同一段用户原文，原运行缺少调用栈，请求归属仍为 UNVERIFIED。详情见[后续归因更正](#request-attribution)。旧 WK manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 六组通过，限于原有测试范围。
 
-原始 PASS/FAIL、artifact 标识与下方历史记录继续保留。完整 MGRS ContextEnvelope/ResultCapsule 仍属设计，独立 ASLI 项目在本次范围外，零访问保证需要独立证明。公开材料仅保留技术合同、仓库相对入口、固定提交和脱敏结果，私有原始状态由 root 在既有证据位置保护。
+上文保存各场景的 PASS、FAIL、UNKNOWN 与产物标识。完整的 ContextEnvelope 和 ResultCapsule 属于 MGRS 设计，零访问机密推理与独立 ASLI 项目不在本页验证范围内。
 
 ## 历史补充 · PR #2 的 5e460e04 源码与局部证据
 
-本页保留首轮 `77c853f1` / `31fd6f75` 记录，以下为同一主题的后续补充，不另建可变工程账本。当前 assisthub 构造固定 `5e460e04a30a9c2625a252736d443692f6074e86`，合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与修复 c291 后端。读取源码及当前指南，关键判断核对调用方、接收方与状态；不是全仓审计。新集成和产品发布未 main 合并、未部署为总控给定状态，本轮不操作 Git、不查远端 PR/CI、不接触生产。
+此阶段读到的 assisthub 版本为 `5e460e04a30a9c2625a252736d443692f6074e86`，合入 GenUI `7bfca12cdfe3c02534443c0222b0923e13aeb469` 与修复 c291 后端。核查对照了调用方、接收方与状态。按当时提供的状态，产品集成尚未合入主线或部署；该次源码阅读未独立查询远端 PR、CI 或生产。更早的 `77c853f1` 和 `31fd6f75` 见下文。
 
-开发根 `core/`、`adapters/`、`deploy/` 与 `frontend/` 为当前源码入口；下文旧发布快照的 `backend/` 路径保留其历史身份。最终产品配对发布 SHA 尚待 root 固定。公开页面只使用仓库相对路径与提交，不包含私有配置、原始会话或本机路径。固定 GitHub 链接指向私有实现仓，需要权限；读者无法访问源码时，仍可阅读本仓的职责解释，但不能因此独立复验私有实现。
+开发根为 `core/`、`adapters/`、`deploy/` 与 `frontend/`。旧发布快照中仍使用 `backend/` 路径。这个阶段尚未确定最终产品配对发布的 SHA。
 
 | 核查主题 | 固定源码（assisthub） | 定向覆盖 |
 | --- | --- | --- |
@@ -103,14 +103,12 @@ root 新更正记录 `64a` 真实 streaming native 25→30 与 Core ACK revision
 
 GenUI 设计动机与固定接口另对照 [2026-11-07 streaming rendering 计划](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/plans/2026-11-07-genui-streaming-rendering.md)；计划中的目标不自动成为验收。增量、草稿与 App 新修复代码也只读对照了 GenUI `7bfca12` 工作树，源码身份与旧 WK manifest 分开。
 
-### 总控证据的精确读取范围
+### 当时读到的两份运行记录
 
 - [candidate-c3-observations.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/candidate-c3-observations.json)：读取 `normal_official_canary_followup` 与 `official_child_followup` 两次独立功能通过，保留原 canary 模块根不匹配失败、c3 convergence 失败和 overall UNVERIFIED。前者 2 次 HTTP 200 与 fresh restart，后者 2 tasks / 2 attempts、验证依赖、HTTP progress、关闭后持久读回及 6 次 HTTP 200，含 A/C 各自 bound 请求。SDK early-close 使 child reported model / usage / cost UNKNOWN，不能声称每个供应商身份均被验证。迁移节只证明隔离真实旧库快照 schema 18→42，不是生产变更或完整 blobs 恢复。
 - [genui-wkwebview-foreground.json](https://github.com/mor765504-gif/assisthub/blob/5e460e04a30a9c2625a252736d443692f6074e86/docs/reports/2026-11-11-audit/genui-wkwebview-foreground.json)：读取六组前台 native WK replay，硬件 M6 / 12 核 / 16GiB，p95 event→DOM 12–18ms / active job 2ms。固定 manifest `acfb1837be9828c68c6371314607fc29aac2cb3ebe1f8f7f08c47146cc639127` 属较旧 scoped candidate，普通产品新 App 修复仍 native acceptance pending；fixture 连续性不能替代新修复或真实模型测试。
 
-总控回读 c291 完整 CI run `42904611343` 为 FAIL：两个 mail-watch 夹具只返回 status，缺少真实 Core 回执字段。修正后的夹具与延迟 UI 物化检查，在源码和隔离安装确认中各执行 173 项通过；后续固定版本完整 CI 仍须另行接受。生产仍为旧 Core 18 / 旧 gateway。最新源 CI、普通 App 原生验收、最终配对发布版本及正式部署只能在 root 获得相应新证据后更新，不能由源码、worker 声明或旧局部通过推断。局部证据详见[审查导读](../005-review-and-conformance.md#followup-evidence)，技术流见[架构](../002-architecture.md#canonical-layout)、[增量视图](../003-context-and-memory.md#incremental-ui)与[恢复所有权](../004-execution-and-evidence.md#recovery-ownership)。
-
-本轮执行文档检查、链接/锚点核对与变更 Mermaid 的 headless 渲染/视觉检查，私有逐文件摘要和渲染产物留在本地，不进入发布清单。历史许可证、研究、归档和既有接受范围未改。
+c291 的完整 CI run `42904611343` 失败，两个 mail-watch 夹具只返回 status，缺少 Core 回执字段。修正后的夹具与延迟 UI 物化检查，在源码和隔离安装确认中各有 173 项通过。当时生产使用旧 Core 18 和旧 gateway。关于这些选择为什么影响使用者，可读[助手可以作哪些判断](../005-review-and-conformance.md)与[任务交接](../004-execution-and-evidence.md)。
 
 ## 历史快照 · 版本与核查方式
 
@@ -149,7 +147,7 @@ GenUI 设计动机与固定接口另对照 [2026-11-07 streaming rendering 计�
 
 ## 本轮可支持的结论
 
-- ProductRuntime 复用既有 Core、Hermes loop、P6 与任务账本。Context、Persona、Skill 与结果请求证据有各自所有者，002 至 004 的图表分别说明职责流、调用和状态。
+- ProductRuntime 复用既有 Core、Hermes loop、P6 与任务账本。Context、Persona、Skill 与结果请求证据有各自所有者。
 - 记忆选择基于本轮 query 和当前有效授权快照，Persona 报告止于 compiled，Skill 读取通过实时发布/授权检查。完整 ContextEnvelope 与语义效果仍按规范逐项核对。
 - 上游结果成为下游必需输入后，保存、排队、最终请求包含、响应观测和具名 verifier 分别取证。外部 process 的必需输入消费当前受能力限制。
 - 取消意图、执行结束、quiet、修复、重试和恢复有不同状态。持久 timeout 或缺少 live binding 保留未知，未据此推导可以重复执行。
@@ -159,11 +157,9 @@ GenUI 设计动机与固定接口另对照 [2026-11-07 streaming rendering 计�
 
 11 月 9 日的源码、CI 和旧版本部署记录继续见[历史基线](2026-11-09-system-baseline.md)，原有接受范围不被此次文档编辑改写。
 
-PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，另一个有重叠的执行/安装套件 `105 passed, 4 subtests passed, 5 skipped, 6 deselected`。记录还保留首次 context CI 的四项 fixture 失败及修复说明、早期内核依赖缺失、AF_UNIX 环境限制和私有人格迁移材料缺失。这些数字来自既有报告，本次没有重跑，也未据此接受组合候选。最终 CI 与总控后续新证据应固定实际执行 SHA 后再补入。
+PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，另一个有重叠的执行/安装套件 `105 passed, 4 subtests passed, 5 skipped, 6 deselected`。记录还保留首次 context CI 的四项 fixture 失败及修复说明、早期内核依赖缺失、AF_UNIX 环境限制和私有人格迁移材料缺失。这些数字来自既有报告，本次没有重跑，也未据此接受组合候选。
 
-本轮仅运行文档归档、链接与 Mermaid 渲染检查，结果交回总控。产品回归、真实 provider、设备、24 小时运行、硬重启及生产 API 收单均未在本轮执行。源码存在、历史受控通过、当前接受、合并和部署分别记录。
-
-公开材料不包含私有宿主地址、配置值、凭据、完整 Persona、数据库或原始会话。检查报告留在本地回执，由总控负责 Git 发布与最终集成。
+这一阶段实际执行了文档与图表检查。产品回归、真实供应商与设备、24 小时运行、硬重启和生产 API 收单均在该次执行范围之外。
 
 <a id="actual-verification"></a>
 
@@ -174,5 +170,7 @@ PR #17 实施记录记载本地受控套件 `256 passed, 85 subtests passed`，�
 修复后Python3.12.16、固定Hermes版本的31文件组合为386 passed、89 subtests、4 skipped，完整安装6项通过。四项skip仍要求prepared kernel，未当作通过；原生补充夹具和依赖缺口仍保留。范围与原失败见[私有实验仓证据](https://github.com/mor765504-gif/assisthub/blob/51a25deb3adfefe3bdd0d96e0dcabae8b35780fd/docs/reports/2026-11-11-audit/README.md)，具体修复见[固定提交](https://github.com/mor765504-gif/Mimi-Superagent/commit/31fd6f75)。这些检查不构成完整产品接受。
 
 另外，总控在原已安装模块的隔离home执行真实官方DeepSeek主控/Worker A→C，两个结果verified且C自动续派，驱动退出0、模型未mock。该次运行不部署本组合，也不证明生产网页收单、其他profile或新结果消费逻辑通过。[脱敏回执](https://github.com/mor765504-gif/assisthub/blob/51a25deb3adfefe3bdd0d96e0dcabae8b35780fd/docs/reports/2026-11-11-audit/installed-official-canary.json)。原安装源码无可读Git HEAD，整体部署版本保留UNKNOWN；文件匹配范围单列，不能由少量文件推断整套版本。
+
+<a id="request-attribution"></a>
 
 后续归因更正：独立 source/installed 原生调用闭包证明既有 U14 主聊天路径已经注入可信能力块。标题辅助调用也可能携带相同的原始用户文本而没有能力块，合法上下文插件还会追加主请求内容。原验收器用 phase、用户全文相等与所有请求都必须带能力块来识别主请求，条件过严。原真实运行未记录调用栈，其被拒请求的归属仍 UNVERIFIED；保留原 unknown 动作和未获得下一轮回复的事实，不将其直接归为产品注入缺陷。验收器按真实调用来源修正，产品注入实现保持原样。历史滑块自身值25而Core/文字值30仍是独立复现问题。
