@@ -21,6 +21,8 @@ MGRS 0.1 来源于 2026 年 11 月 7 日的协议草案与抽屉架构研究。�
 
 编号导读最初的组织形式参考了 DSH 的[首页](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/README.md)与[理念说明](https://github.com/deepseek-ai/dsh-superagent-prototype/blob/8c32a9dc5d72c033816c6a8110b37f40cf94fba4/docs/000-philosophy.md)。编辑历史见[变更记录](../CHANGELOG.md)。
 
+<a id="implementation-sources"></a>
+
 ## 实现与测评材料
 
 | 想追溯的判断 | 依据与适用时间 |
@@ -28,5 +30,7 @@ MGRS 0.1 来源于 2026 年 11 月 7 日的协议草案与抽屉架构研究。�
 | Hermes 宿主、执行网关与自研搜索策略如何接入；机密计算采用过哪些参考材料 | [11 月 9 日工程与来源基线](sources/2026-11-09-system-baseline.md)，含固定源码、既有 CI、搜索运行记录和平台官方资料 |
 | 组件如何交接、断线如何恢复、交互界面为什么能暴露验收问题 | [11 月 11 日源码与运行记录](sources/2026-11-11-integration.md)，按测试版本、执行环境和实际观察查阅 |
 | 旧宿主为什么调整长对话压缩阈值和记忆额度 | [11 月 12 日整理的上下文评测](sources/2026-11-12-context-evaluation-baseline.md)，原评测报告日期为 9 月 26 日 |
+
+[Anthropic 的记忆研究](https://www.anthropic.com/research/components-of-agent-memory)记录了一个可作参照的例子。游戏助手曾把地图上的一个地点记反，回看游戏过程后才改对。003 用组会备稿说明秘秘怎样核对用户当时怎么说、那句话适用于什么场合以及原始材料能证明什么。
 
 公开记录提供脱敏结果、条件和来源定位。部分固定源码、报告与原始日志位于私有实现仓，访问范围由各来源页说明。
