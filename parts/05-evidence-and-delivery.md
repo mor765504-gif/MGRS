@@ -119,6 +119,45 @@ GenUI 中的交互根据实际动作进入不同路径：本地筛选、复制�
 
 **图例由秘秘 `mimi-ui/1` 原生 `guBuild` / `guHTML` 渲染得到，使用虚构数据，是包含实际组件 DOM 的静态 SVG 预览，不是产品运行截图或真实业务执行凭据。** [查看四组组件代码与生成说明](../docs/examples/genui/NATIVE.md)；[查看其他 SVG 设计示例及 GenUI 工作流程](../docs/examples/genui/README.md#genui-在交付中的交互流程)。
 
+
+### GenUI 的原生渲染与交互流程
+
+下图把秘秘的 `mimi-ui/1` 代码渲染、局部草稿、Core 确认与真实业务执行放在同一视图。三种就绪条件分别判断，不要求整条回答完成后才能操作已就绪的本地控件，也不以界面显示代替外部效果回执。
+
+```mermaid
+flowchart TB
+    S["Hermes Agent Loop / SSE<br/>流式 mimi-ui/1 组件内容"]
+    P["U13：原生解析与渲染<br/>guBuild · guHTML · guMorph"]
+    R["render_ready<br/>合法内容安全显示"]
+    UI["主会话 GenUI<br/>卡片 · 表格 · 证据 · 选项"]
+    L["local_interactive<br/>控件声明及依赖有效"]
+    D["draft_state<br/>用户本地编辑 · 即时反馈"]
+
+    S --> P --> R --> UI
+    P --> L --> D
+    D -.->|"更新当前视图"| UI
+
+    F["可信最终正文<br/>成功终态 · 已验证消息身份"]
+    CORE["Core 权威读回<br/>内容版本 · 已确认控件状态"]
+    A["action_ready<br/>当前身份 · 版本 · 授权一致"]
+    G{"实际动作类型"}
+    T["原有会话入口<br/>继续模型协作"]
+    H["可信宿主执行门禁<br/>业务写入 · 外部效果"]
+    O["实际回执与权威状态回读"]
+
+    F --> CORE
+    D -.->|"兼容草稿经确认后持久化"| CORE
+    CORE --> A
+    UI -.->|"需提交的用户意图"| A
+    A --> G
+    G -->|"继续会话"| T
+    G -->|"写入或对外操作"| H --> O
+    O --> UI
+```
+
+该图是 **GenUI 与 Core / 可信宿主之间的责任关系**，不是要求所有操作按顺序经过的审批流程。完整组件输入和静态预览见 [原生渲染示例](../docs/examples/genui/NATIVE.md)，具体契约见 [GenUI 流式渲染设计](https://github.com/mor765504-gif/assisthub/blob/b7031dbc3fd5f16611486311c7007f2b633a7337/docs/plans/2026-11-07-genui-streaming-rendering.md)。
+
+
 ## 5.5 规范映射与跨端状态契约
 
 第五部分的交付、验收与界面状态机制直接对应 MGRS 的核心不变量及跨端契约。`ResultCapsule` 的版本化证据引用由 [专门合同](../spec/05-task-result-capsule.md#mgrs-5) 约束：
