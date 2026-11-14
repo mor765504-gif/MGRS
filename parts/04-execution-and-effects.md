@@ -35,33 +35,32 @@ Mimi Harness 复用了 Hermes 底座成熟的原生工具调用、`MCP` 接入�
 
 ```mermaid
 flowchart TB
-    U["用户目标与当前授权"]
-    H["Hermes Agent Loop<br/>理解目标 · 自主选择方法"]
-    D{"是否需要持续任务治理？"}
+    H["Hermes Agent Loop<br/>自主选择执行方法"]
+    K["搜索策略 · Skill<br/>提供方法知识"] -.-> H
 
-    U --> H --> D
-    M["搜索策略 · Skill<br/>方法知识 · 来源选择"] -.-> H
+    H --> N["原生执行入口<br/>工具调用 · 单次委派"]
+    H --> O["受管任务入口<br/>Mimi Orchestration"]
+    O --> R["ExecutionPort / ExecutorRouter<br/>原生委派 · 受控进程"]
 
-    D -->|"否"| N["原生执行路径<br/>直接工具调用 · 单次委派"]
-    D -->|"是"| O["Mimi Orchestration<br/>任务合同 · Revision · DAG · Attempt"]
+    N --> G["可信宿主执行门禁<br/>身份 · Grant · 审批 · E0–E3"]
+    R --> G
 
-    O --> R["ExecutionPort / ExecutorRouter<br/>受管执行器绑定 · 观察 · 恢复"]
-    R --> A["受管执行适配<br/>HermesNativeBridge · ProcessBridge"]
+    G --> T["原生工具 · MCP · API"]
+    G --> C["CLI · Agent CLI"]
+    G --> B["GUI · Browser"]
 
-    N --> X["按需选择执行能力<br/>原生工具 · MCP · API · CLI · GUI"]
-    A --> X
+    T --> W["实际工作环境<br/>本地文件 · 软件 · 外部服务"]
+    C --> W
+    B --> W
 
-    X --> G["可信宿主与效果门禁<br/>当前授权 · 审批 · 操作边界"]
-    G --> W["实际操作<br/>文件 · 浏览器 · 软件 · 外部服务"]
-    W --> E["执行事实 · 外部效果 · 回执"]
-    E --> F["结果核对 · 继续决策 · 交付"]
-    E -.->|"受管状态回写"| O
+    W --> S["调用与运行状态<br/>工具结果 · 进程状态"]
+    W --> E["真实效果回读<br/>对象状态 · 外部凭证"]
 
-    C["Core<br/>身份 · Grant · 业务事实"] -.-> O
-    C -.-> G
+    S --> Q["结果与效果对账<br/>已完成 · 已发生 · UNKNOWN"]
+    E --> Q
 
-    F --> UI["Intelligence UI / GenUI<br/>展示 · 调整 · 提交 · 接管"]
-    UI -.->|"用户提出新的意图"| U
+    Q --> A["Agent 继续决策或交付"]
+    Q --> UI["Intelligence UI / GenUI<br/>信息展示 · 用户交互与接管"]
 ```
 
 在这一链路中，`ExecutionPort` 负责受管任务的执行器绑定与生命周期管理，常规对话中的普通工具调用直接走原生执行路径即可。同时，方法选择与权限核定保持正交：模型可以判断浏览器更适合完成某项网页操作，但该浏览器会话归属哪个身份、允许访问哪些域名与本地文件、是否允许提交写入，始终由可信宿主裁决。
