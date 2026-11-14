@@ -108,24 +108,16 @@ GenUI 中的交互根据实际动作进入不同路径：本地筛选、复制�
 
 因此，交付还需要区分几个具体事实：**成果已经生成**、**指定版本已经通过验收**、**用户能够在工作空间中访问**、**用户已经收到通知**，以及**内容是否真正发布到外部系统**。对于尚有缺口的部分成果，也应让用户看到哪些内容可以使用、哪些判断尚待核实，而不必因为存在一项未决问题就隐藏整份工作。用户可以继续在同一个主会话中修改要求、检查材料或发起下一步操作，原来已经形成的成果、证据和执行记录则继续保留其版本关系。
 
-这里可直接查看四组基于 Mimi 原生 `mimi-ui/1` 组件编写的示例图。它们分别演示**会议纪要审阅、研究证据回读、多 Agent 交接状态和成果交付**，每组都有可复用组件代码和静态预览，均使用虚构数据：
+下面的示例不重新定义 `ResultCapsule` 或 GenUI 的权限。它们仅将这一节的治理关系落实成秘秘原生 `mimi-ui/1` 组件输出：一个界面可以同时显示结论、原件依据、待确认项与可编辑的局部选项。
 
-| 图例 | 说明 |
+| 会议纪要审阅 | 研究证据回读 |
 | --- | --- |
-| [会议纪要审阅](../docs/examples/genui/README.md#示例一会议纪要审阅) | 会议发言与负责人草稿分开呈现。 |
-| [证据回读卡](../docs/examples/genui/README.md#示例二证据回读卡) | 依据与未解决的检索缺口并列。 |
-| [交接证据看板](../docs/examples/genui/README.md#示例三多-agent-交接证据) | 四级交接语义互不替代。 |
-| [成果交付界面](../docs/examples/genui/README.md#示例四成果交付与持续协作) | 已验收、可访问和外发分别呈现。 |
+| ![真实渲染器：纪要审阅](../docs/assets/genui/meeting-review.svg) | ![真实渲染器：研究证据](../docs/assets/genui/research-evidence.svg) |
+| Worker 结果交接 | 日程操作预览 |
+| --- | --- |
+| ![真实渲染器：Worker 交接](../docs/assets/genui/worker-handoff.svg) | ![真实渲染器：日程预览](../docs/assets/genui/schedule-preview.svg) |
 
-![会议纪要审阅示意](../docs/examples/genui/01-meeting-review.svg)
-
-![证据回读示意](../docs/examples/genui/02-evidence-review.svg)
-
-![交接状态示意](../docs/examples/genui/03-handoff-evidence.svg)
-
-![交付工作空间示意](../docs/examples/genui/04-delivery-workspace.svg)
-
-**这些是依据 `mimi-ui/1` 示例代码生成的静态示意图，不是生产运行截图，也不以界面文字替代真实任务和外部效果回执。** [查看完整代码、图例和 GenUI 交互流程](../docs/examples/genui/README.md)。
+**图例由秘秘 `mimi-ui/1` 原生 `guBuild` / `guHTML` 渲染得到，使用虚构数据，是包含实际组件 DOM 的静态 SVG 预览，不是产品运行截图或真实业务执行凭据。** [查看四组组件代码与生成说明](../docs/examples/genui/NATIVE.md)；[查看其他 SVG 设计示例及 GenUI 工作流程](../docs/examples/genui/README.md#genui-在交付中的交互流程)。
 
 ## 5.5 规范映射与跨端状态契约
 
