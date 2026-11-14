@@ -19,7 +19,7 @@ flowchart TB
     DECIDE -->|"否"| P4["4 执行与外部效果"]
     DECIDE -->|"是"| P3["3 决策、规划与协作编排"]
     P3 --> P4
-    P4 --> P5["5 证据、结果消费与交付"]
+    P4 --> P5["5 成果交接、验收与交付"]
     P5 --> SPACE
     STATE["6 持久状态、恢复与运行观察"] -.-> P1
     STATE -.-> P2
@@ -81,11 +81,11 @@ Hermes 原生工具、MCP、Skill、统一执行端口与受控执行后端产�
 <a id="part-5"></a>
 <a id="mgrs-12"></a>
 
-## 第五部分 · 证据、结果消费与交付
+## 第五部分 · 成果交接、验收与交付
 
-[打开独立说明：证据、结果消费与交付](parts/05-evidence-and-delivery.md#part-5)
+[打开独立说明：成果交接、验收与交付](parts/05-evidence-and-delivery.md#part-5)
 
-ResultCapsule 关联结论、证据、任务与要求版本；区分 Durable、Routed、Consumed 和 Accepted。Workshop、GenUI 与对外通知让结果可理解、可操作，但不靠模型自述或前端标签确认实际完成。
+ResultCapsule 关联结论、证据引用、任务及要求版本；分别核对 Durable、Routed、Consumed 与 Accepted。GenUI 可以呈现流式预览、阶段性成果和交付界面，验收、用户通知与外部发布各自留有可信依据。
 
 关联条文：[ResultCapsule](spec/05-task-result-capsule.md#mgrs-5) · [Web/Mac 与后端](spec/12-web-mac-contract.md#mgrs-12) · [可靠性度量](spec/13-reliability-and-promotion.md#mgrs-13)
 
