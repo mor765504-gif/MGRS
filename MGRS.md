@@ -21,7 +21,7 @@ flowchart TB
     P3 --> P4
     P4 --> P5["5 成果交接、验收与交付"]
     P5 --> SPACE
-    STATE["6 持久状态、恢复与运行观察"] -.-> P1
+    STATE["6 持续工作与运行治理"] -.-> P1
     STATE -.-> P2
     STATE -.-> P3
     STATE -.-> P4
@@ -93,11 +93,11 @@ ResultCapsule 关联结论、证据引用、任务及要求版本；分别核对
 <a id="part-6"></a>
 <a id="mgrs-11"></a><a id="mgrs-13"></a><a id="mgrs-14"></a><a id="mgrs-16"></a>
 
-## 第六部分 · 持久状态、恢复与运行观察
+## 第六部分 · 持续工作与运行治理
 
-[打开独立说明：持久状态、恢复与运行观察](parts/06-persistence-and-operations.md#part-6)
+[打开独立说明：持续工作与运行治理](parts/06-persistence-and-operations.md#part-6)
 
-Core、SessionDB、原生会话和外置材料分别承担真实状态权威。页面退出、压缩、模型切换或宿主重启不会清空逻辑任务；未知外部效果要先对账，并以实际证据评价可靠性。
+有效委托在用户离开后仍能按条件推进：已有合同支持直接执行，C0 负责持续决定工作价值、方法与组织方式；后台观察进入受控记忆，程序性经验可以形成可复用的 Skill。Core、Hermes 会话、SessionDB 与持久工作环境共同维持状态延续，断线、重启和跨宿主迁移则需保留当前授权、真实结果与未决效果。
 
 关联条文：[宿主与恢复](spec/11-host-and-recovery.md#mgrs-11) · [度量](spec/13-reliability-and-promotion.md#mgrs-13) · [实施分期](spec/14-implementation-phases.md#mgrs-14) · [能力与待证边界](spec/16-capabilities-and-gaps.md#mgrs-16)
 
