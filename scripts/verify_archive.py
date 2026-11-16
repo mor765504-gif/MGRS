@@ -47,17 +47,24 @@ def main() -> int:
     spec_files = sorted((ROOT / 'spec').glob('[0-9][0-9]-*.md'))
     if len(spec_files) != 16:
         errors.append(f'Expected 16 standalone chapters; got {len(spec_files)}')
+    chapter_numbers = '一 二 三 四 五 六 七 八 九 十 十一 十二 十三 十四 十五 十六'.split()
+    contract_schemas = {4: 'mgrs-context/1', 5: 'mgrs-result/1'}
     combined = []
     for number, page in enumerate(spec_files, 1):
         part = page.read_text(encoding='utf-8')
         combined.append(part)
-        if not re.search(r'^## ' + str(number) + r'\. ', part, re.M):
+        if not re.search(rf'^## 第{chapter_numbers[number - 1]}条 · \S', part, re.M):
             errors.append('Missing numbered heading: ' + page.name)
         if f'id="mgrs-{number}"' not in part:
             errors.append('Missing chapter anchor: ' + page.name)
-        for data in re.findall(r'(?ms)^~~~json\n(.*?)^~~~\s*$', part):
+        examples = re.findall(r'(?ms)^(```|~~~)json[ \t]*\n(.*?)^\1[ \t]*$', part)
+        if number in contract_schemas and len(examples) != 1:
+            errors.append('Expected one versioned JSON contract example: ' + page.name)
+        for _, data in examples:
             try:
-                json.loads(data)
+                example = json.loads(data)
+                if number in contract_schemas and (not isinstance(example, dict) or example.get('schema') != contract_schemas[number]):
+                    errors.append('Incorrect contract schema in ' + page.name)
             except json.JSONDecodeError as exc:
                 errors.append('Invalid example JSON in ' + page.name + ': ' + str(exc))
     invariants = re.findall(r'^\*\*G(\d{2})\*\* ', '\n'.join(combined), re.M)
@@ -69,7 +76,7 @@ def main() -> int:
         anchor = f'id="mgrs-{number}"'
         if anchor not in index or anchor not in legacy:
             errors.append('Missing index or legacy anchor: ' + anchor)
-    if re.search(r'^## \d+\. ', legacy, re.M):
+    if re.search(r'^## (?:\d+\. |第[一二三四五六七八九十]+条 · )', legacy, re.M):
         errors.append('Legacy reference must not duplicate the current spec')
     declared_parts = [
         '01-entry-and-authority.md',

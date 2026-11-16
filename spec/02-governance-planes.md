@@ -1,16 +1,31 @@
-[协议索引](../MGRS.md) · **MGRS 0.1 设计候选** · [上一章](01-purpose-and-boundaries.md#mgrs-1) · [下一章](03-invariants.md#mgrs-3)
+[协议索引](../MGRS.md) · **MGRS 0.1 治理准则** · [上一章](01-purpose-and-boundaries.md#mgrs-1) · [下一章](03-invariants.md#mgrs-3)
 
 <a id="mgrs-2"></a>
 
-## 2. 六个治理面与唯一权威
+## 第二条 · 六大治理面与运行权责分工
 
-| 治理面 | 唯一权威与现有组件 | 拒绝重复建设 |
-|---|---|---|
-| 身份与授权 Authority | 可信宿主身份、Core/C1/profile/approval 现有授权、有效代次 | Prompt、Skill、前端按钮不得签发权限 |
-| 上下文 Context | Core 有效事实、Hermes 会话与压缩、mimi_tavern 人格、只读 DrawerProjector 选取视图 | 不另建可写 memory 仓库、不将工作进度保存为稳定人格 |
-| 执行 Execution | Hermes 原生 Agent Loop、MCP、delegate_task；mimi_orchestration 只对受管任务调度 | 不引入替代 Planner/Worker runtime |
-| 证据 Evidence | 原生 session/attempt/input/result/receipt、Core 业务结果、可校验产物 | 不能靠模型自述成功建立事实 |
-| 交付 Delivery | Workshop 验收与原有外发/产物服务，授权目标读取回执 | 前端不得直接把“已收取”等同“已发布” |
-| 观察 Operations | ProductRuntime、原生状态、日志/指标、已存在的运行与验收入口 | 不建立第二份持续变化的运行总账 |
+### 2.1 六大治理面与唯一权威
 
-跨治理面的稳定锚点应为：principal / account / profile / scope / native_session / task_id / requirement_revision / attempt_id / result_id / authorization_generation / provenance。不同存储可各有自己的物理数据库，但每项事实只有一个权威写入方。
+MGRS 从六个治理面说明持续工作中的职责。**每一项事实有明确的权威写入方。** 一次上下文装配可以同时回读 Core、原生会话与任务账本。它们各自提供事实，组合后的请求保留各自的来源。
+
+| 治理面 | 治理要解决的核心问题 | 权威记录与组件分工 | 禁止事项 |
+| --- | --- | --- | --- |
+| **一、身份与授权（Authority）** | 谁在委托、允许知道什么、允许做到哪一步 | 可信宿主身份、`Profile`、`scope`、有效 `Grant` 与授权代次（`authorization_generation`） | 提示词、Skill 文档、外部消息推送与前端按钮均无权签发或扩大权限 |
+| **二、上下文（Context）** | 本轮模型推理应当看到哪些有效且已授权的信息 | `Core` 当前有效快照、原生 `Session`、`Persona` 配置与只读投影视图 | 不另建独立可写记忆库；不把临时工作进度写入长期人格设定 |
+| **三、执行（Execution）** | 采取哪条路径推进工作、如何隔离执行边界 | 原生执行循环、受管任务编排（`Orchestration`）与统一执行端口 | 不为简单请求强加形式化规划；不引入替代底层执行内核的平行运行时 |
+| **四、证据（Evidence）** | 哪些动作真正发生过、上游结论是否可靠 | 原生执行回执、持久化 `Attempt` / `Result` 记录与版本化产物原件 | 不能仅凭模型自述“已完成”或“已发送”建立客观事实 |
+| **五、交付（Delivery）** | 结果何时算合格、如何呈现并交回给用户 | 任务合同声明具名验收规则（`result_rule`），验收记录绑定产物版本。会话内 GenUI 与 Workshop 呈现结果，原业务服务提供外发回执 | 不能将流式预览、本地草稿或“已收取”等同于“已验收”或“已对外发布” |
+| **六、延续与验证（Continuity & Verification）** | 中断后如何接续同一项工作、如何证明长期可靠 | ProductRuntime 组织宿主生命周期，任务与业务账本提供原有状态，单一 `active writer` / `epoch` 约束账本接班，恢复按原尝试对账 | 不以客户端窗口存亡推断任务状态；不以源码存在推导长期稳定运行 |
+
+### 2.2 持续工作中的四方运行分工
+
+无论一项持续工作由单个 Agent 独立巡检，还是由多个受限 `Worker` 协同完成，运行时都必须明确回答以下四个权责归属问题：
+
+1. **谁持续组织工作**：当任务跨轮推进、遇到新证据或用户修改要求而需要**重新判断工作方法**时，由主会话与协调角色（`C0`）负责按用户目标重新评估策略、调整分工与依赖关系。按既定阈值跟踪价格等例程，直接依据领域委托与业务对象运行。
+2. **谁推进已决定的步骤**：确定性运行循环根据当前条件推进已定安排。领域例程沿业务入口记本次运行，受管任务按要求版本核查依赖、权限、挂起与资源，准入后将已登记的 `Attempt` 交给对应原生或外部执行器。
+3. **谁按 `result_rule` 验收**：任务声明的验收者或检查程序依据 `result_rule` 核验具体版本的产物。测试、回执、原件比对或独立复核均可提供依据；验收记录与生产者的自评分开保存。
+4. **用户从哪里接手**：用户在主会话、会话内 GenUI 交互卡片或 Workshop 工作空间中审阅进度、编辑本地草稿、补充约束或签署高风险审批；对外发送按实际效果及现有授权执行；支付确认、重大不可逆操作及用户明确保留的最终步骤，交由用户接管。宿主按对应业务回执记录结果。
+
+### 2.3 全链路统一逻辑锚点
+
+各路径按需关联主体（`principal`）、账户（`account`）、`profile`、`scope`、对应授权代次与来源（`provenance`）。普通对话沿 `native_session` 接续。有期限的观察沿业务对象（如 `watch_id`）接续，例程以提供方与 `job_id` 绑定，每次运行记 `run_id`。受管任务以 `task_id` 跨会话定位，`requirement_revision` 标识要求版本，`attempt_id` 和 `result_id` 分别指向具体尝试和产物。

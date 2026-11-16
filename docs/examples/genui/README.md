@@ -111,6 +111,8 @@ SVG 由仓库内的 `examples.json` 和 `render-previews.mjs` 生成，可使用
 </Card>
 ```
 
+<a id="genui-在交付中的交互流程"></a>
+
 ## GenUI 在交付中的交互流程
 
 以下图示区分 `render_ready`、`local_interactive` 与 `action_ready`。它们是不同层次的能力，不是每个请求都必须依次经过的三阶段审批。
