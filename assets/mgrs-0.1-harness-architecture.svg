@@ -29,7 +29,7 @@
 <rect x="32" y="753" width="1472" height="77" rx="22" fill="#FCF7FB" stroke="#750F6D" stroke-width="1.8" stroke-dasharray="7 6"/>
 <g transform="translate(76 771)" fill="none" stroke="#750F6D" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 0l29 11v22q-3 21-29 29Q-3 54-6 33V11z"/><path d="M12 31l9 9 18-20"/></g>
 <line x1="164" y1="769" x2="164" y2="813" stroke="#A65B9B" stroke-width="2"/>
-<text x="182" y="802" font-size="28" font-weight="700" fill="#750F6D" >MGRS 跨阶段治理规则（贯穿全过程）</text>
+<text x="182" y="802" font-size="28" font-weight="700" fill="#750F6D" >MGRS 跨阶段治理规则</text>
 <rect x="654" y="769" width="79" height="44" rx="10" fill="#FFF9FE" stroke="#A35B99" stroke-width="1.15"/>
 <text x="693.5" y="798" font-size="21" font-weight="500" fill="#382039" text-anchor="middle">权限</text>
 <rect x="743" y="769" width="95" height="44" rx="10" fill="#FFF9FE" stroke="#A35B99" stroke-width="1.15"/>
