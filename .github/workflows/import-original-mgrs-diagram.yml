@@ -1,0 +1,47 @@
+name: Import original MGRS diagram (one-shot)
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/import-original-mgrs-diagram.yml'
+permissions:
+  contents: write
+jobs:
+  import-original:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Download and verify original attachment bytes
+        env:
+          SOURCE_URL: 'https://at.adobe.com/d8cn6GCRMxqQ7UJv'
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          curl --fail --location --silent --show-error --retry 3 --max-time 90 "$SOURCE_URL" --output assets/mgrs-0.1-architecture.jpg
+          echo 'ca5d56c9ba4641bf8c066b29357bafff44b5b2c5c5b0a6360e45768c82ed7dc3  assets/mgrs-0.1-architecture.jpg' | sha256sum --check
+      - name: Replace only the overview diagram block in MGRS.md
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('MGRS.md')
+          old = p.read_text(encoding='utf-8')
+          pattern = r'```mermaid\nflowchart TB\n[\s\S]*?\n```'
+          replacement = '![MGRS 0.1 · 从 Mimi Harness 到治理协议](assets/mgrs-0.1-architecture.jpg)'
+          new, n = re.subn(pattern, lambda m: replacement, old, count=1)
+          assert n == 1, f'Expected exactly one original Mermaid block, found {n}'
+          assert new != old
+          p.write_text(new, encoding='utf-8')
+          PY
+      - name: Remove one-shot importer and commit only final assets
+        run: |
+          set -euo pipefail
+          rm .github/workflows/import-original-mgrs-diagram.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add MGRS.md assets/mgrs-0.1-architecture.jpg .github/workflows/import-original-mgrs-diagram.yml
+          git commit -m 'docs: replace architecture Mermaid with exact uploaded JPEG'
+          git push
