@@ -8,7 +8,30 @@ MGRS 是从 **Mimi Harness 的真实工程组织与架构演化**中提炼出来
 
 这里按照一项工作从用户入口到实际交付的关系，组织为 **六个部分**。这是理解 Harness 的运行路线，**不是六个必须按顺序执行的服务或新的六级权限架构**。简单请求不必额外启动受管 Worker；权限、事实权威、证据和恢复等治理规则会贯穿需要它们的环节。
 
-![MGRS 0.1 · Mimi Harness 与跨阶段治理架构](assets/mgrs-0.1-harness-architecture.svg)
+```mermaid
+flowchart TB
+    USER["用户 / 企业"] --> CLIENT["Web / Mac 等客户端"]
+    CLIENT --> SPACE["主会话 / 工坊等工作空间"]
+    SPACE --> P1["1 用户入口与授权"]
+    SPACE -.-> GENUI["GenUI：会话内呈现与交互"]
+    GENUI -.->|"需提交的操作经宿主处理"| P1
+    P1 --> P2["2 上下文与请求装配"]
+    P2 --> AGENT["Hermes Agent Loop / 主 Agent"]
+    AGENT --> DECIDE{"需要持续任务治理？"}
+    DECIDE -->|"否"| P4["4 执行与外部效果"]
+    DECIDE -->|"是"| P3["3 决策、规划与协作编排"]
+    P3 --> P4
+    P4 --> P5["5 成果交接、验收与交付"]
+    P5 --> SPACE
+    STATE["6 持续工作与运行治理"] -.-> P1
+    STATE -.-> P2
+    STATE -.-> P3
+    STATE -.-> P4
+    STATE -.-> P5
+    RULE["MGRS 跨阶段治理规则"] -.-> P1
+    RULE -.-> P3
+    RULE -.-> P5
+```
 
 <a id="governance"></a>
 <a id="part-1"></a>
