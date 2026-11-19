@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/Mimi-personal-agent.png" alt="Mimi" width="84" />
+</p>
+
 <h1 align="center">MGRS · 一起讨论 Agent 该怎么替人做事</h1>
 
 <p align="center">
