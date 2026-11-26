@@ -37,8 +37,6 @@ MGRS 规定秘秘怎样持续代表用户工作。本章记录哪一份源码、
 
 <a id="plugin-draft-status"></a>
 
-### 16.4 插件治理补充（2026 年 11 月 27 日 · 规范草案）
+### 16.4 插件治理设计（2026 年 11 月 27 日）
 
-本次补充提出能力分发与调用授权的区别、第三方隔离、跨宿主协作、插件恢复及交互资源的验证条件。正式要求见[第七条](07-tools-and-effects.md#plugin-governance)、[第十条](10-profile-cache-isolation.md#plugin-isolation)、[第十一条](11-host-and-recovery.md#plugin-recovery)、[第十二条](12-web-mac-contract.md#plugin-ui)和[第十三条](13-reliability-and-promotion.md#plugin-conformance)。
-
-这些条文先于完整产品实现提出，不构成新增插件功能的 SOURCE_PRESENT、CONTROLLED_PASS 或更高等级证据；实际兼容类别、隔离、真实调用、安装恢复与跨宿主验收须按具体版本及场景登记。此前工程证据与未决事项保持原样。
+本次补充的是[插件治理](07-tools-and-effects.md#plugin-governance)及相应的运行约定。实际支持的插件、宿主、权限边界、交互、恢复和跨宿主协作，仍需按具体实现版本及运行记录逐项核验。此次规范修改不增加产品实现或测试通过的证据，原有工程记录保持不变。
