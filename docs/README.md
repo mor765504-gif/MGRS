@@ -31,11 +31,13 @@ MGRS 讨论的是这些产品治理原则及其可以检验的协作约定，**�
 | [第 1 部分 · 用户入口与授权](../parts/01-entry-and-authority.md#part-1) | 可信入口、Profile、scope、授权与撤回 |
 | [第 2 部分 · 上下文与请求装配](../parts/02-context-and-request.md#part-2) | Core、Memory、Persona、会话与 ContextEnvelope |
 | [第 3 部分 · 决策、规划与协作编排](../parts/03-decision-and-orchestration.md#part-3) | 主 Agent、受管任务、依赖、版本与 Worker |
-| [第 4 部分 · 执行与外部效果](../parts/04-execution-and-effects.md#part-4) | Hermes、MCP、Skill、执行网关与外部效果 |
+| [第 4 部分 · 执行与外部效果](../parts/04-execution-and-effects.md#part-4) | Hermes、MCP、Skill、插件、执行网关与外部效果 |
 | [第 5 部分 · 成果交接、验收与交付](../parts/05-evidence-and-delivery.md#part-5) | ResultCapsule、四级回报、验收与 GenUI |
 | [第 6 部分 · 持续工作与运行治理](../parts/06-persistence-and-operations.md#part-6) | 持续委托、方法重判、中断恢复与可靠性验证 |
 
 十六条治理准则在 `spec/` 中逐条维护，约定各组件协作时的权责、版本、执行与验收依据。六部分将这些准则放回用户交代的一项具体工作中解释。
+
+如果关心不同生态的插件怎样接入同一个私人助手，可以先读[学习与项目协作的例子](../parts/04-execution-and-effects.md#plugin-example)，再读[插件治理正式条文](../spec/07-tools-and-effects.md#plugin-governance)。这里先约定用户委托与运行责任，不以已实现功能为前提。
 
 ## 延伸材料
 

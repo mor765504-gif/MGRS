@@ -34,3 +34,11 @@ MGRS 规定秘秘怎样持续代表用户工作。本章记录哪一份源码、
 | 2026-11-02 · 原生调度及已安装环境 | [开发仓 PR #451，真实模型执行与原始回执](https://github.com/mor765504-gif/assisthub/pull/451) · [PR #454，已安装环境的独立作用域验证](https://github.com/mor765504-gif/assisthub/pull/454) | 工程记录给出了真实模型路径的 `PROVIDER_PASS` 实例：A 完成后下游 C 自动启动。另一场景中的 B 有可读结果，未通过预设精确输出检查。已安装环境的定向验证与生产用户真实收单、消息交付各自记录。 |
 
 [产品候选与系统基线](../docs/sources/2026-11-09-system-baseline.md) · [工程整合与验收记录](../docs/sources/2026-11-11-integration.md) · [历史上下文配置与评测](../docs/sources/2026-11-12-context-evaluation-baseline.md)
+
+<a id="plugin-draft-status"></a>
+
+### 16.4 插件治理补充（2026 年 11 月 27 日 · 规范草案）
+
+本次补充提出能力分发与调用授权的区别、第三方隔离、跨宿主协作、插件恢复及交互资源的验证条件。正式要求见[第七条](07-tools-and-effects.md#plugin-governance)、[第十条](10-profile-cache-isolation.md#plugin-isolation)、[第十一条](11-host-and-recovery.md#plugin-recovery)、[第十二条](12-web-mac-contract.md#plugin-ui)和[第十三条](13-reliability-and-promotion.md#plugin-conformance)。
+
+这些条文先于完整产品实现提出，不构成新增插件功能的 SOURCE_PRESENT、CONTROLLED_PASS 或更高等级证据；实际兼容类别、隔离、真实调用、安装恢复与跨宿主验收须按具体版本及场景登记。此前工程证据与未决事项保持原样。
