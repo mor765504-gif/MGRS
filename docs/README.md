@@ -37,8 +37,6 @@ MGRS 讨论的是这些产品治理原则及其可以检验的协作约定，**�
 
 十六条治理准则在 `spec/` 中逐条维护，约定各组件协作时的权责、版本、执行与验收依据。六部分将这些准则放回用户交代的一项具体工作中解释。
 
-如果你关心不同插件怎样接在同一个助手里，可以先看[学习和项目协作的例子](../parts/04-execution-and-effects.md#plugin-example)，再读[插件治理条文](../spec/07-tools-and-effects.md#plugin-governance)。
-
 ## 延伸材料
 
 [六部分主索引](../MGRS.md) · [十六条治理准则目录](reference/mgrs-0.1-technical.md) · [原始研究与出处](PROVENANCE.md) · [变更记录](../CHANGELOG.md)

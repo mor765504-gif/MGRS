@@ -34,9 +34,3 @@ MGRS 规定秘秘怎样持续代表用户工作。本章记录哪一份源码、
 | 2026-11-02 · 原生调度及已安装环境 | [开发仓 PR #451，真实模型执行与原始回执](https://github.com/mor765504-gif/assisthub/pull/451) · [PR #454，已安装环境的独立作用域验证](https://github.com/mor765504-gif/assisthub/pull/454) | 工程记录给出了真实模型路径的 `PROVIDER_PASS` 实例：A 完成后下游 C 自动启动。另一场景中的 B 有可读结果，未通过预设精确输出检查。已安装环境的定向验证与生产用户真实收单、消息交付各自记录。 |
 
 [产品候选与系统基线](../docs/sources/2026-11-09-system-baseline.md) · [工程整合与验收记录](../docs/sources/2026-11-11-integration.md) · [历史上下文配置与评测](../docs/sources/2026-11-12-context-evaluation-baseline.md)
-
-<a id="plugin-draft-status"></a>
-
-### 16.4 插件治理设计（2026 年 11 月 27 日）
-
-本次补充的是[插件治理](07-tools-and-effects.md#plugin-governance)及相应的运行约定。实际支持的插件、宿主、权限边界、交互、恢复和跨宿主协作，仍需按具体实现版本及运行记录逐项核验。此次规范修改不增加产品实现或测试通过的证据，原有工程记录保持不变。

@@ -55,7 +55,7 @@ MGRS 是从 **Mimi Harness 的真实工程组织与架构演化**中提炼出来
 
 Hermes 驱动原生执行循环，搜索策略和 Skill 提供方法。原生工具、MCP、API、CLI 和 GUI 都可以承接实际操作。宿主按目标与效果核验授权，支付和关键不可逆事务的最终步骤由用户本人完成。
 
-关联条文：[工具与效果](spec/07-tools-and-effects.md#mgrs-7) · [插件治理](spec/07-tools-and-effects.md#plugin-governance) · [Skill 生命周期](spec/08-skill-lifecycle.md#mgrs-8) · [恢复约束](spec/11-host-and-recovery.md#mgrs-11)
+关联条文：[工具与效果](spec/07-tools-and-effects.md#mgrs-7) · [Skill 生命周期](spec/08-skill-lifecycle.md#mgrs-8) · [恢复约束](spec/11-host-and-recovery.md#mgrs-11)
 
 <a id="part-5"></a>
 <a id="mgrs-12"></a>
