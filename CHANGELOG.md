@@ -1,5 +1,14 @@
 # 变更记录
 
+## 2026-11-28 · 统一主控、隔离执行环境、Vault/持续委托与多端呈现边界
+
+- 新增设计决定 [D18](docs/DECISIONS.md#d18)，并同步更新 [第三部分](parts/03-decision-and-orchestration.md#part-3)、[第四部分](parts/04-execution-and-effects.md#part-4)、[第六部分](parts/06-persistence-and-operations.md#part-6) 与 [第十二条](spec/12-web-mac-contract.md#mgrs-12)：
+  - 明确单一 `T0=C0` 主控所有权、固定主控模型与 `controller_epoch` 原子交接，并将模型横向评估与控制权威隔离；
+  - 界定隔离 Guest（WPE WebKit / AT-SPI / Wayland / 单一图形串流）的 `fail-closed` 边界与禁止静默 VM→宿主兜底约束；
+  - 明确加密 Vault 不透明句柄、自有 Passkey RP 与第三方站点 Passkey 用户接管的严格分离，以及既定授权代次下的持续委托边界；
+  - 补充确定性 7x24 维护信号（零令牌空闲、缺陷指纹去重、两轮熔断）、冷恢复 `RECONCILING` 对账以及 Web/Mac/iOS 共享任务状态与普通/性能模式热切换规范。
+- 维持原有十六条规范章节、G01–G14 不变量、`mgrs-context/1`、`mgrs-result/1` 与原始历史归档不变，按 CC BY 4.0 与 D11 原则区分规范说明与产品验收门禁。
+
 ## 2026-11-16 · 六部分架构与十六条治理准则对齐
 
 - 重编 [十六条治理准则](docs/reference/mgrs-0.1-technical.md)，保留章节地址、十四条不变量和两个版本化合同。
